@@ -1,0 +1,56 @@
+﻿AI/HS2 Character - Defined in the AIChara namespace
+================
+PNG Data
+[int] Load product number - always equals 100
+[string] identifier - 【AIS_Chara】
+[Version] Load version - another check that this is a character card - always equals 1.0.0
+[int] Language
+[string] User ID
+[string] Data ID
+--- The real data starts here ---
+[int] count - Size in bytes of all combined (contiguous) BlockHeaders
+[BlockHeader] MessagePack object
+=> [string] name of the object type
+=> [Version] version - must equal the version specified for the type
+=> [long] pos - offset of the object
+=> [long] size - size in bytes of the object
+[long] used later for offset
+
+-> AI/HS2 Character objects
+-> ========================
+Custom
+=> Face
+==> [Version] version
+==> [float[]] shapeValueFace
+==> [int] headId
+==> [int] skinId
+==> [int] detailId
+==> [float] detailPower
+==> [int] eyebrowId
+==> [Color] eyebrowColor
+==> [Vector4] eyebrowLayout
+==> [float] eyebrowTilt
+==> [ChaFileFace.EyesInfo[]] pupil
+==> [bool] pupilSameSetting
+==> [float] pupilY
+==> [int] hlId
+==> [Color] hlColor
+==> [Vector4] hlLayout
+==> [float] hlTilt
+==> [float] whiteShadowScale
+==> [int] eyelashesId
+==> [Color] eyelashesColor
+==> [int] moleId
+==> [Color] moleColor
+==> [Vector4] moleLayout
+==> [ChaFileFace.MakeupInfo] makeup
+==> [int] beardId
+==> [Color] beardColor
+=> Body
+=> Hair
+Coordinate
+Parameter
+GameInfo
+Status
+ParameterVerson2
+GameInfoVersion2
