@@ -7,7 +7,7 @@ namespace IllusionCards
 	{
 		public static IllusionCard GetIllusionCardFromFile(FileInfo cardFile)
 		{
-			CardStructure cs = new(cardFile);
+			CardStructure cs = new(cardFile, true);
 			return IllusionCard.NewCard(cs);
 		}
 	}

@@ -2,13 +2,15 @@
 
 namespace IllusionCards.Cards
 {
-	public partial class IllusionCard
+	public abstract class IllusionCard
 	{
 		CardStructure CardStructure;
 		internal IllusionCard(CardStructure cs)
 		{
 			CardStructure = cs;
 		}
+
+		public class WrongCardTypeException : InvalidOperationException { }
 
 		public static IllusionCard NewCard(CardStructure cs)
 		{
