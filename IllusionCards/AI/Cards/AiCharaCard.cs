@@ -1,38 +1,29 @@
-﻿using MessagePack;
-using NLog;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
-namespace IllusionCards.Cards
+using IllusionCards.AI.Chara;
+using IllusionCards.Cards;
+
+using MessagePack;
+
+using NLog;
+
+namespace IllusionCards.AI.Cards
 {
 	public class AiCharaCard : IllusionCard
 	{
 		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-		private readonly CardStructure CardStructure;
 
 		public int Language;
 		public string UserID;
 		public string DataID;
 
-		internal static class AiChaFileDefine
-		{
-			public static readonly Version ChaFileVersion = new Version("1.0.0");
-			public static readonly Version ChaFileCustomVersion = new Version("0.0.0");
-			public static readonly Version ChaFileFaceVersion = new Version("0.0.2");
-			public static readonly Version ChaFileBodyVersion = new Version("0.0.1");
-			public static readonly Version ChaFileHairVersion = new Version("0.0.3");
-			public static readonly Version ChaFileCoordinateVersion = new Version("0.0.0");
-			public static readonly Version ChaFileClothesVersion = new Version("0.0.0");
-			public static readonly Version ChaFileAccessoryVersion = new Version("0.0.0");
-			public static readonly Version ChaFileParameterVersion = new Version("0.0.1");
-			public static readonly Version ChaFileParameterVersion2 = new Version("0.0.0");
-			public static readonly Version ChaFileStatusVersion = new Version("0.0.0");
-			public static readonly Version ChaFileGameInfoVersion = new Version("0.0.0");
-			public static readonly Version ChaFileGameInfoVersion2 = new Version("0.0.0");
-		}
+		public AiCustom Custom = null!;
+		public AiCoordinate Coordinate = null!;
 
-		[MessagePackObject(true)]
+		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 		public class BlockHeader
 		{
 			public List<Info> lstInfo { get; set; }
@@ -41,7 +32,7 @@ namespace IllusionCards.Cards
 				lstInfo = new List<Info>();
 			}
 
-			[MessagePackObject(true)]
+			[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 			public class Info
 			{
 				public string name { get; set; }
@@ -79,18 +70,27 @@ namespace IllusionCards.Cards
 				throw new InvalidCardException(CardStructure.CardFile.FullName, ex.Message);
 			}
 		}
+		private static void CheckInfoVersion(BlockHeader.Info info, Version expectedVersion, string cardPath)
+		{
+			if (new Version(info.version) > expectedVersion)
+				throw new UnsupportedCardException(cardPath, $"{info.name} version {info.version} was greater than the expected version {expectedVersion}");
+		}
 		public AiCharaCard(CardStructure cs) : base(cs)
 		{
 			CardStructure = cs;
+			string _cardPath = CardStructure.CardFile.FullName;
 			FileStream _cardFileStream = CardStructure.cardFileStream;
 			BinaryReader _cardBinaryReader = CardStructure.cardBinaryReader;
 			Logger.Debug(_cardFileStream.Position);
-			VerifyDataNull(delegate() {
+			VerifyDataNull(delegate ()
+			{
 				string _version = _cardBinaryReader.ReadString();
-				Version _cardVersion = new Version(_version);
-				if (_cardVersion > AiChaFileDefine.ChaFileVersion) {
-					throw new UnsupportedCardException(CardStructure.CardFile.FullName, $"Load version {_cardVersion} was greater than the expected version {AiChaFileDefine.ChaFileVersion}"); }
-				});
+				Version _cardVersion = new(_version);
+				if (_cardVersion > AiCharaCardDefinitions.AiChaVersion)
+				{
+					throw new UnsupportedCardException(_cardPath, $"Load version {_cardVersion} was greater than the expected version {AiCharaCardDefinitions.AiChaVersion}");
+				}
+			});
 			Language = (int)VerifyData(delegate { return _cardBinaryReader.ReadInt32(); });
 			UserID = (string)VerifyData(delegate { return _cardBinaryReader.ReadString(); });
 			DataID = (string)VerifyData(delegate { return _cardBinaryReader.ReadString(); });
@@ -99,6 +99,34 @@ namespace IllusionCards.Cards
 			BlockHeader _blockHeader = MessagePackSerializer.Deserialize<BlockHeader>(_bhBytes);
 			long _num = (long)VerifyData(delegate { return _cardBinaryReader.ReadInt64(); });
 			long _postNumPosition = _cardFileStream.Position;
+			foreach (BlockHeader.Info info in _blockHeader.lstInfo)
+			{
+				long _infoPos = _postNumPosition + info.pos;
+				_cardFileStream.Seek(_infoPos, SeekOrigin.Begin);
+				byte[] _infoData = _cardBinaryReader.ReadBytes((int)info.size);
+				Version _version = new(info.version);
+				switch (info.name)
+				{
+					case AiCustom.BlockName:
+						CheckInfoVersion(info, AiCharaCardDefinitions.AiCustomVersion, _cardPath);
+						Custom = new(_infoData);
+						break;
+					case AiCoordinate.BlockName:
+						break;
+					//case AiParameter.BlockName:
+					//	break;
+					//case AiParameter2.BlockName:
+					//	break;
+					//case AiGameInfo.BlockName:
+					//	break;
+					//case AiGameInfo2.BlockName:
+					//	break;
+					//case AiStatus.BlockName:
+					//	break;
+					default:
+						break;
+				}
+			}
 			CardStructure.CleanupStreams();
 		}
 	}

@@ -54,5 +54,12 @@ namespace IllusionCards.Util
 			stream.Seek(_originalPos, SeekOrigin.Begin);
 			return null;
 		}
+
+		public static float[] GetRepeatArray(int length, float val)
+		{
+			float[] _a = new float[length];
+			for (int i = 0; i < length; i++) _a[i] = val;
+			return _a;
+		}
 	}
 }

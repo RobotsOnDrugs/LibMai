@@ -1,7 +1,8 @@
-﻿using IllusionCards.Cards;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace IllusionCards
+using IllusionCards.Cards;
+
+namespace IllusionCards.Util
 {
 	public static class Constants
 	{
@@ -17,7 +18,8 @@ namespace IllusionCards
 		public const string PHFemaleCharaIdentifier = "【PlayHome_FemaleCoordinate】";
 		public const string PHFemaleClothesIdentifier = "【PlayHome_Female】";
 
-		public static readonly Dictionary<CardType,string> CardTypeNames = new() {
+		public static readonly Dictionary<CardType, string> CardTypeNames = new()
+		{
 			[CardType.AIChara] = "AI Shoujo/Honey Select 2 Character",
 			[CardType.AICoordinate] = "AI Shoujo/Honey Select 2 Outfit",
 			[CardType.AIScene] = "Studio NEO v2 Scene",

@@ -1,10 +1,13 @@
 ﻿using System;
 
+using IllusionCards.Util;
+
 namespace IllusionCards.Cards
 {
 	public abstract class IllusionCard
 	{
-		CardStructure CardStructure;
+		internal CardStructure CardStructure { get; init; }
+
 		internal IllusionCard(CardStructure cs)
 		{
 			CardStructure = cs;
@@ -18,9 +21,9 @@ namespace IllusionCards.Cards
 			switch (cs.CardType)
 			{
 				case CardType.AIChara:
-					return new AiCharaCard(cs);
+					return new AI.Cards.AiCharaCard(cs);
 				case CardType.AICoordinate:
-					//return new AiCoordinateCard(cs);
+					//return new AI.Cards.AiCoordinateCard(cs);
 					break;
 				case CardType.AIScene:
 					break;

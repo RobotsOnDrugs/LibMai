@@ -1,29 +1,13 @@
 ﻿using System;
-using System.Linq;
 using System.IO;
+using System.Linq;
+
+using IllusionCards.Util;
 
 using NLog;
 
-using IllusionCards.Cards;
-using IllusionCards.Util;
-using static IllusionCards.Constants;
-
-namespace IllusionCards
+namespace IllusionCards.Cards
 {
-	public class UnsupportedCardException : Exception
-	{
-		public string CardPath;
-		public UnsupportedCardException(string cardPath, string message) : base(message)
-		{
-			CardPath = cardPath;
-		}
-	}
-	public class InvalidCardException : UnsupportedCardException
-	{
-		public InvalidCardException(string cardPath, string message) : base(cardPath, message)
-		{
-		}
-	}
 	public class CardStructure
 	{
 		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -50,7 +34,7 @@ namespace IllusionCards
 				Logger.Debug("{CardName:l} num: {num}", CardFile.Name, _num);
 				// TODO: Further parse the card to determine type and set up the objects
 				throw new UnsupportedCardException(CardFile.FullName, $"Scene cards are not supported yet.");
-				return _version;
+				//return _version;
 				//return true;
 			}
 			cardFileStream.Seek(DataStartOffset, SeekOrigin.Begin);
@@ -84,21 +68,17 @@ namespace IllusionCards
 			cardFileStream.Seek(DataStartOffset, SeekOrigin.Begin);
 			return false;
 		}
-		private void ParseCard()
-		{
-			
-		}
 
 		private static CardType? GetCardType(string identifier)
 		{
 			return identifier switch
 			{
-				AICharaIdentifier => CardType.AIChara,
-				AIClothesIdentifier => CardType.AICoordinate,
-				KKCharaIdentifier => CardType.KKChara,
-				KKPartyCharaIdentifier => CardType.KKPartyChara,
-				KKPartySPCharaIdentifier => CardType.KKPartySPChara,
-				ECCharaIdentifier => CardType.ECChara,
+				Constants.AICharaIdentifier => CardType.AIChara,
+				Constants.AIClothesIdentifier => CardType.AICoordinate,
+				Constants.KKCharaIdentifier => CardType.KKChara,
+				Constants.KKPartyCharaIdentifier => CardType.KKPartyChara,
+				Constants.KKPartySPCharaIdentifier => CardType.KKPartySPChara,
+				Constants.ECCharaIdentifier => CardType.ECChara,
 				_ => null,
 			};
 		}
@@ -108,7 +88,7 @@ namespace IllusionCards
 			cardFileStream.Close();
 		}
 
-		internal CardStructure(string filePath, bool keepStreams = false) : this(new FileInfo(filePath), keepStreams) {}
+		internal CardStructure(string filePath, bool keepStreams = false) : this(new FileInfo(filePath), keepStreams) { }
 		internal CardStructure(FileInfo cardFile, bool keepStreams = false)
 		{
 			CardFile = cardFile;
@@ -128,7 +108,7 @@ namespace IllusionCards
 				CleanupStreams();
 				throw new InvalidCardException(CardFile.FullName, $"Could not determine card type.");
 			}
-			
+
 		}
 
 	}

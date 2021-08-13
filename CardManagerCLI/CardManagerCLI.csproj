@@ -33,10 +33,15 @@
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.7.10" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21308.1" />
+    <PackageReference Include="YamlDotNet" Version="11.2.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\IllusionCards\IllusionCards.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   
 </Project>

@@ -1,6 +1,6 @@
 ﻿using IllusionCards.Cards;
 
-namespace IllusionCards
+namespace IllusionCards.KK.Chara
 {
 	internal class KKCharaCard : IllusionCard
 	{

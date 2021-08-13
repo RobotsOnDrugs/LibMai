@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.CommandLine;
+using System.CommandLine.Invocation;
 using System.IO;
 using System.Security;
 
-using System.CommandLine;
-using System.CommandLine.Invocation;
+using IllusionCards.Cards;
+
 using NLog;
 using NLog.Config;
 using NLog.Targets;
 
-using IllusionCards.Cards;
+using YamlDotNet.Serialization;
+
 using static IllusionCards.CardUtils;
 
 namespace IllusionCards
@@ -41,7 +44,8 @@ namespace IllusionCards
 			Option<string> cardListOption = new("--card-list", "Cards to process") { Arity = ArgumentArity.ExactlyOne };
 			RootCommand RootCommand = new() { cardsOption, cardListOption };
 			RootCommand.Description = "Illusion Card CLI Utility";
-			RootCommand.Handler = CommandHandler.Create<string[], string>((cards, cardList) => {
+			RootCommand.Handler = CommandHandler.Create<string[], string>((cards, cardList) =>
+			{
 				bool _success = true;
 				if (cards.Length != 0)
 				{
@@ -118,13 +122,12 @@ namespace IllusionCards
 				catch (UnsupportedCardException ex) { Logger.Error(ex, "Could not parse card: {card}: {reason:l}", ex.CardPath, ex.Message); continue; }
 				_ = Cards.Add(_card);
 			}
-
+			Serializer serializer = new();
+			foreach (IllusionCard card in Cards)
+			{
+				serializer.Serialize(Console.Out, card);
+			}
 			NLog.LogManager.Shutdown();
-		}
-
-		public static void pstest()
-		{
-			Console.WriteLine("Blorf!");
 		}
 	}
 }

@@ -13,6 +13,6 @@
 		public abstract CharaSex Sex { get; init; }
 		public bool IsFemale { get { return ((Sex == CharaSex.Female) || (Sex == CharaSex.Futa)); } }
 		public bool IsMale { get { return (Sex == CharaSex.Male); } }
-		
+
 	}
 }

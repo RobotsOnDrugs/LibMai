@@ -1,4 +1,6 @@
-﻿namespace IllusionCards.Cards
+﻿using IllusionCards.Cards;
+
+namespace IllusionCards.AI.Cards
 {
 	internal class AiCoordinateCard : IllusionCard
 	{
