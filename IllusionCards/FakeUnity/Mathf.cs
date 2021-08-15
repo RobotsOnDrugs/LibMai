@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace IllusionCards.FakeUnity
+﻿namespace IllusionCards.FakeUnity
 {
 	public static class Mathf
 	{

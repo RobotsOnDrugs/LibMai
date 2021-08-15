@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace IllusionCards.Cards
+﻿namespace IllusionCards.Cards
 {
 	public class UnsupportedCardException : Exception
 	{
@@ -14,7 +12,7 @@ namespace IllusionCards.Cards
 	{
 		public InvalidCardException(string cardPath, string message) : base(cardPath, message) { }
 	}
-	internal class InternalCardException : Exception
+	internal class InternalCardException : InvalidOperationException
 	{
 		public InternalCardException(string message) : base(message) { }
 	}

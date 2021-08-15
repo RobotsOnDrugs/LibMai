@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 using IllusionCards.Chara;
 
 namespace IllusionCards.AI.Chara

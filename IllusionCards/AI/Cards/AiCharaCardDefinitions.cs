@@ -1,10 +1,9 @@
-﻿using System;
-
+﻿
 using IllusionCards.Util;
 
 namespace IllusionCards.AI.Cards
 {
-	public static class AiCharaCardDefinitions
+	public record AiCharaCardDefinitions
 	{
 		public static readonly Version AiChaVersion = new("1.0.0");
 		public static readonly Version AiCustomVersion = new("0.0.0");
@@ -15,10 +14,10 @@ namespace IllusionCards.AI.Cards
 		public static readonly Version AiClothesVersion = new("0.0.0");
 		public static readonly Version AiAccessoryVersion = new("0.0.0");
 		public static readonly Version AiParameterVersion = new("0.0.1");
-		public static readonly Version AiParameterVersion2 = new("0.0.0");
+		public static readonly Version AiParameter2Version = new("0.0.0");
 		public static readonly Version AiStatusVersion = new("0.0.0");
 		public static readonly Version AiGameInfoVersion = new("0.0.0");
-		public static readonly Version AiGameInfoVersion2 = new("0.0.0");
+		public static readonly Version AiGameInfo2Version = new("0.0.0");
 		public const float MaleDefaultHeight = 0.75f;
 		public const int AccessoryCategoryTypeNone = 120;
 		public const int AccessoryColorNum = 4;

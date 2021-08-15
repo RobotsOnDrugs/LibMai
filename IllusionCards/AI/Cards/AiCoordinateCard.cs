@@ -2,7 +2,7 @@
 
 namespace IllusionCards.AI.Cards
 {
-	internal class AiCoordinateCard : IllusionCard
+	internal record AiCoordinateCard : IllusionCard
 	{
 		public AiCoordinateCard(CardStructure cs) : base(cs)
 		{

@@ -2,7 +2,7 @@
 
 namespace IllusionCards.AI.Cards
 {
-	internal class AiSceneCard : IllusionCard
+	internal record AiSceneCard : IllusionCard
 	{
 		public AiSceneCard(CardStructure cs) : base(cs)
 		{

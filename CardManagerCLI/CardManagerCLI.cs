@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.CommandLine;
+﻿using System.CommandLine;
 using System.CommandLine.Invocation;
-using System.IO;
 using System.Security;
 
 using IllusionCards.Cards;
@@ -10,8 +7,6 @@ using IllusionCards.Cards;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
-
-using YamlDotNet.Serialization;
 
 using static IllusionCards.CardUtils;
 
@@ -22,7 +17,7 @@ namespace IllusionCards
 		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
 
-		static int Main(string[] args)
+		static void Main(string[] args)
 		{
 
 			LoggingConfiguration _logconfig = LogManager.Configuration;
@@ -50,21 +45,30 @@ namespace IllusionCards
 				if (cards.Length != 0)
 				{
 					Logger.Info("Adding cards from the command line.");
-					_success = QueueCardsFromArgList(cards, CardFiles);
+					_success = QueueCardsFromArgList(cards, ref CardFiles);
 					// if (!_success) { return; }
 				}
 				if (cardList.Length != 0)
 				{
 					Logger.Info("Adding cards from the text file.");
-					_success = QueueCardsFromFile(cardList, CardFiles);
+					_success = QueueCardsFromFile(cardList, ref CardFiles);
 					// if (!_success) { return; }
 				}
-				Run(CardFiles);
 			});
-			return RootCommand.InvokeAsync(args).Result;
+			RootCommand.Invoke(args);
+			HashSet<IllusionCard> Cards = new();
+			IllusionCard _card;
+			foreach (FileInfo CardFile in CardFiles)
+			{
+				Logger.Info("Processing {cardfile:l}.", CardFile.Name);
+				try { _card = GetIllusionCardFromFile(CardFile); }
+				catch (UnsupportedCardException ex) { Logger.Error(ex, "Could not parse card: {card}: {reason:l}", ex.CardPath, ex.Message); continue; }
+				_ = Cards.Add(_card);
+			}
+			NLog.LogManager.Shutdown();
 		}
 
-		private static bool QueueCardsFromArgList(string[] args, List<FileInfo> cards)
+		private static bool QueueCardsFromArgList(string[] args, ref List<FileInfo> cards)
 		{
 			bool _success = true;
 			foreach (string cardPath in args)
@@ -77,7 +81,7 @@ namespace IllusionCards
 			return _success;
 		}
 
-		private static bool QueueCardsFromFile(string cardList, List<FileInfo> cards)
+		private static bool QueueCardsFromFile(string cardList, ref List<FileInfo> cards)
 		{
 			bool _success = true;
 			TestFileAccess(cardList, out FileInfo? _cardListFile);
@@ -109,25 +113,6 @@ namespace IllusionCards
 				|| ex is FileNotFoundException)
 			{ Logger.Error(ex, "{filePath} could not be accessed: {reason:l}", filePath, ex.Message); }
 			fileInfo = _fileInfo;
-		}
-
-		private static void Run(List<FileInfo> cards)
-		{
-			HashSet<IllusionCard> Cards = new();
-			IllusionCard _card;
-			foreach (FileInfo CardFile in cards)
-			{
-				Logger.Info("Processing {cardfile:l}.", CardFile.Name);
-				try { _card = GetIllusionCardFromFile(CardFile); }
-				catch (UnsupportedCardException ex) { Logger.Error(ex, "Could not parse card: {card}: {reason:l}", ex.CardPath, ex.Message); continue; }
-				_ = Cards.Add(_card);
-			}
-			Serializer serializer = new();
-			foreach (IllusionCard card in Cards)
-			{
-				serializer.Serialize(Console.Out, card);
-			}
-			NLog.LogManager.Shutdown();
 		}
 	}
 }

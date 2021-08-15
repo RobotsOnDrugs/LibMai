@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 using IllusionCards.FakeUnity;
 
@@ -11,28 +10,28 @@ namespace IllusionCards.AI.Chara
 	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 	public record AiBody
 	{
-		public Version version { get; set; } = null!;
-		public float[] shapeValueBody { get; set; } = null!;
-		public float bustSoftness { get; set; }
-		public float bustWeight { get; set; }
-		public int skinId { get; set; }
-		public int detailId { get; set; }
-		public float detailPower { get; set; }
-		public Color skinColor { get; set; }
-		public float skinGlossPower { get; set; }
-		public float skinMetallicPower { get; set; }
-		public int sunburnId { get; set; }
-		public Color sunburnColor { get; set; }
-		public PaintInfo[] paintInfo { get; set; } = null!;
-		public int nipId { get; set; }
-		public Color nipColor { get; set; }
-		public float nipGlossPower { get; set; }
-		public float areolaSize { get; set; }
-		public int underhairId { get; set; }
-		public Color underhairColor { get; set; }
-		public Color nailColor { get; set; }
-		public float nailGlossPower { get; set; }
+		public Version version { get; init; } = null!;
+		public float[] shapeValueBody { get; init; } = null!;
+		public float bustSoftness { get; init; }
+		public float bustWeight { get; init; }
+		public int skinId { get; init; }
+		public int detailId { get; init; }
+		public float detailPower { get; init; }
+		public Color skinColor { get; init; }
+		public float skinGlossPower { get; init; }
+		public float skinMetallicPower { get; init; }
+		public int sunburnId { get; init; }
+		public Color sunburnColor { get; init; }
+		public PaintInfo[] paintInfo { get; init; } = null!;
+		public int nipId { get; init; }
+		public Color nipColor { get; init; }
+		public float nipGlossPower { get; init; }
+		public float areolaSize { get; init; }
+		public int underhairId { get; init; }
+		public Color underhairColor { get; init; }
+		public Color nailColor { get; init; }
+		public float nailGlossPower { get; init; }
 		public AiBody() { }
-		public object? ExtendedSaveData { get; set; }
+		public object? ExtendedSaveData { get; init; }
 	}
 }

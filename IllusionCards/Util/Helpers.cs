@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-
-namespace IllusionCards.Util
+﻿namespace IllusionCards.Util
 {
 	static class Helpers
 	{
@@ -60,6 +56,19 @@ namespace IllusionCards.Util
 			float[] _a = new float[length];
 			for (int i = 0; i < length; i++) _a[i] = val;
 			return _a;
+		}
+		public static byte[][] GetDataChunks(byte[] bytes, int numChunks)
+		{
+			byte[][] chunks = new byte[numChunks][];
+			using MemoryStream _mstream = new(bytes);
+			using BinaryReader _reader = new(_mstream);
+			for (int i = 0; i < chunks.Length; i++)
+			{
+				int _count = _reader.ReadInt32();
+				byte[] _bytes = _reader.ReadBytes(_count);
+				chunks[i] = _bytes;
+			}
+			return chunks;
 		}
 	}
 }

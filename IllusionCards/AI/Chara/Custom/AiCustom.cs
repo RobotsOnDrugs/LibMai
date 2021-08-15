@@ -1,13 +1,12 @@
-﻿using System.IO;
-
-using IllusionCards.AI.Cards;
+﻿using IllusionCards.AI.Cards;
 using IllusionCards.Cards;
+using IllusionCards.Util;
 
 using MessagePack;
 
 namespace IllusionCards.AI.Chara
 {
-	public class AiCustom
+	public record AiCustom
 	{
 		public const string BlockName = "Custom";
 		public AiFace face;
@@ -19,18 +18,10 @@ namespace IllusionCards.AI.Chara
 		// HeightKind is determined by body.shapeValueBody[0] - 0 if =< 0.33f, 2 if >= 0.66f, 1 if in between
 		public AiCustom(byte[] customData)
 		{
-			using MemoryStream _mstream = new(customData);
-			using BinaryReader _reader = new(_mstream);
-			int _count = _reader.ReadInt32();
-			byte[] _bytes = _reader.ReadBytes(_count);
-			//face = new(_bytes);
-			face = MessagePackSerializer.Deserialize<AiFace>(_bytes);
-			_count = _reader.ReadInt32();
-			_bytes = _reader.ReadBytes(_count);
-			body = MessagePackSerializer.Deserialize<AiBody>(_bytes);
-			_count = _reader.ReadInt32();
-			_bytes = _reader.ReadBytes(_count);
-			hair = MessagePackSerializer.Deserialize<AiHair>(_bytes);
+			byte[][] _dataChunks = Helpers.GetDataChunks(customData, 3);
+			face = MessagePackSerializer.Deserialize<AiFace>(_dataChunks[0]);
+			body = MessagePackSerializer.Deserialize<AiBody>(_dataChunks[1]);
+			hair = MessagePackSerializer.Deserialize<AiHair>(_dataChunks[2]);
 			if (face.version < AiCharaCardDefinitions.AiFaceVersion) { throw new InternalCardException("Face data for this card is too old."); }
 			if (body.version < AiCharaCardDefinitions.AiBodyVersion) { throw new InternalCardException("Body data for this card is too old."); }
 			if (hair.version < AiCharaCardDefinitions.AiHairVersion) { throw new InternalCardException("Hair data for this card is too old."); }

@@ -2,7 +2,7 @@
 
 namespace IllusionCards.KK.Chara
 {
-	internal class KKCharaCard : IllusionCard
+	internal record KKCharaCard : IllusionCard
 	{
 		public KKCharaCard(CardStructure cs) : base(cs)
 		{

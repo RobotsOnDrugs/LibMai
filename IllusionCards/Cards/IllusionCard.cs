@@ -1,12 +1,11 @@
-﻿using System;
-
+﻿
 using IllusionCards.Util;
 
 namespace IllusionCards.Cards
 {
-	public abstract class IllusionCard
+	public abstract record IllusionCard
 	{
-		internal CardStructure CardStructure { get; init; }
+		public CardStructure CardStructure { get; init; }
 
 		internal IllusionCard(CardStructure cs)
 		{
