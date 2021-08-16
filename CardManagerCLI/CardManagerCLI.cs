@@ -37,21 +37,27 @@ namespace IllusionCards
 			List<FileInfo> CardFiles = new();
 			Option<string> cardsOption = new("--cards", "Cards to process") { Arity = ArgumentArity.OneOrMore };
 			Option<string> cardListOption = new("--card-list", "Cards to process") { Arity = ArgumentArity.ExactlyOne };
-			RootCommand RootCommand = new() { cardsOption, cardListOption };
+			Option<string> gameDirectoryOption = new("--game-dir", "Cards to process") { Arity = ArgumentArity.ExactlyOne };
+			RootCommand RootCommand = new() { cardsOption, cardListOption, gameDirectoryOption };
 			RootCommand.Description = "Illusion Card CLI Utility";
-			RootCommand.Handler = CommandHandler.Create<string[], string>((cards, cardList) =>
+			RootCommand.Handler = CommandHandler.Create<string[], string, string>((cards, cardList, gameDir) =>
 			{
-				bool _success = true;
 				if (cards.Length != 0)
 				{
 					Logger.Info("Adding cards from the command line.");
-					_success = QueueCardsFromArgList(cards, ref CardFiles);
+					bool _successArgList = QueueCardsFromArgList(cards, ref CardFiles);
 					// if (!_success) { return; }
 				}
 				if (cardList.Length != 0)
 				{
 					Logger.Info("Adding cards from the text file.");
-					_success = QueueCardsFromFile(cardList, ref CardFiles);
+					bool _successFileList = QueueCardsFromFile(cardList, ref CardFiles);
+					// if (!_success) { return; }
+				}
+				if (gameDir.Length != 0)
+				{
+					Logger.Info("Adding cards from the game directory.");
+					bool _successGameDir = QueueCardsFromGameDir(gameDir, ref CardFiles);
 					// if (!_success) { return; }
 				}
 			});
@@ -96,6 +102,19 @@ namespace IllusionCards
 				cards.Add(_cardFile);
 			}
 
+			return _success;
+		}
+		private static bool QueueCardsFromGameDir(string dirPath, ref List<FileInfo> cards)
+		{
+			bool _success = true;
+			string _cardsPath = Path.Join(dirPath, "UserData", "chara");
+			if (!Directory.Exists(_cardsPath)) { return false; }
+			IEnumerable<string> _potentialCardFiles = Directory.EnumerateFiles(_cardsPath, "*.png", enumerationOptions: new() { AttributesToSkip=FileAttributes.Device|FileAttributes.System, RecurseSubdirectories=true, IgnoreInaccessible=true });
+			foreach (string potentialCardFile in _potentialCardFiles)
+			{
+				Logger.Debug("Added {cardPath} to list of cards.", potentialCardFile);
+				cards.Add(new FileInfo(potentialCardFile));
+			}
 			return _success;
 		}
 

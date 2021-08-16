@@ -1,15 +1,27 @@
-﻿namespace IllusionCards.AI.ExtendedData.PluginData
+﻿using System.Xml;
+
+namespace IllusionCards.AI.ExtendedData.PluginData
 {
 	public record AdditionalAccessoriesData : ExtendedPluginData
 	{
-		public new const string PluginGUID = "moreAccessories";
-		public override Type DataType { get; init; } = typeof(Version);
-		public Version Data { get; init; }
+		public const string DataKey = DefinitionMetadata.DataKey;
+		private readonly struct DefinitionMetadata
+		{
+			internal const string PluginGUID = "com.joan6694.illusionplugins.moreaccessories";
+			internal const string DataKey = "moreAccessories";
+			internal readonly Version PluginVersion = new("1.2.2");
+			internal const string RepoURL = "https://bitbucket.org/Joan6694/hsplugins/src/master/MoreAccessoriesAI/";
+			internal const string ClassDefinitionsURL = "https://bitbucket.org/Joan6694/hsplugins/src/master/MoreAccessoriesAI/MoreAccessories.cs";
+			internal const string? License = null;
+		}
+		public override Type DataType { get; init; } = typeof(XmlDocument);
+		public XmlDocument Data { get; init; }
 		public AdditionalAccessoriesData(Dictionary<object, object> dataDict) : base(dataDict)
 		{
 			string _rawData = (string)dataDict["additionalAccessories"];
-			string _versionString = _rawData.ToString().Split(" ")[1].Split("=")[1].Replace("\"", "");
-			Data = new Version(_versionString);
+			XmlDocument _xmlDoc = new();
+			_xmlDoc.LoadXml(_rawData);
+			Data = _xmlDoc;
 		}
 	}
 }

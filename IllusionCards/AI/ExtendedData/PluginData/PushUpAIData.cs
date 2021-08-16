@@ -2,60 +2,69 @@
 {
 	public record PushUpAIData : ExtendedPluginData
 	{
-		public new const string PluginGUID = "mikke.pushUpAI";
+		public const string DataKey = DefinitionMetadata.DataKey;
+		private readonly struct DefinitionMetadata
+		{
+			internal const string PluginGUID = "mikke.pushUpAI";
+			internal const string DataKey = PluginGUID;
+			internal readonly Version PluginVersion = new("2.1.1");
+			internal const string RepoURL = "https://bitbucket.org/mikkemikke/mikkeplugins/src/master/PushUpAI/";
+			internal const string ClassDefinitionsURL = "https://bitbucket.org/mikkemikke/mikkeplugins/src/master/PushUpAI/PushUpController.cs";
+			internal const string? License = null;
+		}
 		public override Type DataType { get; init; } = typeof(PushUpAIOptions);
 		public readonly struct PushUpAIOptions
 		{
-			public float FIRMNESS { get; init; }
-			public float LIFT { get; init; }
-			public float PUSH_TOGETHER { get; init; }
-			public float SQUEEZE { get; init; }
-			public float CENTER_NIPPLES { get; init; }
-			public bool FLATTEN_NIPPLES { get; init; }
-			public bool ENABLE_PUSHUP { get; init; }
-			public bool HIDE_ACCESSORIES { get; init; }
-			public bool HIDE_NIPPLES { get; init; }
-			public float CORSET { get; init; }
-			public bool CORSET_HALF { get; init; }
-			public float TOP_FIRMNESS { get; init; }
-			public float TOP_LIFT { get; init; }
-			public float TOP_PUSH_TOGETHER { get; init; }
-			public float TOP_SQUEEZE { get; init; }
-			public float TOP_CENTER_NIPPLES { get; init; }
-			public bool TOP_FLATTEN_NIPPLES { get; init; }
-			public bool TOP_ENABLE_PUSHUP { get; init; }
-			public bool TOP_HIDE_ACCESSORIES { get; init; }
-			public bool TOP_HIDE_NIPPLES { get; init; }
-			public float TOP_CORSET { get; init; }
-			public bool TOP_CORSET_HALF { get; init; }
+			public ClothData BraClothData { get; init; }
+			public ClothData TopClothData { get; init; }
+			public readonly struct ClothData
+			{
+				public float? Firmness { get; init; }
+				public float? Lift { get; init; }
+				public float? PushTogether { get; init; }
+				public float? Squeeze { get; init; }
+				public bool? FlattenNipples { get; init; }
+				public bool? HideNipples { get; init; }
+				public bool? EnablePushUp { get; init; }
+				public float? CenterNipples { get; init; }
+				public bool? HideAccessories { get; init; }
+				public float? Corset { get; init; }
+				public bool? CorsetHalf { get; init; }
+			}
 		}
 		public PushUpAIOptions Data { get; init; }
 		public PushUpAIData(Dictionary<object, object> dataDict) : base(dataDict)
 		{
 			Data = new()
 			{
-				FIRMNESS = (float)dataDict["FIRMNESS"],
-				LIFT = (float)dataDict["LIFT"],
-				PUSH_TOGETHER = (float)dataDict["PUSH_TOGETHER"],
-				SQUEEZE = (float)dataDict["SQUEEZE"],
-				CENTER_NIPPLES = (float)dataDict["CENTER_NIPPLES"],
-				FLATTEN_NIPPLES = (bool)dataDict["FLATTEN_NIPPLES"],
-				ENABLE_PUSHUP = (bool)dataDict["ENABLE_PUSHUP"],
-				HIDE_ACCESSORIES = (bool)dataDict["HIDE_ACCESSORIES"],
-				HIDE_NIPPLES = (bool)dataDict["HIDE_NIPPLES"],
-				CORSET = (float)dataDict["CORSET"],
-				CORSET_HALF = (bool)dataDict["CORSET_HALF"],
-				TOP_FIRMNESS = (float)dataDict["TOP_FIRMNESS"],
-				TOP_LIFT = (float)dataDict["TOP_LIFT"],
-				TOP_PUSH_TOGETHER = (float)dataDict["TOP_PUSH_TOGETHER"],
-				TOP_SQUEEZE = (float)dataDict["TOP_SQUEEZE"],
-				TOP_CENTER_NIPPLES = (float)dataDict["TOP_CENTER_NIPPLES"],
-				TOP_FLATTEN_NIPPLES = (bool)dataDict["TOP_FLATTEN_NIPPLES"],
-				TOP_ENABLE_PUSHUP = (bool)dataDict["TOP_ENABLE_PUSHUP"],
-				TOP_HIDE_ACCESSORIES = (bool)dataDict["TOP_HIDE_ACCESSORIES"],
-				TOP_HIDE_NIPPLES = (bool)dataDict["TOP_HIDE_NIPPLES"],
-				TOP_CORSET = (float)dataDict["TOP_CORSET"],
-				TOP_CORSET_HALF = (bool)dataDict["TOP_CORSET_HALF"]
+				BraClothData = new()
+				{
+					Firmness = dataDict.TryGetValue("FIRMNESS", out object? _tryval) ? (float)_tryval : null,
+					Lift = dataDict.TryGetValue("LIFT", out _tryval) ? (float)_tryval : null,
+					PushTogether = dataDict.TryGetValue("PUSH_TOGETHER", out _tryval) ? (float)_tryval : null,
+					Squeeze = dataDict.TryGetValue("SQUEEZE", out _tryval) ? (float)_tryval : null,
+					CenterNipples = dataDict.TryGetValue("CENTER_NIPPLES", out _tryval) ? (float)_tryval : null,
+					FlattenNipples = dataDict.TryGetValue("FLATTEN_NIPPLES", out _tryval) ? (bool)_tryval : null,
+					EnablePushUp = dataDict.TryGetValue("ENABLE_PUSHUP", out _tryval) ? (bool)_tryval : null,
+					HideAccessories = dataDict.TryGetValue("HIDE_ACCESSORIES", out _tryval) ? (bool)_tryval : null,
+					HideNipples = dataDict.TryGetValue("HIDE_NIPPLES", out _tryval) ? (bool)_tryval : null,
+					Corset = dataDict.TryGetValue("CORSET", out _tryval) ? (float)_tryval : null,
+					CorsetHalf = dataDict.TryGetValue("CORSET_HALF", out _tryval) ? (bool)_tryval : null
+				},
+				TopClothData = new()
+				{
+					Firmness = dataDict.TryGetValue("TOP_FIRMNESS", out _tryval) ? (float)_tryval : null,
+					Lift = dataDict.TryGetValue("TOP_LIFT", out _tryval) ? (float)_tryval : null,
+					PushTogether = dataDict.TryGetValue("TOP_PUSH_TOGETHER", out _tryval) ? (float)_tryval : null,
+					Squeeze = dataDict.TryGetValue("TOP_SQUEEZE", out _tryval) ? (float)_tryval : null,
+					CenterNipples = dataDict.TryGetValue("TOP_CENTER_NIPPLES", out _tryval) ? (float)_tryval : null,
+					FlattenNipples = dataDict.TryGetValue("TOP_FLATTEN_NIPPLES", out _tryval) ? (bool)_tryval : null,
+					EnablePushUp = dataDict.TryGetValue("TOP_ENABLE_PUSHUP", out _tryval) ? (bool)_tryval : null,
+					HideAccessories = dataDict.TryGetValue("TOP_HIDE_ACCESSORIES", out _tryval) ? (bool)_tryval : null,
+					HideNipples = dataDict.TryGetValue("TOP_HIDE_NIPPLES", out _tryval) ? (bool)_tryval : null,
+					Corset = dataDict.TryGetValue("TOP_CORSET", out _tryval) ? (float)_tryval : null,
+					CorsetHalf = dataDict.TryGetValue("TOP_CORSET_HALF", out _tryval) ? (bool)_tryval : null
+				}
 			};
 		}
 	}

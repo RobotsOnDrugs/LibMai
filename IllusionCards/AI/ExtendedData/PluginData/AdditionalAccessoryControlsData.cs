@@ -5,7 +5,16 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 {
 	public record AdditionalAccessoryControlsData : ExtendedPluginData
 	{
-		public new const string PluginGUID = "orange.spork.additionalaccessorycontrolsplugin";
+		public const string DataKey = DefinitionMetadata.DataKey;
+		private readonly struct DefinitionMetadata
+		{
+			internal const string PluginGUID = "orange.spork.additionalaccessorycontrolsplugin";
+			internal const string DataKey = PluginGUID;
+			internal readonly Version PluginVersion = new("1.1.8");
+			internal const string RepoURL = "https://github.com/OrangeSpork/AdditionalAccessoryControls";
+			internal const string ClassDefinitionsURL = "https://github.com/OrangeSpork/AdditionalAccessoryControls/blob/master/AdditionalAccessoryControls/AdditionalAccessoryControlsController.cs";
+			internal const string? License = null;
+		}
 		public override Type DataType { get; init; } = typeof(AdditionalAccessoryControlsOptions);
 		public readonly struct AdditionalAccessoryControlsOptions
 		{

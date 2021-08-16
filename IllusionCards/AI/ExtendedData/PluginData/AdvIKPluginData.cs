@@ -1,40 +1,48 @@
-﻿
-using IllusionCards.FakeUnity;
+﻿using IllusionCards.FakeUnity;
 
 namespace IllusionCards.AI.ExtendedData.PluginData
 {
 	public record AdvIKPluginData : ExtendedPluginData
 	{
-		public new const string PluginGUID = "orange.spork.advikplugin";
+		public const string DataKey = DefinitionMetadata.DataKey;
+		private readonly struct DefinitionMetadata
+		{
+			internal const string PluginGUID = "orange.spork.advikplugin";
+			internal const string DataKey = PluginGUID;
+			internal readonly Version PluginVersion = new("1.6.3");
+			internal const string RepoURL = "https://github.com/OrangeSpork/AdvIKPlugin";
+			internal const string ClassDefinitionsURL = "https://github.com/OrangeSpork/AdvIKPlugin/blob/master/AdvIKPlugin/AdvIKCharaController.cs";
+			internal const string? License = null;
+		}
 		public override Type DataType { get; init; } = typeof(AdvIKPluginOptions);
 		public readonly struct AdvIKPluginOptions
 		{
-			public bool ShoulderRotationEnabled { get; init; }
-			public bool IndependentShoulders { get; init; }
-			public float ShoulderWeight { get; init; }
-			public float ShoulderRightWeight { get; init; }
-			public float ShoulderOffset { get; init; }
-			public float ShoulderRightOffset { get; init; }
-			public float SpineStiffness { get; init; }
-			public bool EnableSpineFKHints { get; init; }
-			public bool EnableShoulderFKHints { get; init; }
-			public bool ReverseShoulderL { get; init; }
-			public bool ReverseShoulderR { get; init; }
-			public bool EnableToeFKHints { get; init; }
-			public bool Enabled { get; init; }
-			public float IntakePause { get; init; }
-			public float HoldPause { get; init; }
-			public float InhalePercentage { get; init; }
-			public int BreathsPerMinute { get; init; }
-			public bool MagnitudeData { get; init; }
+			public bool? ShoulderRotationEnabled { get; init; }
+			public bool? IndependentShoulders { get; init; }
+			public float? ShoulderWeight { get; init; }
+			public float? ShoulderRightWeight { get; init; }
+			public float? ShoulderOffset { get; init; }
+			public float? ShoulderRightOffset { get; init; }
+			public float? SpineStiffness { get; init; }
+			public bool? EnableSpineFKHints { get; init; }
+			public bool? EnableShoulderFKHints { get; init; }
+			public bool? ReverseShoulderL { get; init; }
+			public bool? ReverseShoulderR { get; init; }
+			public bool? EnableToeFKHints { get; init; }
+			public bool? Enabled { get; init; }
+			public float? IntakePause { get; init; }
+			public float? HoldPause { get; init; }
+			public float? InhalePercentage { get; init; }
+			public int? BreathsPerMinute { get; init; }
+			public bool? MagnitudeData { get; init; }
 			public Vector3? BreathMagnitude { get; init; }
 			public Vector3? UpperChestRelativeScaling { get; init; }
 			public Vector3? LowerChestRelativeScaling { get; init; }
 			public Vector3? AbdomenRelativeScaling { get; init; }
-			public float ShoulderDampeningFactor { get; init; }
-			public float MagnitudeFactor { get; init; }
-			public IKResizeCentroid ResizeCentroid { get; init; }
-			public Dictionary<IKChain, IKResizeChainAdjustment> ChainAdjustments { get; init; }
+			public float? ShoulderDampeningFactor { get; init; }
+			public float? MagnitudeFactor { get; init; }
+			public IKResizeCentroid? ResizeCentroid { get; init; }
+			public Dictionary<IKChain, IKResizeChainAdjustment>? ChainAdjustments { get; init; }
 		}
 		public enum IKChain
 		{
@@ -97,34 +105,37 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			(float)dataDict["BreathingAbdomenScaling.x"],
 			(float)dataDict["BreathingAbdomenScaling.y"],
 			(float)dataDict["BreathingAbdomenScaling.z"]) : null;
+			Dictionary<IKChain, IKResizeChainAdjustment>? _chainAdjustments;
+			_chainAdjustments = dataDict.TryGetValue("ResizeChainAdjustments", out object? _tryval) ?
+				MessagePack.MessagePackSerializer.Deserialize<Dictionary<IKChain, IKResizeChainAdjustment>>((byte[])_tryval) : null;
 			Data = new AdvIKPluginOptions()
 			{
-				ShoulderRotationEnabled = (bool)dataDict["ShoulderRotatorEnabled"],
-				IndependentShoulders = (bool)dataDict["IndependentShoulders"],
-				ShoulderWeight = (float)dataDict["ShoulderWeight"],
-				ShoulderRightWeight = (float)dataDict["ShoulderRightWeight"],
-				ShoulderOffset = (float)dataDict["ShoulderOffset"],
-				ShoulderRightOffset = (float)dataDict["ShoulderRightOffset"],
-				SpineStiffness = (float)dataDict["SpineStiffness"],
-				EnableSpineFKHints = (bool)dataDict["EnableSpineFKHints"],
-				EnableShoulderFKHints = (bool)dataDict["EnableShoulderFKHints"],
-				ReverseShoulderL = (bool)dataDict["ReverseShoulderL"],
-				ReverseShoulderR = (bool)dataDict["ReverseShoulderR"],
-				EnableToeFKHints = (bool)dataDict["EnableToeFKHints"],
-				Enabled = (bool)dataDict["BreathingEnabled"],
-				IntakePause = (float)dataDict["BreathingIntakePause"],
-				HoldPause = (float)dataDict["BreathingHoldPause"],
-				InhalePercentage = (float)dataDict["BreathingInhalePercentage"],
-				BreathsPerMinute = (int)dataDict["BreathingBPM"],
+				ShoulderRotationEnabled = dataDict.TryGetValue("ShoulderRotatorEnabled", out _tryval) ? (bool)_tryval : null,
+				IndependentShoulders = dataDict.TryGetValue("IndependentShoulders", out _tryval) ? (bool)_tryval : null,
+				ShoulderWeight = dataDict.TryGetValue("ShoulderWeight", out _tryval) ? (float)_tryval : null,
+				ShoulderRightWeight = dataDict.TryGetValue("ShoulderRightWeight", out _tryval) ? (float)_tryval : null,
+				ShoulderOffset = dataDict.TryGetValue("ShoulderOffset", out _tryval) ? (float)_tryval : null,
+				ShoulderRightOffset = dataDict.TryGetValue("ShoulderRightOffset", out _tryval) ? (float)_tryval : null,
+				SpineStiffness = dataDict.TryGetValue("SpineStiffness", out _tryval) ? (float)_tryval : null,
+				EnableSpineFKHints = dataDict.TryGetValue("EnableSpineFKHints", out _tryval) ? (bool)_tryval : null,
+				EnableShoulderFKHints = dataDict.TryGetValue("EnableShoulderFKHints", out _tryval) ? (bool)_tryval : null,
+				ReverseShoulderL = dataDict.TryGetValue("ReverseShoulderL", out _tryval) ? (bool)_tryval : null,
+				ReverseShoulderR = dataDict.TryGetValue("ReverseShoulderR", out _tryval) ? (bool)_tryval : null,
+				EnableToeFKHints = dataDict.TryGetValue("EnableToeFKHints", out _tryval) ? (bool)_tryval : null,
+				Enabled = dataDict.TryGetValue("BreathingEnabled", out _tryval) ? (bool)_tryval : null,
+				IntakePause = dataDict.TryGetValue("BreathingIntakePause", out _tryval) ? (float)_tryval : null,
+				HoldPause = dataDict.TryGetValue("BreathingHoldPause", out _tryval) ? (float)_tryval : null,
+				InhalePercentage = dataDict.TryGetValue("BreathingInhalePercentage", out _tryval) ? (float)_tryval : null,
+				BreathsPerMinute = dataDict.TryGetValue("BreathingBPM", out _tryval) ? (int)_tryval : null,
 				MagnitudeData = _magnitudeData,
 				BreathMagnitude = _breathingMagnitude,
 				UpperChestRelativeScaling = _breathingUpperChestScaling,
 				LowerChestRelativeScaling = _breathingLowerChestScaling,
 				AbdomenRelativeScaling = _breathingAbdomenScaling,
-				ShoulderDampeningFactor = (float)dataDict["BreathingShoulderDampeningFactor"],
-				MagnitudeFactor = (float)dataDict["MagnitudeFactor"],
-				ResizeCentroid = (IKResizeCentroid)dataDict["ResizeCentroid"],
-				ChainAdjustments = MessagePack.MessagePackSerializer.Deserialize<Dictionary<IKChain, IKResizeChainAdjustment>>((byte[])dataDict["ResizeChainAdjustments"])
+				ShoulderDampeningFactor = dataDict.TryGetValue("BreathingShoulderDampeningFactor", out _tryval) ? (float)_tryval : null,
+				MagnitudeFactor = dataDict.TryGetValue("MagnitudeFactor", out _tryval) ? (float)_tryval : null,
+				ResizeCentroid = dataDict.TryGetValue("ResizeCentroid", out _tryval) ? (IKResizeCentroid)_tryval : null,
+				ChainAdjustments = _chainAdjustments
 			};
 		}
 	}

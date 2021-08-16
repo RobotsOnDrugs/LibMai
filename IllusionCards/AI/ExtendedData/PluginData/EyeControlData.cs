@@ -2,7 +2,16 @@
 {
 	public record EyeControlData : ExtendedPluginData
 	{
-		public new const string PluginGUID = "com.deathweasel.bepinex.eyecontrol";
+		public const string DataKey = DefinitionMetadata.DataKey;
+		private readonly struct DefinitionMetadata
+		{
+			internal const string PluginGUID = "com.deathweasel.bepinex.eyecontrol";
+			internal const string DataKey = PluginGUID;
+			internal readonly Version PluginVersion = new("1.0.1");
+			internal const string RepoURL = "https://github.com/IllusionMods/KK_Plugins";
+			internal const string ClassDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/EyeControl.Core/EyeControl.CharaController.cs";
+			internal const string License = "GPL 3.0";
+		}
 		public override Type DataType { get; init; } = typeof(EyeControlOptions);
 		public readonly struct EyeControlOptions
 		{

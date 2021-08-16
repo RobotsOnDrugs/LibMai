@@ -4,7 +4,16 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 {
 	public record DynamicBoneEditorData : ExtendedPluginData
 	{
-		public new const string PluginGUID = "com.deathweasel.bepinex.dynamicboneeditor";
+		public const string DataKey = DefinitionMetadata.DataKey;
+		private readonly struct DefinitionMetadata
+		{
+			internal const string PluginGUID = "com.deathweasel.bepinex.dynamicboneeditor";
+			internal const string DataKey = PluginGUID;
+			internal readonly Version PluginVersion = new("1.0.1");
+			internal const string RepoURL = "https://github.com/IllusionMods/KK_Plugins";
+			internal const string ClassDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/DynamicBoneEditor.Core/DynamicBoneEditor.Controller.cs";
+			internal const string License = "GPL 3.0";
+		}
 		public override Type DataType { get; init; } = typeof(byte[]);
 		public List<DynamicBoneData> Data { get; init; }
 		public DynamicBoneEditorData(Dictionary<object, object> dataDict) : base(dataDict)

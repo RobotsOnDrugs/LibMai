@@ -1,24 +1,25 @@
 ﻿namespace IllusionCards.AI.ExtendedData.PluginData
 {
-	public record ExtendedPluginData
+	public abstract record ExtendedPluginData
 	{
-		public static ExtendedPluginData GetExtendedPluginData(string pluginGUID, Dictionary<object, object> dataDict) => pluginGUID switch
+		public static ExtendedPluginData GetExtendedPluginData(string dataKey, Dictionary<object, object> dataDict) => dataKey switch
 		{
-			BepinExSideloaderData.PluginGUID => new BepinExSideloaderData(dataDict),
-			AdditionalAccessoriesData.PluginGUID => new AdditionalAccessoriesData(dataDict),
-			UncensorSelectorData.PluginGUID => new UncensorSelectorData(dataDict),
-			EyeControlData.PluginGUID => new EyeControlData(dataDict),
-			DynamicBoneEditorData.PluginGUID => new DynamicBoneEditorData(dataDict),
-			KK_InvisibleBodyData.PluginGUID => new KK_InvisibleBodyData(dataDict),
-			KK_PregnancyPlusData.PluginGUID => new KK_PregnancyPlusData(dataDict),
-			PushUpAIData.PluginGUID => new PushUpAIData(dataDict),
-			AdditionalAccessoryControlsData.PluginGUID => new AdditionalAccessoryControlsData(dataDict),
-			AdvIKPluginData.PluginGUID => new AdvIKPluginData(dataDict),
-			_ => new ExtendedPluginData(dataDict)
+			BepinExSideloaderData.DataKey => new BepinExSideloaderData(dataDict),
+			AdditionalAccessoriesData.DataKey => new AdditionalAccessoriesData(dataDict),
+			UncensorSelectorData.DataKey => new UncensorSelectorData(dataDict),
+			EyeControlData.DataKey => new EyeControlData(dataDict),
+			DynamicBoneEditorData.DataKey => new DynamicBoneEditorData(dataDict),
+			KK_InvisibleBodyData.DataKey => new KK_InvisibleBodyData(dataDict),
+			KK_PregnancyPlusData.DataKey => new KK_PregnancyPlusData(dataDict),
+			PushUpAIData.DataKey => new PushUpAIData(dataDict),
+			AdditionalAccessoryControlsData.DataKey => new AdditionalAccessoryControlsData(dataDict),
+			AdvIKPluginData.DataKey => new AdvIKPluginData(dataDict),
+			AdvancedBoneModData.DataKey => new AdvancedBoneModData(dataDict),
+			_ => new UnknownPluginData(dataDict)
 		};
-		public const object? PluginGUID = null;
-		public object RawData { get; init; }
+		public object? RawData { get; init; }
 		public virtual Type DataType { get; init; } = typeof(object);
 		public ExtendedPluginData(Dictionary<object, object> dataDict) { RawData = dataDict; }
+		public ExtendedPluginData() { RawData = null; }
 	}
 }
