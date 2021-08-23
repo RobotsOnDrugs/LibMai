@@ -75,6 +75,7 @@ namespace IllusionCards.Cards
 			if (!_header.SequenceEqual(Constants.pngHeader)) { throw new InvalidCardException(CardFile.FullName, "No PNG header was found at the beginning of the file."); }
 			long _pngEndOffset = Helpers.FindSequence(CardFileStream, Constants.pngFooter) ?? throw new InvalidCardException(CardFile.FullName, "No PNG footer was found.");
 			DataStartOffset = _pngEndOffset + Constants.pngFooter.Length;
+			if (CardFileStream.Length <= DataStartOffset) { throw new InvalidCardException(CardFile.FullName, "This is a normal PNG file with no extra data."); }
 			CardFileStream.Seek(DataStartOffset, SeekOrigin.Begin);
 			Logger.Debug("Data offset for {CardName:l}: {DataStartOffset}", CardFile.Name, DataStartOffset);
 			if (TrySceneParse() is not null) { if (!keepStreams) { CleanupStreams(); } return; }

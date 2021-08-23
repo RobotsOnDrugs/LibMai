@@ -1,12 +1,24 @@
 ﻿
+using System.Collections.Immutable;
+
 using IllusionCards.Cards;
 
 namespace IllusionCards.Util
 {
-	public record Constants
+	public readonly struct Constants
 	{
-		public static readonly byte[] pngHeader = { 0x89, 0x50, 0x4E, 0x47, 0x0D };
-		public static readonly byte[] pngFooter = { 0x49, 0x45, 0x4E, 0x44, 0xAE, 0x42, 0x60, 0x82 };
+		public static readonly ImmutableArray<byte> pngHeader = new byte[5] { 0x89, 0x50, 0x4E, 0x47, 0x0D }.ToImmutableArray();
+		public static readonly ImmutableArray<byte> pngFooter = new byte[8] { 0x49, 0x45, 0x4E, 0x44, 0xAE, 0x42, 0x60, 0x82 }.ToImmutableArray();
+
+
+		public const string AiCustomBlockName = "Custom";
+		public const string AiCoordinateBlockName = "Coordinate";
+		public const string AiParameterBlockName = "Parameter";
+		public const string AiParameter2BlockName = "Parameter2";
+		public const string AiGameInfoBlockName = "GameInfo";
+		public const string AiGameInfo2BlockName = "GameInfo2";
+		public const string AiStatusBlockName = "Status";
+		public const string AiPluginDataBlockName = "KKEx";
 
 		public const string AICharaIdentifier = "【AIS_Chara】";
 		public const string AIClothesIdentifier = "【AIS_Clothes】";
@@ -17,7 +29,7 @@ namespace IllusionCards.Util
 		public const string PHFemaleCharaIdentifier = "【PlayHome_FemaleCoordinate】";
 		public const string PHFemaleClothesIdentifier = "【PlayHome_Female】";
 
-		public static readonly Dictionary<CardType, string> CardTypeNames = new()
+		public static readonly ImmutableDictionary<CardType, string> CardTypeNames = new Dictionary<CardType, string>()
 		{
 			[CardType.AIChara] = "AI Shoujo/Honey Select 2 Character",
 			[CardType.AICoordinate] = "AI Shoujo/Honey Select 2 Outfit",
@@ -30,7 +42,7 @@ namespace IllusionCards.Util
 			[CardType.PHFemaleClothes] = "PlayHome Female Clothes",
 			[CardType.PHScene] = "PlayHome Studio Scene",
 			[CardType.ECChara] = "Emotion Creators Character"
-		};
+		}.ToImmutableDictionary();
 
 	}
 }

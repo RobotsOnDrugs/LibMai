@@ -1,12 +1,14 @@
-﻿using System.CommandLine;
+﻿using System.Collections.Immutable;
+using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.Security;
 
+using IllusionCards.AI.Cards;
+using IllusionCards.AI.ExtendedData.PluginData;
 using IllusionCards.Cards;
 
 using NLog;
 using NLog.Config;
-using NLog.Targets;
 
 using static IllusionCards.CardUtils;
 
@@ -28,7 +30,7 @@ namespace IllusionCards
 				_logconfig.FindTargetByName<ColoredConsoleTarget>("logcolors").Layout = _debugLayout;
 				_logconfig.FindRuleByName("console").SetLoggingLevels(LogLevel.Debug, LogLevel.Fatal);
 #else
-			_logconfig.FindRuleByName("console").SetLoggingLevels(LogLevel.Info, LogLevel.Fatal);
+				_logconfig.FindRuleByName("console").SetLoggingLevels(LogLevel.Warn, LogLevel.Fatal);
 #endif
 			}
 			LogManager.Configuration = _logconfig;
@@ -63,14 +65,35 @@ namespace IllusionCards
 			});
 			RootCommand.Invoke(args);
 			HashSet<IllusionCard> Cards = new();
+			HashSet<string> UnknownPlugins = new();
 			IllusionCard _card;
+			//int _i = 0;
 			foreach (FileInfo CardFile in CardFiles)
 			{
 				Logger.Info("Processing {cardfile:l}.", CardFile.Name);
 				try { _card = GetIllusionCardFromFile(CardFile); }
 				catch (UnsupportedCardException ex) { Logger.Error(ex, "Could not parse card: {card}: {reason:l}", ex.CardPath, ex.Message); continue; }
 				_ = Cards.Add(_card);
+				//if (_i < 1)
+				//{
+				//	using FileStream _fstream = new("dump.json", FileMode.Create, FileAccess.Write, FileShare.None);
+				//	using StreamWriter _swriter = new(_fstream);
+				//	//_swriter.Write(ObjectDumper.Dump(((AiCharaCard)_card).Custom, new DumpOptions() { DumpStyle = DumpStyle.Console }));
+				//	_i++;
+				//}
+				if (_card.GetType() == typeof(AiCharaCard))
+				{
+					ImmutableHashSet<AiPluginData>? _extendedData = ((AiCharaCard)_card).ExtendedData;
+					if (_extendedData is null)
+						continue;
+					foreach (AiPluginData pluginData in _extendedData)
+					{
+						if (pluginData.PluginDataInfo?.GetType() == typeof(UnknownPluginData))
+							_ = UnknownPlugins.Add(pluginData.DataKey);
+					}
+				}
 			}
+			Thread.Sleep(1000);
 			NLog.LogManager.Shutdown();
 		}
 
@@ -109,7 +132,7 @@ namespace IllusionCards
 			bool _success = true;
 			string _cardsPath = Path.Join(dirPath, "UserData", "chara");
 			if (!Directory.Exists(_cardsPath)) { return false; }
-			IEnumerable<string> _potentialCardFiles = Directory.EnumerateFiles(_cardsPath, "*.png", enumerationOptions: new() { AttributesToSkip=FileAttributes.Device|FileAttributes.System, RecurseSubdirectories=true, IgnoreInaccessible=true });
+			IEnumerable<string> _potentialCardFiles = Directory.EnumerateFiles(_cardsPath, "*.png", enumerationOptions: new() { AttributesToSkip = FileAttributes.Device | FileAttributes.System, RecurseSubdirectories = true, IgnoreInaccessible = true });
 			foreach (string potentialCardFile in _potentialCardFiles)
 			{
 				Logger.Debug("Added {cardPath} to list of cards.", potentialCardFile);

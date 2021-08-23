@@ -5,12 +5,12 @@ using MessagePack;
 namespace IllusionCards.AI.Chara
 {
 	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-	public record AiGameInfo
+	public readonly struct AiGameInfo
 	{
 		public Version version { get; init; } = null!;
 		public bool gameRegistration { get; init; }
-		public MinMaxInfo tempBound { get; init; } = null!;
-		public MinMaxInfo moodBound { get; init; } = null!;
+		public MinMaxInfo tempBound { get; init; }
+		public MinMaxInfo moodBound { get; init; }
 		public Dictionary<int, int> flavorState { get; init; } = null!;
 		public int totalFlavor { get; init; }
 		public Dictionary<int, float> desireDefVal { get; init; } = null!;
@@ -26,16 +26,13 @@ namespace IllusionCards.AI.Chara
 		public bool isHAddTaii0 { get; init; }
 		public bool isHAddTaii1 { get; init; }
 		public object? ExtendedSaveData { get; init; }
-		public AiGameInfo() { }
 
 		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-		public record MinMaxInfo
+		public readonly struct MinMaxInfo
 		{
 			public float lower { get; init; }
 			public float upper { get; init; }
 			public object? ExtendedSaveData { get; init; }
 		}
-		[IgnoreMember]
-		public const string BlockName = "GameInfo";
 	}
 }

@@ -14,7 +14,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			internal const string ClassDefinitionsURL = "https://github.com/OrangeSpork/AdvIKPlugin/blob/master/AdvIKPlugin/AdvIKCharaController.cs";
 			internal const string? License = null;
 		}
-		public override Type DataType { get; init; } = typeof(AdvIKPluginOptions);
+		public override Type DataType { get; } = typeof(AdvIKPluginOptions);
 		public readonly struct AdvIKPluginOptions
 		{
 			public bool? ShoulderRotationEnabled { get; init; }
@@ -82,7 +82,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			ELBOW_RIGHT = 20
 		}
 		public AdvIKPluginOptions Data { get; init; }
-		public AdvIKPluginData(Dictionary<object, object> dataDict) : base(dataDict)
+		public AdvIKPluginData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		{
 			bool _magnitudeData = (bool)dataDict["MagnitudeData"];
 			Vector3? _breathingMagnitude;

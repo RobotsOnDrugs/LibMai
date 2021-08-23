@@ -14,9 +14,9 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			internal const string ClassDefinitionsURL = "https://bitbucket.org/Joan6694/hsplugins/src/master/MoreAccessoriesAI/MoreAccessories.cs";
 			internal const string? License = null;
 		}
-		public override Type DataType { get; init; } = typeof(XmlDocument);
+		public override Type DataType { get; } = typeof(XmlDocument);
 		public XmlDocument Data { get; init; }
-		public AdditionalAccessoriesData(Dictionary<object, object> dataDict) : base(dataDict)
+		public AdditionalAccessoriesData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		{
 			string _rawData = (string)dataDict["additionalAccessories"];
 			XmlDocument _xmlDoc = new();

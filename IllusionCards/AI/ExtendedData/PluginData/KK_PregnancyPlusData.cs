@@ -21,8 +21,8 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			internal const string ClassDefinitionsURL = "https://github.com/thojmr/KK_PregnancyPlus/blob/5a912edc4b09a2195d2e44d7c08627644f0ebb30/PregnancyPlus/PregnancyPlus.Core/Data/PPData.cs";
 			internal const string License = "GPL 3.0";
 		}
-		public override Type DataType { get; init; } = typeof(KK_PregnancyPlusOptions);
-		public KK_PregnancyPlusOptions Data { get; init; }
+		public override Type DataType { get; } = typeof(KK_PregnancyPlusOptions);
+		public KK_PregnancyPlusOptions Data { get; }
 		[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Mirrors original variable names")]
 		public readonly struct KK_PregnancyPlusOptions
 		{
@@ -43,8 +43,8 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			public float inflationRoundness { get; init; }
 			public float inflationDrop { get; init; }
 			public int clothingOffsetVersion { get; init; }
-			public byte[] meshBlendShape { get; init; }
-			public ImmutableList<MeshBlendShape>? meshBlendShapes { get; init; }
+			public byte[] meshBlendShape { get; init; } = Array.Empty<Byte>();
+			public ImmutableArray<MeshBlendShape> meshBlendShapes { get; init; } = ImmutableArray<MeshBlendShape>.Empty;
 			public Version? pluginVersion { get; init; }
 		}
 		public record MeshBlendShape
@@ -86,8 +86,8 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			}
 		}
 
-		
-		public KK_PregnancyPlusData(Dictionary<object, object> dataDict) : base(dataDict)
+
+		public KK_PregnancyPlusData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		{
 			FieldInfo[] _fields = typeof(KK_PregnancyPlusOptions).GetFields();
 			object? _tryval;
@@ -111,7 +111,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 					case var x when x == typeof(Version):
 						_field.SetValue(this, dataDict.TryGetValue(_field.Name, out _tryval) ? new Version((string)_tryval) : null);
 						break;
-					case var x when x == typeof(ImmutableList<MeshBlendShape>):
+					case var x when x == typeof(ImmutableArray<MeshBlendShape>):
 						// Not implementing the logic to deserialize meshBlendShapes yet
 						_field.SetValue(this, null);
 						break;

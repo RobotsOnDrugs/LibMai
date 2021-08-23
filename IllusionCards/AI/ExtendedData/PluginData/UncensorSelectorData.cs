@@ -14,7 +14,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			internal const string ClassDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/UncensorSelector.Core/Core.UncensorSelector.Controller.cs";
 			internal const string License = "GPL 3.0";
 		}
-		public override Type DataType { get; init; } = typeof(UncensorOptions);
+		public override Type DataType { get; } = typeof(UncensorOptions);
 		public readonly struct UncensorOptions
 		{
 			public string? BodyGUID { get; init; }
@@ -22,12 +22,12 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			public string? BallsGUID { get; init; }
 			public bool DisplayPenis { get; init; }
 			public bool DisplayBalls { get; init; }
-			public ImmutableList<object>? Unrecognized { get; init; }
+			public ImmutableArray<object>? Unrecognized { get; init; }
 		}
 		public UncensorOptions Data { get; init; }
-		public UncensorSelectorData(Dictionary<object, object> dataDict) : base(dataDict)
+		public UncensorSelectorData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		{
-			List<object>? _unrecognized = null;
+			ImmutableArray<object>.Builder? _unrecognized = null;
 			string? _BodyGUID = null;
 			string? _PenisGUID = null;
 			string? _BallsGUID = null;
@@ -53,7 +53,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 						_DisplayBalls = (bool)uncensorOption.Value;
 						break;
 					default:
-						_unrecognized ??= new();
+						_unrecognized ??= ImmutableArray.CreateBuilder<object>();
 						_unrecognized.Add(uncensorOption.Value);
 						break;
 				}
@@ -65,7 +65,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 				BallsGUID = _BallsGUID,
 				DisplayPenis = _DisplayPenis ?? throw new InvalidOperationException(),
 				DisplayBalls = _DisplayBalls ?? throw new InvalidOperationException(),
-				Unrecognized = _unrecognized?.ToImmutableList()
+				Unrecognized = _unrecognized?.ToImmutable()
 			};
 		}
 	}

@@ -19,7 +19,7 @@ namespace IllusionCards.AI.Chara
 		public AiHair() { }
 		public object? ExtendedSaveData { get; init; }
 		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-		public record HairPartsInfo
+		public readonly struct HairPartsInfo
 		{
 			public int id { get; init; }
 			public Color baseColor { get; init; }
@@ -34,22 +34,19 @@ namespace IllusionCards.AI.Chara
 			public int meshType { get; init; }
 			public Color meshColor { get; init; }
 			public Vector4 meshLayout { get; init; }
-			public HairPartsInfo() { }
 			public object? ExtendedSaveData { get; init; }
 			[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-			public record BundleInfo
+			public readonly struct BundleInfo
 			{
 				public Vector3 moveRate { get; init; }
 				public Vector3 rotRate { get; init; }
 				public bool noShake { get; init; }
-				public BundleInfo() { }
 				public object ExtendedSaveData { get; init; } = null!;
 			}
 			[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-			public record ColorInfo
+			public readonly struct ColorInfo
 			{
 				public Color color { get; init; }
-				public ColorInfo() { }
 				public object ExtendedSaveData { get; init; } = null!;
 			}
 		}

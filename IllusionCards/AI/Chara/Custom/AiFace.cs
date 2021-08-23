@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 
 using IllusionCards.FakeUnity;
 
@@ -7,7 +8,7 @@ using MessagePack;
 namespace IllusionCards.AI.Chara
 {
 	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-	public record AiFace
+	public readonly struct AiFace
 	{
 		public Version version { get; init; } = null!;
 		public float[] shapeValueFace { get; init; } = null!;
@@ -32,13 +33,12 @@ namespace IllusionCards.AI.Chara
 		public int moleId { get; init; }
 		public Color moleColor { get; init; }
 		public Vector4 moleLayout { get; init; }
-		public MakeupInfo makeup { get; init; } = null!;
+		public MakeupInfo makeup { get; init; }
 		public int beardId { get; init; }
 		public Color beardColor { get; init; }
-		public AiFace() { }
 		public object? ExtendedSaveData { get; init; }
 		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-		public record EyesInfo
+		public readonly struct EyesInfo
 		{
 			public Color whiteColor { get; init; }
 			public int pupilId { get; init; }
@@ -52,7 +52,7 @@ namespace IllusionCards.AI.Chara
 			public float blackH { get; init; }
 		}
 		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-		public record MakeupInfo
+		public readonly struct MakeupInfo
 		{
 			public int eyeshadowId { get; init; }
 			public Color eyeshadowColor { get; init; }
@@ -63,7 +63,10 @@ namespace IllusionCards.AI.Chara
 			public int lipId { get; init; }
 			public Color lipColor { get; init; }
 			public float lipGloss { get; init; }
-			public PaintInfo[] paintInfo { get; init; } = null!;
+			[Key("paintInfo")]
+			[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Required for MessagePack initialization")]
+			private PaintInfo[] _paintInfo { init { paintInfo = value.ToImmutableArray(); } }
+			public ImmutableArray<PaintInfo> paintInfo { get; init; }
 		}
 	}
 }

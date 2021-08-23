@@ -7,7 +7,7 @@ using MessagePack;
 namespace IllusionCards.AI.Chara
 {
 	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-	public record AiParameter
+	public readonly struct AiParameter
 	{
 		public Version version { get; init; } = null!;
 		public byte sex { get; init; }
@@ -30,9 +30,6 @@ namespace IllusionCards.AI.Chara
 
 		public int wish03 { get => hsWish.Count == 0 ? -1 : this.hsWish.ToArray<int>()[2]; }
 		public bool futanari { get; init; }
-		[IgnoreMember]
-		public const string BlockName = "Parameter";
 		public object? ExtendedSaveData { get; init; }
-		public AiParameter() { }
 	}
 }

@@ -1,8 +1,12 @@
-﻿namespace IllusionCards.Util
+﻿using System.Collections.Immutable;
+
+using IllusionCards.FakeUnity;
+
+namespace IllusionCards.Util
 {
 	static class Helpers
 	{
-		public static long? FindSequence(Stream stream, byte[] sequence)
+		public static long? FindSequence(Stream stream, ImmutableArray<byte> sequence)
 		{
 			long _originalPos = stream.Position;
 			long _bufferPos = stream.Position;
@@ -69,6 +73,23 @@
 				chunks[i] = _bytes;
 			}
 			return chunks;
+		}
+
+		public static ImmutableArray<ImmutableArray<Vector3>> GetImmutable2DVector3(ref Vector3[,] twodvector3)
+		{
+			ImmutableArray<ImmutableArray<Vector3>>.Builder _outerArrayBuilder = ImmutableArray.CreateBuilder<ImmutableArray<Vector3>>();
+			if (twodvector3.Length == 0)
+				_outerArrayBuilder.Add(ImmutableArray<Vector3>.Empty);
+			for (int i = 0; i < twodvector3.GetLength(0); i++)
+			{
+				ImmutableArray<Vector3>.Builder _innerArrayBuilder = ImmutableArray.CreateBuilder<Vector3>();
+				for (int j = 0; j < twodvector3.GetLength(i); j++)
+				{
+					_innerArrayBuilder.Add(twodvector3[i, j]);
+				}
+				_outerArrayBuilder.Add(_innerArrayBuilder.ToImmutableArray());
+			}
+			return _outerArrayBuilder.ToImmutableArray();
 		}
 	}
 }

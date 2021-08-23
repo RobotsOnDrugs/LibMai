@@ -1,4 +1,6 @@
-﻿using MessagePack;
+﻿using System.Collections.Immutable;
+
+using MessagePack;
 
 namespace IllusionCards.AI.ExtendedData.PluginData
 {
@@ -14,11 +16,11 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			internal const string ClassDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/DynamicBoneEditor.Core/DynamicBoneEditor.Controller.cs";
 			internal const string License = "GPL 3.0";
 		}
-		public override Type DataType { get; init; } = typeof(byte[]);
-		public List<DynamicBoneData> Data { get; init; }
-		public DynamicBoneEditorData(Dictionary<object, object> dataDict) : base(dataDict)
+		public override Type DataType { get; } = typeof(ImmutableArray<DynamicBoneData>);
+		public ImmutableArray<DynamicBoneData> Data { get; init; }
+		public DynamicBoneEditorData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		{
-			Data = MessagePackSerializer.Deserialize<List<DynamicBoneData>>((byte[])dataDict["AccessoryDynamicBoneData"]);
+			Data = MessagePackSerializer.Deserialize<List<DynamicBoneData>>((byte[])dataDict["AccessoryDynamicBoneData"]).ToImmutableArray();
 		}
 	}
 	[MessagePackObject]
@@ -61,5 +63,5 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 		[Key(nameof(RadiusOriginal))]
 		public float? RadiusOriginal;
 	}
-	public record DynamicBone { public enum FreezeAxis { None, X, Y, Z } }
+	public readonly struct DynamicBone { public enum FreezeAxis { None, X, Y, Z } }
 }

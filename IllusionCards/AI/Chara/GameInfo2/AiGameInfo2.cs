@@ -6,10 +6,8 @@ using MessagePack;
 namespace IllusionCards.AI.Chara
 {
 	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-	public record AiGameInfo2
+	public readonly struct AiGameInfo2
 	{
-		[IgnoreMember]
-		public const string BlockName = "GameInfo2";
 		public int Favor { get; init; }
 		public int Enjoyment { get; init; }
 		public int Aversion { get; init; }
@@ -50,6 +48,5 @@ namespace IllusionCards.AI.Chara
 		public bool isChangeParameter { get; init; }
 		public bool isConcierge { get; init; }
 		public object? ExtendedSaveData { get; init; }
-		public AiGameInfo2() { }
 	}
 }

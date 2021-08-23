@@ -12,16 +12,16 @@
 			internal const string ClassDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/EyeControl.Core/EyeControl.CharaController.cs";
 			internal const string License = "GPL 3.0";
 		}
-		public override Type DataType { get; init; } = typeof(EyeControlOptions);
-		public readonly struct EyeControlOptions
+		public override Type DataType { get; } = typeof(MaterialEditorOptions);
+		public readonly struct MaterialEditorOptions
 		{
 			public float EyeOpenMax { get; init; }
 			public bool DisableBlinking { get; init; }
 		}
-		public EyeControlOptions Data { get; init; }
-		public EyeControlData(Dictionary<object, object> dataDict) : base(dataDict)
+		public MaterialEditorOptions Data { get; }
+		public EyeControlData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		{
-			Data = new EyeControlOptions()
+			Data = new MaterialEditorOptions()
 			{
 				EyeOpenMax = (float)dataDict["EyeOpenMax"],
 				DisableBlinking = (bool)dataDict["DisableBlinking"]

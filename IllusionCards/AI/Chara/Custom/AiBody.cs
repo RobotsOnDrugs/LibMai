@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 
 using IllusionCards.FakeUnity;
 
@@ -8,10 +9,13 @@ namespace IllusionCards.AI.Chara
 {
 
 	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-	public record AiBody
+	public readonly struct AiBody
 	{
 		public Version version { get; init; } = null!;
-		public float[] shapeValueBody { get; init; } = null!;
+		[Key("shapeValueBody")]
+		[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Required for MessagePack initialization")]
+		private float[] _shapeValueBody { init { shapeValueBody = value.ToImmutableArray(); } }
+		public ImmutableArray<float> shapeValueBody { get; init; }
 		public float bustSoftness { get; init; }
 		public float bustWeight { get; init; }
 		public int skinId { get; init; }
@@ -22,7 +26,10 @@ namespace IllusionCards.AI.Chara
 		public float skinMetallicPower { get; init; }
 		public int sunburnId { get; init; }
 		public Color sunburnColor { get; init; }
-		public PaintInfo[] paintInfo { get; init; } = null!;
+		[Key("paintInfo")]
+		[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Required for MessagePack initialization")]
+		private PaintInfo[] _paintInfo { init { paintInfo = value.ToImmutableArray(); } }
+		public ImmutableArray<PaintInfo> paintInfo { get; init; }
 		public int nipId { get; init; }
 		public Color nipColor { get; init; }
 		public float nipGlossPower { get; init; }
@@ -31,7 +38,6 @@ namespace IllusionCards.AI.Chara
 		public Color underhairColor { get; init; }
 		public Color nailColor { get; init; }
 		public float nailGlossPower { get; init; }
-		public AiBody() { }
 		public object? ExtendedSaveData { get; init; }
 	}
 }

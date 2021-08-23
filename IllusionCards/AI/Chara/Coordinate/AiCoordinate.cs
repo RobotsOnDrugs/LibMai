@@ -1,4 +1,6 @@
-﻿using IllusionCards.AI.Cards;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using IllusionCards.AI.Cards;
 using IllusionCards.Cards;
 using IllusionCards.Util;
 
@@ -6,11 +8,11 @@ using MessagePack;
 
 namespace IllusionCards.AI.Chara
 {
-	public record AiCoordinate
+	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
+	public readonly struct AiCoordinate
 	{
-		public const string BlockName = "Coordinate";
-		public AiClothes clothes;
-		public AiAccessory accessory;
+		public AiClothes clothes { get; init; }
+		public AiAccessory accessory { get; init; }
 		public AiCoordinate(byte[] coordinateData)
 		{
 			byte[][] _dataChunks = Helpers.GetDataChunks(coordinateData, 2);

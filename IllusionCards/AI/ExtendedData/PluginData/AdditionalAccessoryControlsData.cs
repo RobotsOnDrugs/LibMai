@@ -15,7 +15,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			internal const string ClassDefinitionsURL = "https://github.com/OrangeSpork/AdditionalAccessoryControls/blob/master/AdditionalAccessoryControls/AdditionalAccessoryControlsController.cs";
 			internal const string? License = null;
 		}
-		public override Type DataType { get; init; } = typeof(AdditionalAccessoryControlsOptions);
+		public override Type DataType { get; } = typeof(AdditionalAccessoryControlsOptions);
 		public readonly struct AdditionalAccessoryControlsOptions
 		{
 			public AdditionalAccessorySlotData[] SlotData { get; init; }
@@ -134,7 +134,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			FOOT = 34,
 			EYELASH = 35
 		}
-		public AdditionalAccessoryControlsData(Dictionary<object, object> dataDict) : base(dataDict)
+		public AdditionalAccessoryControlsData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		{
 			Data = new()
 			{

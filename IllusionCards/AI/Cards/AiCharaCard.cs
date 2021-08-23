@@ -2,7 +2,9 @@
 using System.Diagnostics.CodeAnalysis;
 
 using IllusionCards.AI.Chara;
+using IllusionCards.AI.ExtendedData.PluginData;
 using IllusionCards.Cards;
+using IllusionCards.Util;
 
 using MessagePack;
 
@@ -18,14 +20,15 @@ namespace IllusionCards.AI.Cards
 		public string UserID { get; init; }
 		public string DataID { get; init; }
 
-		public AiCustom Custom { get; init; } = null!;
-		public AiCoordinate Coordinate { get; init; } = null!;
-		public AiParameter Parameter { get; init; } = null!;
-		public AiParameter2 Parameter2 { get; init; } = null!;
-		public AiGameInfo GameInfo { get; init; } = null!;
-		public AiGameInfo2 GameInfo2 { get; init; } = null!;
-		public AiStatus Status { get; init; } = null!;
-		public ImmutableSortedDictionary<string, AiPluginData>? ExtendedData { get; init; }
+		public AiCustom Custom { get; init; }
+		public AiCoordinate Coordinate { get; init; }
+		public AiParameter Parameter { get; init; }
+		public AiParameter2 Parameter2 { get; init; }
+		public AiGameInfo GameInfo { get; init; }
+		public AiGameInfo2 GameInfo2 { get; init; }
+		public AiStatus Status { get; init; }
+		public ImmutableHashSet<AiPluginData>? ExtendedData { get; init; }
+		public ImmutableHashSet<NullPluginData>? NullData { get; init; }
 
 		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 		public record BlockHeader
@@ -107,49 +110,64 @@ namespace IllusionCards.AI.Cards
 				_cardFileStream.Seek(_infoPos, SeekOrigin.Begin);
 				byte[] _infoData = _cardBinaryReader.ReadBytes((int)info.size);
 				Version _version;
-				if (info.name != AiPluginData.BlockName)
+				if (info.name != Constants.AiPluginDataBlockName)
 					_version = new(info.version);
 				try
 				{
 					switch (info.name)
 					{
-						case AiCustom.BlockName:
+						case Constants.AiCustomBlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiCustomVersion, _cardPath);
 							Custom = new(_infoData);
 							break;
-						case AiCoordinate.BlockName:
+						case Constants.AiCoordinateBlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiCoordinateVersion, _cardPath);
 							Coordinate = new(_infoData);
 							break;
-						case AiParameter.BlockName:
+						case Constants.AiParameterBlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiParameterVersion, _cardPath);
 							Parameter = MessagePackSerializer.Deserialize<AiParameter>(_infoData);
 							break;
-						case AiParameter2.BlockName:
+						case Constants.AiParameter2BlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiParameter2Version, _cardPath);
 							Parameter2 = MessagePackSerializer.Deserialize<AiParameter2>(_infoData);
 							break;
-						case AiGameInfo.BlockName:
+						case Constants.AiGameInfoBlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiGameInfoVersion, _cardPath);
 							GameInfo = MessagePackSerializer.Deserialize<AiGameInfo>(_infoData);
 							break;
-						case AiGameInfo2.BlockName:
+						case Constants.AiGameInfo2BlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiGameInfo2Version, _cardPath);
 							GameInfo2 = MessagePackSerializer.Deserialize<AiGameInfo2>(_infoData);
 							break;
-						case AiStatus.BlockName:
+						case Constants.AiStatusBlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiStatusVersion, _cardPath);
 							Status = MessagePackSerializer.Deserialize<AiStatus>(_infoData);
 							break;
-						case AiPluginData.BlockName:
-							var _rawExtendedData = MessagePackSerializer.Deserialize<Dictionary<string, AiRawPluginData>>(_infoData);
-							SortedDictionary<string, AiPluginData> _pluginData = new();
+						case Constants.AiPluginDataBlockName:
+							Dictionary<string, AiRawPluginData?> _rawExtendedData = MessagePackSerializer.Deserialize<Dictionary<string, AiRawPluginData?>>(_infoData);
+							ImmutableHashSet<AiPluginData>.Builder _pluginData = ImmutableHashSet.CreateBuilder<AiPluginData>();
+							ImmutableHashSet<NullPluginData>.Builder _nullData = ImmutableHashSet.CreateBuilder<NullPluginData>();
 							foreach (var kvp in _rawExtendedData)
 							{
-								AiPluginData _aiPluginData = new(kvp.Key, kvp.Value);
-								_pluginData.Add(kvp.Key, _aiPluginData);
+								if (kvp.Value is null)
+								{
+									_nullData.Add(new NullPluginData() { DataKey = kvp.Key });
+									continue;
+								}
+								if (kvp.Value?.data is null)
+								{
+									_nullData.Add(new NullPluginData() { DataKey = kvp.Key });
+									continue;
+								}
+								AiRawPluginData _rawPluginData = (AiRawPluginData)kvp.Value;
+								if (kvp.Value is not null)
+								{
+									AiPluginData _aiPluginData = new(kvp.Key, _rawPluginData);
+									_pluginData.Add(_aiPluginData);
+								}
 							}
-							ExtendedData = _pluginData.ToImmutableSortedDictionary();
+							ExtendedData = _pluginData.ToImmutable();
 							break;
 						default:
 							throw new UnsupportedCardException(_cardPath, $"This card has an unknown data section {info.name}");
@@ -159,7 +177,6 @@ namespace IllusionCards.AI.Cards
 				{
 					throw new InvalidCardException(_cardPath, ex.Message);
 				}
-
 			}
 			CardStructure.CleanupStreams();
 		}

@@ -12,7 +12,7 @@
 			internal const string ClassDefinitionsURL = "https://bitbucket.org/mikkemikke/mikkeplugins/src/master/PushUpAI/PushUpController.cs";
 			internal const string? License = null;
 		}
-		public override Type DataType { get; init; } = typeof(PushUpAIOptions);
+		public override Type DataType { get; } = typeof(PushUpAIOptions);
 		public readonly struct PushUpAIOptions
 		{
 			public ClothData BraClothData { get; init; }
@@ -33,7 +33,7 @@
 			}
 		}
 		public PushUpAIOptions Data { get; init; }
-		public PushUpAIData(Dictionary<object, object> dataDict) : base(dataDict)
+		public PushUpAIData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		{
 			Data = new()
 			{

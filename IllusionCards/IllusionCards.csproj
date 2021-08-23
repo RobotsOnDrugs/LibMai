@@ -3,6 +3,7 @@
   <PropertyGroup>
 	<OutputType>Library</OutputType>
 	<TargetFramework>net6.0</TargetFramework>
+	<LangVersion>preview</LangVersion>
 	<StartupObject></StartupObject>
 	<Nullable>enable</Nullable>
 	<Platforms>x64;x86</Platforms>
@@ -36,7 +37,8 @@
 
   <ItemGroup>
 	<PackageReference Include="MessagePack" Version="2.3.75" />
-	<PackageReference Include="NLog" Version="4.7.10" />
+	<PackageReference Include="NLog" Version="4.7.11" />
+	<PackageReference Include="ObjectDumper.NET" Version="3.1.21178.1" />
   </ItemGroup>
 
 </Project>

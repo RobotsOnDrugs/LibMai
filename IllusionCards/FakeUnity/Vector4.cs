@@ -1,19 +1,22 @@
 ﻿
+using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
+
 using MessagePack;
 using MessagePack.Formatters;
 
 namespace IllusionCards.FakeUnity
 {
 	[MessagePackFormatter(typeof(Vector4Formatter))]
-	[MessagePackObject(true)]
-	public struct Vector4
+	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention, mirrors original variable names")]
+	public readonly struct Vector4
 	{
 
 		public const float kEpsilon = 1E-05f;
-		public float x;
-		public float y;
-		public float z;
-		public float w;
+		public float x { get; init; } = 0f;
+		public float y { get; init; } = 0f;
+		public float z { get; init; } = 0f;
+		public float w { get; init; } = 0f;
 		public Vector4(float x, float y, float z, float w)
 		{
 			this.x = x;
@@ -23,7 +26,7 @@ namespace IllusionCards.FakeUnity
 		}
 		public Vector4(float x, float y, float z) : this(x, y, z, 0f) { }
 		public Vector4(float x, float y) : this(x, y, 0f, 0f) { }
-		public Vector4(float[] values)
+		public Vector4(ImmutableArray<float> values)
 		{
 			if (values.Length != 4) throw new ArgumentException($"Values array must contain 4 items, but {values.Length} were supplied.");
 			x = values[0];

@@ -17,20 +17,15 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			internal const string ClassDefinitionsURL = "https://github.com/IllusionMods/BepisPlugins/blob/5dee8c824e17414b68e36aeae00b8c609ea0c49b/src/Core_Sideloader/UniversalAutoResolver/Core.UAR.ResolveInfo.cs";
 			internal const string License = "GPL 3.0";
 		}
-		public override Type DataType { get; init; } = typeof(Dictionary<string, object[]>);
-		private List<ModInfo> ModInfos { get; init; }
-		public ImmutableList<ModInfo> Data { get; init; }
-		public BepinExSideloaderData(Dictionary<object, object> dataDict) : base(dataDict)
+		public override Type DataType { get; } = typeof(Dictionary<string, object[]>);
+		public ImmutableArray<ModInfo> Data { get; init; }
+		public BepinExSideloaderData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		{
-			ModInfos = new();
+			ImmutableArray<ModInfo>.Builder _modInfos = ImmutableArray.CreateBuilder<ModInfo>();
 			object[] _rawData = (object[])dataDict["info"];
-			DeserializeData(_rawData);
-			Data = ModInfos.ToImmutableList();
-		}
-		internal void DeserializeData(object[] rawModData)
-		{
-			foreach (byte[] chunk in rawModData)
-				ModInfos.Add(MessagePackSerializer.Deserialize<ModInfo>(chunk));
+			foreach (byte[] chunk in _rawData)
+				_modInfos.Add(MessagePackSerializer.Deserialize<ModInfo>(chunk));
+			Data = _modInfos.ToImmutable();
 		}
 	}
 }

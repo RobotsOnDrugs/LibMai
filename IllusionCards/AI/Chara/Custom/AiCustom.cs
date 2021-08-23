@@ -1,4 +1,6 @@
-﻿using IllusionCards.AI.Cards;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using IllusionCards.AI.Cards;
 using IllusionCards.Cards;
 using IllusionCards.Util;
 
@@ -6,12 +8,12 @@ using MessagePack;
 
 namespace IllusionCards.AI.Chara
 {
-	public record AiCustom
+	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
+	public readonly struct AiCustom
 	{
-		public const string BlockName = "Custom";
-		public AiFace face;
-		public AiBody body;
-		public AiHair hair;
+		public AiFace face { get; init; }
+		public AiBody body { get; init; }
+		public AiHair hair { get; init; }
 
 		// In case it's important:
 		// BustSizeKind is determined by body.shapeValueBody[1] - 0 if =< 0.33f, 2 if >= 0.66f, 1 if in between

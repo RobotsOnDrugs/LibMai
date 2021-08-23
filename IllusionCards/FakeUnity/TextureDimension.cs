@@ -1,0 +1,14 @@
+﻿namespace IllusionCards.FakeUnity
+{
+	public enum TextureDimension
+	{
+		Unknown = -1,
+		None,
+		Any,
+		Tex2D,
+		Tex3D,
+		Cube,
+		Tex2DArray,
+		CubeArray
+	}
+}

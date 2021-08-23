@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 
 using MessagePack;
 using MessagePack.Formatters;
@@ -6,14 +7,14 @@ using MessagePack.Formatters;
 namespace IllusionCards.FakeUnity
 {
 	[MessagePackFormatter(typeof(Vector3Formatter))]
-	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-	public struct Vector3
+	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention, mirrors original variable names")]
+	public readonly struct Vector3
 	{
 		public const float kEpsilon = 1E-05f;
 		public const float kEpsilonNormalSqrt = 1E-15f;
-		public float x;
-		public float y;
-		public float z;
+		public float x { get; init; } = 0f;
+		public float y { get; init; } = 0f;
+		public float z { get; init; } = 0f;
 		public Vector3(float x, float y, float z)
 		{
 			this.x = x;
@@ -21,7 +22,7 @@ namespace IllusionCards.FakeUnity
 			this.z = z;
 		}
 		public Vector3(float x, float y) : this(x, y, 0f) { }
-		public Vector3(float[] values)
+		public Vector3(ImmutableArray<float> values)
 		{
 			if (values.Length != 3) throw new ArgumentException($"Values array must contain 3 items, but {values.Length} were supplied.");
 			x = values[0];

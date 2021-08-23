@@ -12,10 +12,10 @@
 			internal const string ClassDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/InvisibleBody.Core/Core.InvisibleBody.cs";
 			internal const string License = "GPL 3.0";
 		}
-		public override Type DataType { get; init; } = typeof(KK_InvisibleBodyOptions);
+		public override Type DataType { get; } = typeof(KK_InvisibleBodyOptions);
 		public readonly struct KK_InvisibleBodyOptions { public bool Visible { get; init; } }
 		public KK_InvisibleBodyOptions Data { get; init; }
-		public KK_InvisibleBodyData(Dictionary<object, object> dataDict) : base(dataDict)
+		public KK_InvisibleBodyData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		{
 			Data = new() { Visible = (bool)dataDict["Visible"] };
 		}

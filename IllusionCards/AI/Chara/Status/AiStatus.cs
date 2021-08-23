@@ -6,7 +6,7 @@ using MessagePack;
 namespace IllusionCards.AI.Chara
 {
 	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-	public record AiStatus
+	public readonly struct AiStatus
 	{
 		public Version version { get; init; } = null!;
 		public byte[] clothesState { get; init; } = null!;
@@ -53,9 +53,6 @@ namespace IllusionCards.AI.Chara
 		public int[,] shapeHandPtn { get; init; } = null!;
 		public float[] shapeHandBlendValue { get; init; } = null!;
 		public float siriAkaRate { get; init; }
-		[IgnoreMember]
-		public const string BlockName = "Status";
 		public object? ExtendedSaveData { get; init; }
-		public AiStatus() { }
 	}
 }
