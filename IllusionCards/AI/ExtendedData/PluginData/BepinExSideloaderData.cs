@@ -14,10 +14,10 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			internal const string OldDataKey = "EC.Core.Sideloader.UniversalAutoResolver";
 			internal readonly Version PluginVersion = new("16.4");
 			internal const string RepoURL = "https://github.com/IllusionMods/BepisPlugins";
-			internal const string ClassDefinitionsURL = "https://github.com/IllusionMods/BepisPlugins/blob/5dee8c824e17414b68e36aeae00b8c609ea0c49b/src/Core_Sideloader/UniversalAutoResolver/Core.UAR.ResolveInfo.cs";
+			internal const string ClassDefinitionsURL = "https://github.com/IllusionMods/BepisPlugins/blob/master/src/Core_Sideloader/UniversalAutoResolver/Core.UAR.ResolveInfo.cs";
 			internal const string License = "GPL 3.0";
 		}
-		public override Type DataType { get; } = typeof(Dictionary<string, object[]>);
+		public override Type DataType { get; } = typeof(ImmutableArray<ModInfo>);
 		public ImmutableArray<ModInfo> Data { get; init; }
 		public BepinExSideloaderData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		{

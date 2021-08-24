@@ -65,9 +65,6 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 				2 => Version2(dataDict),
 				_ => throw new InternalCardException($"KoiSkinOverlayXData version {version} is not supported.")
 			};
-			//.TryGetValue(CoordinateType.Unknown, out Dictionary<string, TexType>? _tryval2) && (_tryval2 is not null) ?
-			//	_tryval2 : new()
-			//: new();
 		}
 		private static ImmutableDictionary<TexType, ClothesTexData> Version1(Dictionary<object, object> v1data)
 		{

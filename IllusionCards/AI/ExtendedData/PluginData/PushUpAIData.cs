@@ -39,31 +39,31 @@
 			{
 				BraClothData = new()
 				{
-					Firmness = dataDict.TryGetValue("FIRMNESS", out object? _tryval) ? (float)_tryval : null,
-					Lift = dataDict.TryGetValue("LIFT", out _tryval) ? (float)_tryval : null,
-					PushTogether = dataDict.TryGetValue("PUSH_TOGETHER", out _tryval) ? (float)_tryval : null,
-					Squeeze = dataDict.TryGetValue("SQUEEZE", out _tryval) ? (float)_tryval : null,
-					CenterNipples = dataDict.TryGetValue("CENTER_NIPPLES", out _tryval) ? (float)_tryval : null,
-					FlattenNipples = dataDict.TryGetValue("FLATTEN_NIPPLES", out _tryval) ? (bool)_tryval : null,
-					EnablePushUp = dataDict.TryGetValue("ENABLE_PUSHUP", out _tryval) ? (bool)_tryval : null,
-					HideAccessories = dataDict.TryGetValue("HIDE_ACCESSORIES", out _tryval) ? (bool)_tryval : null,
-					HideNipples = dataDict.TryGetValue("HIDE_NIPPLES", out _tryval) ? (bool)_tryval : null,
-					Corset = dataDict.TryGetValue("CORSET", out _tryval) ? (float)_tryval : null,
-					CorsetHalf = dataDict.TryGetValue("CORSET_HALF", out _tryval) ? (bool)_tryval : null
+					Firmness = NullCheckDictionaryEntries(ref dataDict, "FIRMNESS",0f),
+					Lift = NullCheckDictionaryEntries(ref dataDict, "LIFT", 0f),
+					PushTogether = NullCheckDictionaryEntries(ref dataDict, "PUSH_TOGETHER", 0f),
+					Squeeze = NullCheckDictionaryEntries(ref dataDict, "SQUEEZE", 0f),
+					CenterNipples = NullCheckDictionaryEntries(ref dataDict, "CENTER_NIPPLES", 0f),
+					FlattenNipples = NullCheckDictionaryEntries(ref dataDict, "FLATTEN_NIPPLES", false),
+					EnablePushUp = NullCheckDictionaryEntries(ref dataDict, "ENABLE_PUSHUP", false),
+					HideAccessories = NullCheckDictionaryEntries(ref dataDict, "HIDE_ACCESSORIES", false),
+					HideNipples = NullCheckDictionaryEntries(ref dataDict, "HIDE_NIPPLES", false),
+					Corset = NullCheckDictionaryEntries(ref dataDict, "CORSET", 0f),
+					CorsetHalf = NullCheckDictionaryEntries(ref dataDict, "CORSET_HALF", false),
 				},
 				TopClothData = new()
 				{
-					Firmness = dataDict.TryGetValue("TOP_FIRMNESS", out _tryval) ? (float)_tryval : null,
-					Lift = dataDict.TryGetValue("TOP_LIFT", out _tryval) ? (float)_tryval : null,
-					PushTogether = dataDict.TryGetValue("TOP_PUSH_TOGETHER", out _tryval) ? (float)_tryval : null,
-					Squeeze = dataDict.TryGetValue("TOP_SQUEEZE", out _tryval) ? (float)_tryval : null,
-					CenterNipples = dataDict.TryGetValue("TOP_CENTER_NIPPLES", out _tryval) ? (float)_tryval : null,
-					FlattenNipples = dataDict.TryGetValue("TOP_FLATTEN_NIPPLES", out _tryval) ? (bool)_tryval : null,
-					EnablePushUp = dataDict.TryGetValue("TOP_ENABLE_PUSHUP", out _tryval) ? (bool)_tryval : null,
-					HideAccessories = dataDict.TryGetValue("TOP_HIDE_ACCESSORIES", out _tryval) ? (bool)_tryval : null,
-					HideNipples = dataDict.TryGetValue("TOP_HIDE_NIPPLES", out _tryval) ? (bool)_tryval : null,
-					Corset = dataDict.TryGetValue("TOP_CORSET", out _tryval) ? (float)_tryval : null,
-					CorsetHalf = dataDict.TryGetValue("TOP_CORSET_HALF", out _tryval) ? (bool)_tryval : null
+					Firmness = NullCheckDictionaryEntries(ref dataDict, "TOP_FIRMNESS", 0f),
+					Lift = NullCheckDictionaryEntries(ref dataDict, "TOP_LIFT", 0f),
+					PushTogether = NullCheckDictionaryEntries(ref dataDict, "TOP_PUSH_TOGETHER", 0f),
+					Squeeze = NullCheckDictionaryEntries(ref dataDict, "TOP_SQUEEZE", 0f),
+					CenterNipples = NullCheckDictionaryEntries(ref dataDict, "TOP_CENTER_NIPPLES", 0f),
+					FlattenNipples = NullCheckDictionaryEntries(ref dataDict, "TOP_FLATTEN_NIPPLES", false),
+					EnablePushUp = NullCheckDictionaryEntries(ref dataDict, "TOP_ENABLE_PUSHUP", false),
+					HideAccessories = NullCheckDictionaryEntries(ref dataDict, "TOP_HIDE_ACCESSORIES", false),
+					HideNipples = NullCheckDictionaryEntries(ref dataDict, "TOP_HIDE_NIPPLES", false),
+					Corset = NullCheckDictionaryEntries(ref dataDict, "TOP_CORSET", 0f),
+					CorsetHalf = NullCheckDictionaryEntries(ref dataDict, "TOP_CORSET_HALF", false),
 				}
 			};
 		}

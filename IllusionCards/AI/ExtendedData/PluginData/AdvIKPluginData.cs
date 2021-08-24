@@ -1,4 +1,6 @@
-﻿using IllusionCards.FakeUnity;
+﻿using System.Collections.Immutable;
+
+using IllusionCards.FakeUnity;
 
 namespace IllusionCards.AI.ExtendedData.PluginData
 {
@@ -34,7 +36,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			public float? HoldPause { get; init; }
 			public float? InhalePercentage { get; init; }
 			public int? BreathsPerMinute { get; init; }
-			public bool? MagnitudeData { get; init; }
+			public bool MagnitudeData { get; init; }
 			public Vector3? BreathMagnitude { get; init; }
 			public Vector3? UpperChestRelativeScaling { get; init; }
 			public Vector3? LowerChestRelativeScaling { get; init; }
@@ -42,7 +44,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			public float? ShoulderDampeningFactor { get; init; }
 			public float? MagnitudeFactor { get; init; }
 			public IKResizeCentroid? ResizeCentroid { get; init; }
-			public Dictionary<IKChain, IKResizeChainAdjustment>? ChainAdjustments { get; init; }
+			public ImmutableDictionary<IKChain, IKResizeChainAdjustment>? ChainAdjustments { get; init; }
 		}
 		public enum IKChain
 		{
@@ -84,7 +86,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 		public AdvIKPluginOptions Data { get; init; }
 		public AdvIKPluginData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		{
-			bool _magnitudeData = (bool)dataDict["MagnitudeData"];
+			bool _magnitudeData = NullCheckDictionaryEntries(ref dataDict, "MagnitudeData", false) ?? false;
 			Vector3? _breathingMagnitude;
 			Vector3? _breathingUpperChestScaling;
 			Vector3? _breathingLowerChestScaling;
@@ -105,36 +107,35 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			(float)dataDict["BreathingAbdomenScaling.x"],
 			(float)dataDict["BreathingAbdomenScaling.y"],
 			(float)dataDict["BreathingAbdomenScaling.z"]) : null;
-			Dictionary<IKChain, IKResizeChainAdjustment>? _chainAdjustments;
-			_chainAdjustments = dataDict.TryGetValue("ResizeChainAdjustments", out object? _tryval) ?
-				MessagePack.MessagePackSerializer.Deserialize<Dictionary<IKChain, IKResizeChainAdjustment>>((byte[])_tryval) : null;
+			var _chainAdjustments = dataDict.TryGetValue("ResizeChainAdjustments", out object? _tryval) && (_tryval is not null) ?
+				MessagePack.MessagePackSerializer.Deserialize<ImmutableDictionary<IKChain, IKResizeChainAdjustment>>((byte[])_tryval) : null;
 			Data = new AdvIKPluginOptions()
 			{
-				ShoulderRotationEnabled = dataDict.TryGetValue("ShoulderRotatorEnabled", out _tryval) ? (bool)_tryval : null,
-				IndependentShoulders = dataDict.TryGetValue("IndependentShoulders", out _tryval) ? (bool)_tryval : null,
-				ShoulderWeight = dataDict.TryGetValue("ShoulderWeight", out _tryval) ? (float)_tryval : null,
-				ShoulderRightWeight = dataDict.TryGetValue("ShoulderRightWeight", out _tryval) ? (float)_tryval : null,
-				ShoulderOffset = dataDict.TryGetValue("ShoulderOffset", out _tryval) ? (float)_tryval : null,
-				ShoulderRightOffset = dataDict.TryGetValue("ShoulderRightOffset", out _tryval) ? (float)_tryval : null,
-				SpineStiffness = dataDict.TryGetValue("SpineStiffness", out _tryval) ? (float)_tryval : null,
-				EnableSpineFKHints = dataDict.TryGetValue("EnableSpineFKHints", out _tryval) ? (bool)_tryval : null,
-				EnableShoulderFKHints = dataDict.TryGetValue("EnableShoulderFKHints", out _tryval) ? (bool)_tryval : null,
-				ReverseShoulderL = dataDict.TryGetValue("ReverseShoulderL", out _tryval) ? (bool)_tryval : null,
-				ReverseShoulderR = dataDict.TryGetValue("ReverseShoulderR", out _tryval) ? (bool)_tryval : null,
-				EnableToeFKHints = dataDict.TryGetValue("EnableToeFKHints", out _tryval) ? (bool)_tryval : null,
-				Enabled = dataDict.TryGetValue("BreathingEnabled", out _tryval) ? (bool)_tryval : null,
-				IntakePause = dataDict.TryGetValue("BreathingIntakePause", out _tryval) ? (float)_tryval : null,
-				HoldPause = dataDict.TryGetValue("BreathingHoldPause", out _tryval) ? (float)_tryval : null,
-				InhalePercentage = dataDict.TryGetValue("BreathingInhalePercentage", out _tryval) ? (float)_tryval : null,
-				BreathsPerMinute = dataDict.TryGetValue("BreathingBPM", out _tryval) ? (int)_tryval : null,
+				ShoulderRotationEnabled = NullCheckDictionaryEntries(ref dataDict, "ShoulderRotatorEnabled", false),
+				IndependentShoulders = NullCheckDictionaryEntries(ref dataDict, "IndependentShoulders", false),
+				ShoulderWeight = NullCheckDictionaryEntries(ref dataDict, "ShoulderWeight", 0f),
+				ShoulderRightWeight = NullCheckDictionaryEntries(ref dataDict, "ShoulderRightWeight", 0f),
+				ShoulderOffset = NullCheckDictionaryEntries(ref dataDict, "ShoulderOffset", 0f),
+				ShoulderRightOffset = NullCheckDictionaryEntries(ref dataDict, "ShoulderRightOffset", 0f),
+				SpineStiffness = NullCheckDictionaryEntries(ref dataDict, "SpineStiffness", 0f),
+				EnableSpineFKHints = NullCheckDictionaryEntries(ref dataDict, "EnableSpineFKHints", false),
+				EnableShoulderFKHints = NullCheckDictionaryEntries(ref dataDict, "EnableShoulderFKHints", false),
+				ReverseShoulderL = NullCheckDictionaryEntries(ref dataDict, "ReverseShoulderL", false),
+				ReverseShoulderR = NullCheckDictionaryEntries(ref dataDict, "ReverseShoulderR", false),
+				EnableToeFKHints = NullCheckDictionaryEntries(ref dataDict, "EnableToeFKHints", false),
+				Enabled = NullCheckDictionaryEntries(ref dataDict, "BreathingEnabled", false),
+				IntakePause = NullCheckDictionaryEntries(ref dataDict, "BreathingIntakePause", 0f),
+				HoldPause = NullCheckDictionaryEntries(ref dataDict, "BreathingHoldPause", 0f),
+				InhalePercentage = NullCheckDictionaryEntries(ref dataDict, "BreathingInhalePercentage", 0f),
+				BreathsPerMinute = NullCheckDictionaryEntries(ref dataDict, "BreathingBPM", 0),
 				MagnitudeData = _magnitudeData,
 				BreathMagnitude = _breathingMagnitude,
 				UpperChestRelativeScaling = _breathingUpperChestScaling,
 				LowerChestRelativeScaling = _breathingLowerChestScaling,
 				AbdomenRelativeScaling = _breathingAbdomenScaling,
-				ShoulderDampeningFactor = dataDict.TryGetValue("BreathingShoulderDampeningFactor", out _tryval) ? (float)_tryval : null,
-				MagnitudeFactor = dataDict.TryGetValue("MagnitudeFactor", out _tryval) ? (float)_tryval : null,
-				ResizeCentroid = dataDict.TryGetValue("ResizeCentroid", out _tryval) ? (IKResizeCentroid)_tryval : null,
+				ShoulderDampeningFactor = NullCheckDictionaryEntries(ref dataDict, "BreathingShoulderDampeningFactor", 0f),
+				MagnitudeFactor = NullCheckDictionaryEntries(ref dataDict, "MagnitudeFactor", 0f),
+				ResizeCentroid = dataDict.TryGetValue("ResizeCentroid", out _tryval) && (_tryval is not null) ? (IKResizeCentroid)_tryval : null,
 				ChainAdjustments = _chainAdjustments
 			};
 		}

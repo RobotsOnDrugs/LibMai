@@ -9,8 +9,9 @@
 	<Platforms>x64;x86</Platforms>
 	<SubsystemVersion>6.02</SubsystemVersion>
 	<ApplicationIcon />
-	<Version>0.0.1</Version>
+	<Version>0.0.2</Version>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

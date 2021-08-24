@@ -10,7 +10,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			internal const string PluginGUID = "com.joan6694.illusionplugins.moreaccessories";
 			internal const string DataKey = "moreAccessories";
 			internal readonly Version PluginVersion = new("1.2.2");
-			internal const string RepoURL = "https://bitbucket.org/Joan6694/hsplugins/src/master/MoreAccessoriesAI/";
+			internal const string RepoURL = "https://bitbucket.org/Joan6694/hsplugins";
 			internal const string ClassDefinitionsURL = "https://bitbucket.org/Joan6694/hsplugins/src/master/MoreAccessoriesAI/MoreAccessories.cs";
 			internal const string? License = null;
 		}
@@ -18,7 +18,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 		public XmlDocument Data { get; init; }
 		public AdditionalAccessoriesData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		{
-			string _rawData = (string)dataDict["additionalAccessories"];
+			string _rawData = NullCheckDictionaryEntries(ref dataDict, "additionalAccessories", "") ?? "";
 			XmlDocument _xmlDoc = new();
 			_xmlDoc.LoadXml(_rawData);
 			Data = _xmlDoc;

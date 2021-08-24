@@ -9,6 +9,7 @@ using IllusionCards.Cards;
 
 using NLog;
 using NLog.Config;
+using NLog.Targets;
 
 using static IllusionCards.CardUtils;
 
@@ -83,7 +84,7 @@ namespace IllusionCards
 				//}
 				if (_card.GetType() == typeof(AiCharaCard))
 				{
-					ImmutableHashSet<AiPluginData>? _extendedData = ((AiCharaCard)_card).ExtendedData;
+					ImmutableHashSet<AiPluginData>? _extendedData = ((AiCharaCard)_card).Chara.ExtendedData;
 					if (_extendedData is null)
 						continue;
 					foreach (AiPluginData pluginData in _extendedData)
@@ -93,7 +94,10 @@ namespace IllusionCards
 					}
 				}
 			}
-			Thread.Sleep(1000);
+			foreach (string unknownPlugin in UnknownPlugins)
+			{
+				Logger.Warn(unknownPlugin);
+			}
 			NLog.LogManager.Shutdown();
 		}
 

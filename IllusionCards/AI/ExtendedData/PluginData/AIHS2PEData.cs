@@ -12,7 +12,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			internal const string DataKeyAI = "aipe";
 			internal const string DataKeyHS2 = "hs2pe";
 			internal readonly Version PluginVersion = new("2.12.0");
-			internal const string RepoURL = "https://bitbucket.org/Joan6694/hsplugins/src/master/HSPE/";
+			internal const string RepoURL = "https://bitbucket.org/Joan6694/hsplugins";
 			internal const string ClassDefinitionsURL = "https://bitbucket.org/Joan6694/hsplugins/src/master/HSPE/CharaPoseController.cs";
 			internal const string? License = null;
 		}

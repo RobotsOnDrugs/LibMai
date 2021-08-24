@@ -25,9 +25,21 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			BetterPenetrationData.DataKey => new BetterPenetrationData(version, dataDict),
 			AIHS2PEData.DataKeyAI => new AIHS2PEData(version, dataDict),
 			AIHS2PEData.DataKeyHS2 => new AIHS2PEData(version, dataDict),
-			//ReverseTrapData.DataKey => new ReverseTrapData(version, dataDict),
+			ReverseTrapData.DataKey => new ReverseTrapData(version, dataDict),
+			OutfitPainterData.DataKey => new OutfitPainterData(version, dataDict),
+			AgentTrainerData.DataKey => new AgentTrainerData(version, dataDict),
+			CollidersData.DataKey => new CollidersData(version, dataDict),
+			CollidersData.OldDataKey => new CollidersData(version, dataDict),
 			_ => new UnknownPluginData(version, dataDict)
 		};
+#pragma warning disable IDE0060 // Remove unused parameter - somewhat hacky way to overload for type checking
+		internal static int? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, int _throwaway) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (int)_tryval : null;
+		internal static float? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, float _throwaway) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (float)_tryval : null;
+		internal static bool? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, bool _throwaway) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (bool)_tryval : null;
+		internal static string? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, string _throwaway) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (string)_tryval : null;
+#pragma warning restore IDE0060 // Remove unused parameter
+
+
 		public object? RawData { get; init; }
 		public int? Version { get; init; }
 		public virtual Type DataType { get; } = typeof(object);

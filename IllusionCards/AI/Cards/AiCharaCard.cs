@@ -19,19 +19,21 @@ namespace IllusionCards.AI.Cards
 		public int Language { get; init; }
 		public string UserID { get; init; }
 		public string DataID { get; init; }
+		public AiChara Chara {  get; init; }
 
-		public AiCustom Custom { get; init; }
-		public AiCoordinate Coordinate { get; init; }
-		public AiParameter Parameter { get; init; }
-		public AiParameter2 Parameter2 { get; init; }
-		public AiGameInfo GameInfo { get; init; }
-		public AiGameInfo2 GameInfo2 { get; init; }
-		public AiStatus Status { get; init; }
-		public ImmutableHashSet<AiPluginData>? ExtendedData { get; init; }
-		public ImmutableHashSet<NullPluginData>? NullData { get; init; }
+
+		private AiCustom? Custom { get; init; } = null;
+		private AiCoordinate? Coordinate { get; init; } = null;
+		private AiParameter? Parameter { get; init; } = null;
+		private AiParameter2? Parameter2 { get; init; }
+		private AiGameInfo? GameInfo { get; init; } = null;
+		private AiGameInfo2? GameInfo2 { get; init; } = null;
+		private AiStatus? Status { get; init; } = null;
+		ImmutableHashSet<AiPluginData>? ExtendedData { get; init; } = null;
+
 
 		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-		public record BlockHeader
+		public readonly struct BlockHeader
 		{
 			public List<Info> lstInfo { get; init; }
 			public BlockHeader()
@@ -40,19 +42,12 @@ namespace IllusionCards.AI.Cards
 			}
 
 			[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-			public record Info
+			public readonly struct Info
 			{
 				public string name { get; init; }
 				public string version { get; init; }
 				public long pos { get; init; }
 				public long size { get; init; }
-				public Info()
-				{
-					name = "";
-					version = "";
-					pos = 0L;
-					size = 0L;
-				}
 			}
 		}
 
@@ -112,6 +107,8 @@ namespace IllusionCards.AI.Cards
 				Version _version;
 				if (info.name != Constants.AiPluginDataBlockName)
 					_version = new(info.version);
+				ImmutableHashSet<AiPluginData>.Builder _pluginData = ImmutableHashSet.CreateBuilder<AiPluginData>();
+				ImmutableHashSet<NullPluginData>.Builder _nullData = ImmutableHashSet.CreateBuilder<NullPluginData>();
 				try
 				{
 					switch (info.name)
@@ -146,8 +143,6 @@ namespace IllusionCards.AI.Cards
 							break;
 						case Constants.AiPluginDataBlockName:
 							Dictionary<string, AiRawPluginData?> _rawExtendedData = MessagePackSerializer.Deserialize<Dictionary<string, AiRawPluginData?>>(_infoData);
-							ImmutableHashSet<AiPluginData>.Builder _pluginData = ImmutableHashSet.CreateBuilder<AiPluginData>();
-							ImmutableHashSet<NullPluginData>.Builder _nullData = ImmutableHashSet.CreateBuilder<NullPluginData>();
 							foreach (var kvp in _rawExtendedData)
 							{
 								if (kvp.Value is null)
@@ -178,6 +173,17 @@ namespace IllusionCards.AI.Cards
 					throw new InvalidCardException(_cardPath, ex.Message);
 				}
 			}
+			Chara = new()
+			{
+				Custom = Custom ?? throw new InvalidCardException(CardStructure.CardFile.FullName, "No Custom data was found on this card"),
+				Coordinate = Coordinate ?? throw new InvalidCardException(CardStructure.CardFile.FullName, "No Coordinate data was found on this card"),
+				Parameter = Parameter ?? throw new InvalidCardException(CardStructure.CardFile.FullName, "No Parameter data was found on this card"),
+				Parameter2 = Parameter2,
+				GameInfo = GameInfo ?? throw new InvalidCardException(CardStructure.CardFile.FullName, "No GameInfo data was found on this card"),
+				GameInfo2 = GameInfo2,
+				Status = Status ?? throw new InvalidCardException(CardStructure.CardFile.FullName, "No Status data was found on this card"),
+				ExtendedData = ExtendedData
+			};
 			CardStructure.CleanupStreams();
 		}
 	}

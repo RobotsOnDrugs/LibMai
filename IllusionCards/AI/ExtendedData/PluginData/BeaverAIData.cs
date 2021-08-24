@@ -10,7 +10,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			internal const string PluginGUID = "mikke.BeaverAI";
 			internal const string DataKey = PluginGUID;
 			internal readonly Version PluginVersion = new("1.2.3");
-			internal const string RepoURL = "https://bitbucket.org/mikkemikke/mikkeplugins/";
+			internal const string RepoURL = "https://bitbucket.org/mikkemikke/mikkeplugins";
 			internal const string ClassDefinitionsURL = "https://bitbucket.org/mikkemikke/mikkeplugins/src/master/BeaverAI/BeaverPlugin.cs";
 			internal const string? License = null;
 		}
