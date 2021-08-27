@@ -14,6 +14,8 @@ namespace IllusionCards.AI.Chara
 		public AiFace face { get; init; }
 		public AiBody body { get; init; }
 		public AiHair hair { get; init; }
+		[IgnoreMember]
+		internal bool IsInitialized { get; init; } = false;
 
 		// In case it's important:
 		// BustSizeKind is determined by body.shapeValueBody[1] - 0 if =< 0.33f, 2 if >= 0.66f, 1 if in between
@@ -27,6 +29,7 @@ namespace IllusionCards.AI.Chara
 			if (face.version < AiCharaCardDefinitions.AiFaceVersion) { throw new InternalCardException("Face data for this card is too old."); }
 			if (body.version < AiCharaCardDefinitions.AiBodyVersion) { throw new InternalCardException("Body data for this card is too old."); }
 			if (hair.version < AiCharaCardDefinitions.AiHairVersion) { throw new InternalCardException("Hair data for this card is too old."); }
+			IsInitialized = true;
 		}
 	}
 }

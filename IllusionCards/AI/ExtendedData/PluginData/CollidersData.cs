@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IllusionCards.AI.ExtendedData.PluginData
+﻿namespace IllusionCards.AI.ExtendedData.PluginData
 {
 	public record CollidersData : ExtendedPluginData
 	{

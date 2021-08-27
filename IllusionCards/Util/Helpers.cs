@@ -75,7 +75,7 @@ namespace IllusionCards.Util
 			return chunks;
 		}
 
-		public static ImmutableArray<ImmutableArray<Vector3>> GetImmutable2DVector3(ref Vector3[,] twodvector3)
+		public static ImmutableArray<ImmutableArray<Vector3>> GetImmutable2DVector3(Vector3[,] twodvector3)
 		{
 			ImmutableArray<ImmutableArray<Vector3>>.Builder _outerArrayBuilder = ImmutableArray.CreateBuilder<ImmutableArray<Vector3>>();
 			if (twodvector3.Length == 0)

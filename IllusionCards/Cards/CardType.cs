@@ -12,6 +12,7 @@
 		PHFemaleChara,
 		PHFemaleClothes,
 		PHScene,
-		ECChara
+		ECChara,
+		Unknown
 	}
 }

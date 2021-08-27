@@ -13,6 +13,8 @@ namespace IllusionCards.AI.Chara
 	{
 		public AiClothes clothes { get; init; }
 		public AiAccessory accessory { get; init; }
+		[IgnoreMember]
+		internal bool IsInitialized { get; init; } = false;
 		public AiCoordinate(byte[] coordinateData)
 		{
 			byte[][] _dataChunks = Helpers.GetDataChunks(coordinateData, 2);
@@ -20,6 +22,7 @@ namespace IllusionCards.AI.Chara
 			accessory = MessagePackSerializer.Deserialize<AiAccessory>(_dataChunks[1]);
 			if (clothes.version < AiCharaCardDefinitions.AiClothesVersion) { throw new InternalCardException("Clothes data for this card is too old."); }
 			if (accessory.version < AiCharaCardDefinitions.AiAccessoryVersion) { throw new InternalCardException("Accessory data for this card is too old."); }
+			IsInitialized = true;
 		}
 	}
 }

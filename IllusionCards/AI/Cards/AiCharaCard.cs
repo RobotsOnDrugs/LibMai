@@ -1,5 +1,4 @@
 ﻿using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 
 using IllusionCards.AI.Chara;
 using IllusionCards.AI.ExtendedData.PluginData;
@@ -10,6 +9,8 @@ using MessagePack;
 
 using NLog;
 
+using static IllusionCards.Cards.CardStructure;
+
 namespace IllusionCards.AI.Cards
 {
 	public record AiCharaCard : IllusionCard
@@ -19,37 +20,19 @@ namespace IllusionCards.AI.Cards
 		public int Language { get; init; }
 		public string UserID { get; init; }
 		public string DataID { get; init; }
-		public AiChara Chara {  get; init; }
+		public AiChara Chara { get; init; }
+		public ImmutableArray<byte> PngData { get; init; }
 
 
-		private AiCustom? Custom { get; init; } = null;
-		private AiCoordinate? Coordinate { get; init; } = null;
-		private AiParameter? Parameter { get; init; } = null;
+		private AiCustom Custom { get; init; }
+		private AiCoordinate Coordinate { get; init; }
+		private AiParameter Parameter { get; init; }
 		private AiParameter2? Parameter2 { get; init; }
-		private AiGameInfo? GameInfo { get; init; } = null;
-		private AiGameInfo2? GameInfo2 { get; init; } = null;
-		private AiStatus? Status { get; init; } = null;
-		ImmutableHashSet<AiPluginData>? ExtendedData { get; init; } = null;
-
-
-		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-		public readonly struct BlockHeader
-		{
-			public List<Info> lstInfo { get; init; }
-			public BlockHeader()
-			{
-				lstInfo = new List<Info>();
-			}
-
-			[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-			public readonly struct Info
-			{
-				public string name { get; init; }
-				public string version { get; init; }
-				public long pos { get; init; }
-				public long size { get; init; }
-			}
-		}
+		private AiGameInfo GameInfo { get; init; }
+		private AiGameInfo2? GameInfo2 { get; init; }
+		private AiStatus Status { get; init; }
+		private ImmutableHashSet<AiPluginData>? ExtendedData { get; init; } = null;
+		private ImmutableHashSet<NullPluginData>? NullData { get; init; } = null;
 
 		private Object VerifyData(Func<Object> func)
 		{
@@ -77,13 +60,18 @@ namespace IllusionCards.AI.Cards
 			if (new Version(info.version) > expectedVersion)
 				throw new UnsupportedCardException(cardPath, $"{info.name} version {info.version} was greater than the expected version {expectedVersion}");
 		}
+
 		public AiCharaCard(CardStructure cs) : base(cs)
 		{
 			CardStructure = cs;
 			string _cardPath = CardStructure.CardFile.FullName;
 			FileStream _cardFileStream = CardStructure.CardFileStream;
 			BinaryReader _cardBinaryReader = CardStructure.CardBinaryReader;
+			long _curPos = _cardFileStream.Position;
 			Logger.Debug(_cardFileStream.Position);
+			_cardFileStream.Seek(0, SeekOrigin.Begin);
+			PngData = ImmutableArray.Create<byte>(_cardBinaryReader.ReadBytes((int)CardStructure.DataStartOffset));
+			_cardFileStream.Seek(_curPos, SeekOrigin.Begin);
 			VerifyDataNull(delegate ()
 			{
 				string _version = _cardBinaryReader.ReadString();
@@ -99,6 +87,7 @@ namespace IllusionCards.AI.Cards
 			BlockHeader _blockHeader = MessagePackSerializer.Deserialize<BlockHeader>(_bhBytes);
 			long _num = (long)VerifyData(delegate { return _cardBinaryReader.ReadInt64(); });
 			long _postNumPosition = _cardFileStream.Position;
+			List<InternalCardException> _exList = new();
 			foreach (BlockHeader.Info info in _blockHeader.lstInfo)
 			{
 				long _infoPos = _postNumPosition + info.pos;
@@ -116,14 +105,20 @@ namespace IllusionCards.AI.Cards
 						case Constants.AiCustomBlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiCustomVersion, _cardPath);
 							Custom = new(_infoData);
+							if (!Custom.IsInitialized)
+								throw new InternalCardException("No Custom data was found on this card");
 							break;
 						case Constants.AiCoordinateBlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiCoordinateVersion, _cardPath);
 							Coordinate = new(_infoData);
+							if (!Coordinate.IsInitialized)
+								throw new InternalCardException("No Coordinate data was found on this card");
 							break;
 						case Constants.AiParameterBlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiParameterVersion, _cardPath);
 							Parameter = MessagePackSerializer.Deserialize<AiParameter>(_infoData);
+							if (Parameter.version is null)
+								throw new InternalCardException("No Parameter data was found on this card");
 							break;
 						case Constants.AiParameter2BlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiParameter2Version, _cardPath);
@@ -132,6 +127,8 @@ namespace IllusionCards.AI.Cards
 						case Constants.AiGameInfoBlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiGameInfoVersion, _cardPath);
 							GameInfo = MessagePackSerializer.Deserialize<AiGameInfo>(_infoData);
+							if (GameInfo.version is null)
+								throw new InternalCardException("No GameInfo data was found on this card");
 							break;
 						case Constants.AiGameInfo2BlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiGameInfo2Version, _cardPath);
@@ -140,6 +137,8 @@ namespace IllusionCards.AI.Cards
 						case Constants.AiStatusBlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiStatusVersion, _cardPath);
 							Status = MessagePackSerializer.Deserialize<AiStatus>(_infoData);
+							if (Status.version is null)
+								throw new InternalCardException("No Status data was found on this card");
 							break;
 						case Constants.AiPluginDataBlockName:
 							Dictionary<string, AiRawPluginData?> _rawExtendedData = MessagePackSerializer.Deserialize<Dictionary<string, AiRawPluginData?>>(_infoData);
@@ -163,6 +162,7 @@ namespace IllusionCards.AI.Cards
 								}
 							}
 							ExtendedData = _pluginData.ToImmutable();
+							NullData = _nullData.ToImmutable();
 							break;
 						default:
 							throw new UnsupportedCardException(_cardPath, $"This card has an unknown data section {info.name}");
@@ -170,19 +170,27 @@ namespace IllusionCards.AI.Cards
 				}
 				catch (InternalCardException ex)
 				{
-					throw new InvalidCardException(_cardPath, ex.Message);
+					_exList.Add(ex);
+					try
+					{
+						if (_exList.Count != 0)
+							throw new AggregateException("Some critical data was missing from this card.", _exList);
+					}
+					catch (AggregateException aex) { throw new UnsupportedCardException(CardStructure.CardFile.FullName, aex.Message); }
 				}
 			}
+			//Chara = new(Custom, Coordinate, Parameter, Parameter2, GameInfo, GameInfo2, Status, ExtendedData, NullData);
 			Chara = new()
 			{
-				Custom = Custom ?? throw new InvalidCardException(CardStructure.CardFile.FullName, "No Custom data was found on this card"),
-				Coordinate = Coordinate ?? throw new InvalidCardException(CardStructure.CardFile.FullName, "No Coordinate data was found on this card"),
-				Parameter = Parameter ?? throw new InvalidCardException(CardStructure.CardFile.FullName, "No Parameter data was found on this card"),
+				Custom = Custom,
+				Coordinate = Coordinate,
+				Parameter = Parameter,
 				Parameter2 = Parameter2,
-				GameInfo = GameInfo ?? throw new InvalidCardException(CardStructure.CardFile.FullName, "No GameInfo data was found on this card"),
+				GameInfo = GameInfo,
 				GameInfo2 = GameInfo2,
-				Status = Status ?? throw new InvalidCardException(CardStructure.CardFile.FullName, "No Status data was found on this card"),
-				ExtendedData = ExtendedData
+				Status = Status,
+				ExtendedData = ExtendedData,
+				NullData = NullData
 			};
 			CardStructure.CleanupStreams();
 		}

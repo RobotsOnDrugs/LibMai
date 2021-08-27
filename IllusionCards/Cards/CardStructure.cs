@@ -1,21 +1,41 @@
 ﻿
+using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
+
 using IllusionCards.Util;
+
+using MessagePack;
 
 using NLog;
 
 namespace IllusionCards.Cards
 {
-	public class CardStructure
+	public readonly struct CardStructure
 	{
 		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 		public FileInfo CardFile { get; init; }
 		public const long PngStartOffset = 0;
 		public long DataStartOffset { get; init; }
-		public int LoadProductNo { get; init; }
-		public CardType CardType { get; init; }
+		public int? LoadProductNo { get; init; } = null;
+		public CardType CardType { get; init; } = CardType.Unknown;
 		internal FileStream CardFileStream { get; init; }
 		internal BinaryReader CardBinaryReader { get; init; }
 		// internal BinaryWriter CardBinaryWriter { get; init; }
+
+		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
+		public readonly struct BlockHeader
+		{
+			public ImmutableArray<Info> lstInfo { get; init; }
+
+			[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
+			public readonly struct Info
+			{
+				public string name { get; init; }
+				public string version { get; init; }
+				public long pos { get; init; }
+				public long size { get; init; }
+			}
+		}
 		private Version? TrySceneParse()
 		{
 			// Studio scene files for AI, KK, and PH all start with a version number.

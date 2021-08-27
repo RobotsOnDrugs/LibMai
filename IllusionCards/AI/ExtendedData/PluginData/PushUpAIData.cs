@@ -39,7 +39,7 @@
 			{
 				BraClothData = new()
 				{
-					Firmness = NullCheckDictionaryEntries(ref dataDict, "FIRMNESS",0f),
+					Firmness = NullCheckDictionaryEntries(ref dataDict, "FIRMNESS", 0f),
 					Lift = NullCheckDictionaryEntries(ref dataDict, "LIFT", 0f),
 					PushTogether = NullCheckDictionaryEntries(ref dataDict, "PUSH_TOGETHER", 0f),
 					Squeeze = NullCheckDictionaryEntries(ref dataDict, "SQUEEZE", 0f),
