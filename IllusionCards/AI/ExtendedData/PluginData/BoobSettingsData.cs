@@ -1,5 +1,4 @@
-﻿
-//Not compatible with PushUp plugin.
+﻿//Not compatible with PushUp plugin.
 //Only the Inert and Gravity options work.
 //Not compatible with HS2_Jiggle plugin.
 //HS2_Jiggle plugin overrides the Inert and Elasticity options.
