@@ -18,7 +18,7 @@ namespace IllusionCards.AI.Chara
 			public int type { get; init; }
 			public int id { get; init; }
 			public string parentKey { get; init; } = null!;
-			
+
 			public Vector3[,] addmove { get; init; } = new Vector3[,] { };
 			public ColorInfo[] colorInfo { get; init; } = null!;
 			public int hideCategory { get; init; }

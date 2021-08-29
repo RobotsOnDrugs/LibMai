@@ -6,7 +6,7 @@ namespace IllusionCards.AI.Cards
 	{
 		public AiCoordinateCard(CardStructure cs) : base(cs)
 		{
-
+			throw new UnsupportedCardException(CardStructure.CardFile.FullName, "AI/HS2 coordinate card support still in progress");
 		}
 	}
 }

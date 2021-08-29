@@ -2,34 +2,10 @@
 
   <PropertyGroup>
 	<OutputType>Library</OutputType>
-	<TargetFramework>net6.0</TargetFramework>
-	<LangVersion>preview</LangVersion>
 	<StartupObject></StartupObject>
-	<Nullable>enable</Nullable>
-	<Platforms>x64;x86</Platforms>
-	<SubsystemVersion>6.02</SubsystemVersion>
 	<ApplicationIcon />
 	<Version>0.0.2</Version>
-	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-	<PlatformTarget>x64</PlatformTarget>
-	<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-	<PlatformTarget>x64</PlatformTarget>
-	<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-	<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
-	<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
   </PropertyGroup>
 
   <ItemGroup>

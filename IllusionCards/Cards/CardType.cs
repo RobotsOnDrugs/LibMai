@@ -11,6 +11,7 @@
 		KKScene,
 		PHFemaleChara,
 		PHFemaleClothes,
+		PHMaleChara,
 		PHScene,
 		ECChara,
 		Unknown

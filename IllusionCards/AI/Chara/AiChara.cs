@@ -2,21 +2,36 @@
 
 using IllusionCards.AI.Cards;
 using IllusionCards.AI.ExtendedData.PluginData;
+using IllusionCards.Cards;
 using IllusionCards.Chara;
+using IllusionCards.Util;
+
+using MessagePack;
 
 using static IllusionCards.AI.Chara.FriendlyNameLookup;
+using static IllusionCards.Cards.CardStructure;
 
 namespace IllusionCards.AI.Chara
 {
 	public readonly struct AiChara : IIllusionChara
 	{
-		public IIllusionChara.CharaSex Sex { get {
-				return Parameter.sex switch {
+		public IIllusionChara.CharaSex Sex
+		{
+			get
+			{
+				return Parameter.sex switch
+				{
 					0b0 => IIllusionChara.CharaSex.Male,
 					0b1 => IIllusionChara.CharaSex.Female,
 					_ => IIllusionChara.CharaSex.Unknown
-		}; } }
+				};
+			}
+		}
 		public string Name { get => Parameter.fullname; }
+
+		public int Language { get; init; }
+		public string UserID { get; init; }
+		public string DataID { get; init; }
 
 		public AiCustom Custom { get; init; }
 		public AiCoordinate Coordinate { get; init; }
@@ -243,6 +258,148 @@ namespace IllusionCards.AI.Chara
 					Paint2 = custom.face.makeup.paintInfo[1]
 				}
 			};
+		}
+		private static void CheckInfoVersion(BlockHeader.Info info, Version expectedVersion)
+		{
+			if (new Version(info.version) > expectedVersion)
+				throw new InternalCardException($"{info.name} version {info.version} was greater than the expected version {expectedVersion}");
+		}
+		internal static AiChara ParseAiCharaData(BinaryReader binaryReader)
+		{
+			string _version = binaryReader.ReadString();
+			Version loadVersion = new(_version);
+			if (loadVersion > AiCharaCardDefinitions.AiChaVersion)
+				throw new InternalCardException($"Load version {loadVersion} was greater than the expected version {AiCharaCardDefinitions.AiChaVersion}");
+			int _language;
+			string _userID;
+			string _dataID;
+			int _count;
+			byte[] _bhBytes;
+			BlockHeader _blockHeader;
+			long _num;
+			try
+			{
+				_language = binaryReader.ReadInt32();
+				_userID = binaryReader.ReadString();
+				_dataID = binaryReader.ReadString();
+				_count = binaryReader.ReadInt32();
+				_bhBytes = binaryReader.ReadBytes(_count);
+				_blockHeader = MessagePackSerializer.Deserialize<BlockHeader>(_bhBytes);
+				_num = binaryReader.ReadInt64();
+			}
+			catch (Exception ex)
+			{
+				throw new InternalCardException("Could not parse character header information", ex);
+			}
+
+			AiCustom? Custom = null;
+			AiCoordinate? Coordinate = null;
+			AiParameter? Parameter = null;
+			AiParameter2? Parameter2 = null;
+			AiGameInfo? GameInfo = null;
+			AiGameInfo2? GameInfo2 = null;
+			AiStatus? Status = null;
+			ImmutableHashSet<AiPluginData>? ExtendedData = null;
+			ImmutableHashSet<NullPluginData>? NullData = null;
+
+			long _postNumPosition = binaryReader.BaseStream.Position;
+			List<InvalidDataException> _exList = new();
+			foreach (BlockHeader.Info info in _blockHeader.lstInfo)
+			{
+				long _infoPos = _postNumPosition + info.pos;
+				binaryReader.BaseStream.Seek(_infoPos, SeekOrigin.Begin);
+				byte[] _infoData = binaryReader.ReadBytes((int)info.size);
+				Version _dataVersion;
+				if (info.name != Constants.AiPluginDataBlockName)
+					_dataVersion = new(info.version);
+				ImmutableHashSet<AiPluginData>.Builder _pluginData = ImmutableHashSet.CreateBuilder<AiPluginData>();
+				ImmutableHashSet<NullPluginData>.Builder _nullData = ImmutableHashSet.CreateBuilder<NullPluginData>();
+				try
+				{
+					switch (info.name)
+					{
+						case Constants.AiCustomBlockName:
+							CheckInfoVersion(info, AiCharaCardDefinitions.AiCustomVersion);
+							Custom = new(_infoData);
+							if (!(Custom?.IsInitialized ?? false))
+								throw new InvalidDataException("No Custom data was found on this card");
+							break;
+						case Constants.AiCoordinateBlockName:
+							CheckInfoVersion(info, AiCharaCardDefinitions.AiCoordinateVersion);
+							Coordinate = new(_infoData);
+							if (!(Coordinate?.IsInitialized ?? false))
+								throw new InvalidDataException("No Coordinate data was found on this card");
+							break;
+						case Constants.AiParameterBlockName:
+							CheckInfoVersion(info, AiCharaCardDefinitions.AiParameterVersion);
+							Parameter = MessagePackSerializer.Deserialize<AiParameter>(_infoData);
+							if (Parameter?.version is null)
+								throw new InvalidDataException("No Parameter data was found on this card");
+							break;
+						case Constants.AiParameter2BlockName:
+							CheckInfoVersion(info, AiCharaCardDefinitions.AiParameter2Version);
+							Parameter2 = MessagePackSerializer.Deserialize<AiParameter2>(_infoData);
+							break;
+						case Constants.AiGameInfoBlockName:
+							CheckInfoVersion(info, AiCharaCardDefinitions.AiGameInfoVersion);
+							GameInfo = MessagePackSerializer.Deserialize<AiGameInfo>(_infoData);
+							if (GameInfo?.version is null)
+								throw new InvalidDataException("No GameInfo data was found on this card");
+							break;
+						case Constants.AiGameInfo2BlockName:
+							CheckInfoVersion(info, AiCharaCardDefinitions.AiGameInfo2Version);
+							GameInfo2 = MessagePackSerializer.Deserialize<AiGameInfo2>(_infoData);
+							break;
+						case Constants.AiStatusBlockName:
+							CheckInfoVersion(info, AiCharaCardDefinitions.AiStatusVersion);
+							Status = MessagePackSerializer.Deserialize<AiStatus>(_infoData);
+							if (Status?.version is null)
+								throw new InvalidDataException("No Status data was found on this card");
+							break;
+						case Constants.AiPluginDataBlockName:
+							Dictionary<string, AiRawPluginData?> _rawExtendedData = MessagePackSerializer.Deserialize<Dictionary<string, AiRawPluginData?>>(_infoData);
+							foreach (var kvp in _rawExtendedData)
+							{
+								if (kvp.Value is null)
+								{
+									_nullData.Add(new NullPluginData() { DataKey = kvp.Key });
+									continue;
+								}
+								if (kvp.Value?.data is null)
+								{
+									_nullData.Add(new NullPluginData() { DataKey = kvp.Key });
+									continue;
+								}
+								AiRawPluginData _rawPluginData = (AiRawPluginData)kvp.Value;
+								if (kvp.Value is not null)
+								{
+									AiPluginData _aiPluginData = new(kvp.Key, _rawPluginData);
+									_pluginData.Add(_aiPluginData);
+								}
+							}
+							ExtendedData = _pluginData.ToImmutable();
+							NullData = _nullData.ToImmutable();
+							break;
+						default:
+							throw new InternalCardException($"This card has an unknown data section {info.name}");
+					}
+				}
+				catch (InvalidDataException ex) { _exList.Add(ex); }
+			}
+			return _exList.Count == 0 ?
+			(new()
+			{
+				Custom = Custom ?? throw new InternalCardException("This card contains no Custom data"),
+				Coordinate = Coordinate ?? throw new InternalCardException("This card contains no Coordinate data"),
+				Parameter = Parameter ?? throw new InternalCardException("This card contains no Parameter data"),
+				Parameter2 = Parameter2,
+				GameInfo = GameInfo ?? throw new InternalCardException("This card contains no GameInfo data"),
+				GameInfo2 = GameInfo2,
+				Status = Status ?? throw new InternalCardException("This card contains no Status data"),
+				ExtendedData = ExtendedData,
+				NullData = NullData
+			}) :
+			throw new AggregateException("Some critical data was missing from this card.", _exList);
 		}
 	}
 }

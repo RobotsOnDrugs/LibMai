@@ -29,7 +29,7 @@ namespace IllusionCards
 #if DEBUG
 				const string _debugLayout = "[${longdate}][${logger}][${callsite-fileName:includeSourcePath=false}:${callsite-linenumber}] ${level:uppercase=true}: ${message}";
 				_logconfig.FindTargetByName<ColoredConsoleTarget>("logcolors").Layout = _debugLayout;
-				_logconfig.FindRuleByName("console").SetLoggingLevels(LogLevel.Debug, LogLevel.Fatal);
+				_logconfig.FindRuleByName("console").SetLoggingLevels(LogLevel.Info, LogLevel.Fatal);
 #else
 				_logconfig.FindRuleByName("console").SetLoggingLevels(LogLevel.Warn, LogLevel.Fatal);
 #endif
@@ -40,10 +40,13 @@ namespace IllusionCards
 			List<FileInfo> CardFiles = new();
 			Option<string> cardsOption = new("--cards", "Cards to process") { Arity = ArgumentArity.OneOrMore };
 			Option<string> cardListOption = new("--card-list", "Cards to process") { Arity = ArgumentArity.ExactlyOne };
-			Option<string> gameDirectoryOption = new("--game-dir", "Cards to process") { Arity = ArgumentArity.ExactlyOne };
-			RootCommand RootCommand = new() { cardsOption, cardListOption, gameDirectoryOption };
+			Option<string> gameDirectoryOption = new("--game-dir", "Game directory") { Arity = ArgumentArity.ExactlyOne };
+			Option<bool> scanCharaOption = new("--chara", description: "Scan character cards", getDefaultValue: () => false) { Arity = ArgumentArity.ExactlyOne, IsRequired = false };
+			Option<bool> scanCoordinateOption = new("--coordinate", description: "Scan coordinate cards", getDefaultValue: () => false) { Arity = ArgumentArity.ExactlyOne, IsRequired = false };
+			Option<bool> scanSceneOption = new("--scene", description: "Scan scene cards", getDefaultValue: () => false) { Arity = ArgumentArity.ExactlyOne, IsRequired = false };
+			RootCommand RootCommand = new() { cardsOption, cardListOption, gameDirectoryOption, scanCharaOption, scanCoordinateOption, scanSceneOption };
 			RootCommand.Description = "Illusion Card CLI Utility";
-			RootCommand.Handler = CommandHandler.Create<string[], string, string>((cards, cardList, gameDir) =>
+			RootCommand.Handler = CommandHandler.Create<string[], string, string, bool, bool, bool>((cards, cardList, gameDir, chara, coordinate, scene) =>
 			{
 				if (cards.Length != 0)
 				{
@@ -60,7 +63,7 @@ namespace IllusionCards
 				if (gameDir.Length != 0)
 				{
 					Logger.Info("Adding cards from the game directory.");
-					bool _successGameDir = QueueCardsFromGameDir(gameDir, ref CardFiles);
+					bool _successGameDir = QueueCardsFromGameDir(gameDir, ref CardFiles, chara, coordinate, scene);
 					// if (!_success) { return; }
 				}
 			});
@@ -131,18 +134,34 @@ namespace IllusionCards
 
 			return _success;
 		}
-		private static bool QueueCardsFromGameDir(string dirPath, ref List<FileInfo> cards)
+		private static bool QueueCardsFromGameDir(string dirPath, ref List<FileInfo> cards, bool chara, bool coordinate, bool scene)
 		{
-			bool _success = true;
-			string _cardsPath = Path.Join(dirPath, "UserData", "chara");
-			if (!Directory.Exists(_cardsPath)) { return false; }
-			IEnumerable<string> _potentialCardFiles = Directory.EnumerateFiles(_cardsPath, "*.png", enumerationOptions: new() { AttributesToSkip = FileAttributes.Device | FileAttributes.System, RecurseSubdirectories = true, IgnoreInaccessible = true });
+			if (!Directory.Exists(dirPath)) { return false; }
+			string _cardsPath;
+			List<string> _potentialCardFiles = new();
+			List<string> _paths = new();
+			if (!chara && !coordinate && !scene)
+			{
+				_cardsPath = Path.Join(dirPath, "UserData");
+				_potentialCardFiles.AddRange(Directory.EnumerateFiles(_cardsPath, "*.png", enumerationOptions: new() { AttributesToSkip = FileAttributes.Device | FileAttributes.System, RecurseSubdirectories = true, IgnoreInaccessible = true }));
+
+			}
+			if (chara)
+				_paths.Add(Path.Join(dirPath, "UserData", "chara"));
+			if (coordinate)
+				_paths.Add(Path.Join(dirPath, "UserData", "coordinate"));
+			if (scene)
+				_paths.Add(Path.Join(dirPath, "UserData", "studio", "scene"));
+			foreach (string path in _paths)
+			{
+				_potentialCardFiles.AddRange(Directory.EnumerateFiles(path, "*.png", enumerationOptions: new() { AttributesToSkip = FileAttributes.Device | FileAttributes.System, RecurseSubdirectories = true, IgnoreInaccessible = true }));
+			}
 			foreach (string potentialCardFile in _potentialCardFiles)
 			{
 				Logger.Debug("Added {cardPath} to list of cards.", potentialCardFile);
 				cards.Add(new FileInfo(potentialCardFile));
 			}
-			return _success;
+			return true;
 		}
 
 		private static void TestFileAccess(string filePath, out FileInfo? fileInfo)
