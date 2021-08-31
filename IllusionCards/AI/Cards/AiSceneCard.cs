@@ -9,30 +9,30 @@ namespace IllusionCards.AI.Cards
 	{
 		public Version CardVersion { get; init; }
 		public ImmutableArray<AiStudioObject> StudioObjects { get; init; }
-		public AiSceneCard(CardStructure cs) : base(cs)
+		public AiSceneCard(CardStructure cs, BinaryReader binaryReader) : base(cs, binaryReader)
 		{
+			//throw new UnsupportedCardException(CardPath, "Scene cards are not supported yet");
 			ImmutableArray<AiStudioObject>.Builder _studioObjects = ImmutableArray.CreateBuilder<AiStudioObject>();
-			CardVersion = new(CardBinaryReader.ReadString());
-			int _numObjects = CardBinaryReader.ReadInt32();
+			CardVersion = new(binaryReader.ReadString());
+			int _numObjects = binaryReader.ReadInt32();
 			for (int i = 0; i < _numObjects; i++)
 			{
-				int _objId = CardBinaryReader.ReadInt32();
-				int _objType = CardBinaryReader.ReadInt32();
+				int _objId = binaryReader.ReadInt32();
+				int _objType = binaryReader.ReadInt32();
 				AiStudioObject _obj = _objType switch
 				{
-					0 => new AiStudioCharacter(CardBinaryReader),
-					1 => new AiStudioItem(CardBinaryReader),
-					2 => new AiStudioLight(CardBinaryReader),
-					3 => new AiStudioFolder(CardBinaryReader),
-					4 => new AiStudioRoute(CardBinaryReader),
-					5 => new AiStudioCamera(CardBinaryReader),
-					_ => throw new InvalidCardException(CardPath, "Could not parse what seemed to be a Studio NEO V2 card.")
+					0 => new AiStudioCharacter(binaryReader),
+					1 => new AiStudioItem(binaryReader),
+					2 => new AiStudioLight(binaryReader),
+					3 => new AiStudioFolder(binaryReader),
+					4 => new AiStudioRoute(binaryReader),
+					5 => new AiStudioCamera(binaryReader),
+					_ => throw new InvalidCardException("Could not parse what seemed to be a Studio NEO V2 card.")
 				};
 				_studioObjects.Add(_obj);
 			}
 
 			StudioObjects = _studioObjects.ToImmutable();
-			CardStructure.CleanupStreams();
 		}
 	}
 }

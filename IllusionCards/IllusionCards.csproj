@@ -6,6 +6,7 @@
 	<ApplicationIcon />
 	<Version>0.0.2</Version>
 	<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+	<PackageLicenseExpression>BSD-4-Clause</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>

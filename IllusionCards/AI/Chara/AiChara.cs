@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 
 using IllusionCards.AI.Cards;
 using IllusionCards.AI.ExtendedData.PluginData;
@@ -9,7 +10,7 @@ using IllusionCards.Util;
 using MessagePack;
 
 using static IllusionCards.AI.Chara.FriendlyNameLookup;
-using static IllusionCards.Cards.CardStructure;
+using static IllusionCards.Cards.IllusionCard;
 
 namespace IllusionCards.AI.Chara
 {
@@ -29,7 +30,6 @@ namespace IllusionCards.AI.Chara
 		}
 		public string Name { get => Parameter.fullname; }
 
-		public int Language { get; init; }
 		public string UserID { get; init; }
 		public string DataID { get; init; }
 
@@ -264,13 +264,23 @@ namespace IllusionCards.AI.Chara
 			if (new Version(info.version) > expectedVersion)
 				throw new InternalCardException($"{info.name} version {info.version} was greater than the expected version {expectedVersion}");
 		}
+
+		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
+		public readonly struct BlockHeader
+		{
+			public ImmutableArray<Info> lstInfo { get; init; }
+
+			[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
+			public readonly struct Info
+			{
+				public string name { get; init; } = "";
+				public string version { get; init; } = "";
+				public long pos { get; init; } = 0;
+				public long size { get; init; } = 0;
+			}
+		}
 		internal static AiChara ParseAiCharaData(BinaryReader binaryReader)
 		{
-			string _version = binaryReader.ReadString();
-			Version loadVersion = new(_version);
-			if (loadVersion > AiCharaCardDefinitions.AiChaVersion)
-				throw new InternalCardException($"Load version {loadVersion} was greater than the expected version {AiCharaCardDefinitions.AiChaVersion}");
-			int _language;
 			string _userID;
 			string _dataID;
 			int _count;
@@ -279,9 +289,8 @@ namespace IllusionCards.AI.Chara
 			long _num;
 			try
 			{
-				_language = binaryReader.ReadInt32();
-				_userID = binaryReader.ReadString();
-				_dataID = binaryReader.ReadString();
+				_userID = ReadStringAndReset(binaryReader, noReset: true);
+				_dataID = ReadStringAndReset(binaryReader, noReset: true);
 				_count = binaryReader.ReadInt32();
 				_bhBytes = binaryReader.ReadBytes(_count);
 				_blockHeader = MessagePackSerializer.Deserialize<BlockHeader>(_bhBytes);
@@ -389,6 +398,8 @@ namespace IllusionCards.AI.Chara
 			return _exList.Count == 0 ?
 			(new()
 			{
+				UserID = _userID,
+				DataID = _dataID,
 				Custom = Custom ?? throw new InternalCardException("This card contains no Custom data"),
 				Coordinate = Coordinate ?? throw new InternalCardException("This card contains no Coordinate data"),
 				Parameter = Parameter ?? throw new InternalCardException("This card contains no Parameter data"),

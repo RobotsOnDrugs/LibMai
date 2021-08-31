@@ -11,7 +11,7 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 
-using static IllusionCards.CardUtils;
+using static IllusionCards.AI.Chara.AiAccessory;
 
 namespace IllusionCards
 {
@@ -75,7 +75,7 @@ namespace IllusionCards
 			foreach (FileInfo CardFile in CardFiles)
 			{
 				Logger.Info("Processing {cardfile:l}.", CardFile.Name);
-				try { _card = GetIllusionCardFromFile(CardFile); }
+				try { _card = IllusionCard.NewCard(CardFile); }
 				catch (UnsupportedCardException ex) { Logger.Error(ex, "Could not parse card: {card}: {reason:l}", ex.CardPath, ex.Message); continue; }
 				_ = Cards.Add(_card);
 				//if (_i < 1)

@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Immutable;
+using System.Text;
 
 using IllusionCards.Util;
 
@@ -10,48 +11,73 @@ namespace IllusionCards.Cards
 	public abstract record IllusionCard
 	{
 		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-		public CardStructure CardStructure { get; init; }
+
+
+		public const long PngStartOffset = 0;
+		public long DataStartOffset { get; init; }
 		public ImmutableArray<byte> PngData { get; init; }
+		public FileInfo? CardFile { get; init; }
+		public virtual CardType CardType { get; } = CardType.Unknown;
+		internal CardStructure CardStructure { get; init; }
 
-		internal FileStream CardFileStream { get; init; }
-		internal BinaryReader CardBinaryReader { get; init; }
-		internal string CardPath { get; init; }
-		internal long CurPos { get; init; }
-
-		internal IllusionCard(CardStructure cs)
+		internal IllusionCard(CardStructure cs, BinaryReader binaryReader)
 		{
 			CardStructure = cs;
-			CardPath = CardStructure.CardFile.FullName;
-			CardFileStream = CardStructure.CardFileStream;
-			CardBinaryReader = CardStructure.CardBinaryReader;
-			CurPos = CardFileStream.Position;
-			Logger.Debug(CardFileStream.Position);
-			CardFileStream.Seek(0, SeekOrigin.Begin);
-			PngData = ImmutableArray.Create<byte>(CardBinaryReader.ReadBytes((int)CardStructure.DataStartOffset));
-			CardFileStream.Seek(CurPos, SeekOrigin.Begin);
+			DataStartOffset = cs.DataStartOffset;
+			binaryReader.BaseStream.Seek(0, SeekOrigin.Begin);
+			PngData = ImmutableArray.Create<byte>(binaryReader.ReadBytes((int)DataStartOffset));
+			binaryReader.BaseStream.Seek(DataStartOffset, SeekOrigin.Begin);
 		}
 
 		public class WrongCardTypeException : InvalidOperationException { }
 
-		public static IllusionCard NewCard(CardStructure cs)
+		public static IllusionCard NewCard(FileInfo cardFile)
 		{
+			using FileStream _fstream = new(cardFile.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
+			return NewCard(_fstream, cardFile);
+		}
+
+		private static IllusionCard NewCard(Stream stream, FileInfo? cardFile)
+		{
+			using BinaryReader _breader = new(stream, Encoding.UTF8);
+			CardStructure cs;
+			try { cs = new(_breader, cardFile); }
+			catch (UnsupportedCardException ex) { throw new UnsupportedCardException(ex.Message, ex, cardFile?.FullName); }
 			string _friendlyName = Constants.CardTypeNames[cs.CardType];
 			return cs.CardType switch
 			{
-				CardType.AIChara => new AI.Cards.AiCharaCard(cs),
-				CardType.AICoordinate => new AI.Cards.AiCoordinateCard(cs),
-				CardType.AIScene => new AI.Cards.AiSceneCard(cs),
-				CardType.KKChara => throw new UnsupportedCardException(cs.CardFile.FullName, $"{_friendlyName} cards are currently not supported."),
-				CardType.KKPartyChara => throw new UnsupportedCardException(cs.CardFile.FullName, $"{_friendlyName} cards are currently not supported."),
-				CardType.KKPartySPChara => throw new UnsupportedCardException(cs.CardFile.FullName, $"{_friendlyName} cards are currently not supported."),
-				CardType.KKScene => throw new UnsupportedCardException(cs.CardFile.FullName, $"{_friendlyName} cards are currently not supported."),
-				CardType.PHFemaleChara => throw new UnsupportedCardException(cs.CardFile.FullName, $"{_friendlyName} cards are currently not supported."),
-				CardType.PHFemaleClothes => throw new UnsupportedCardException(cs.CardFile.FullName, $"{_friendlyName} cards are currently not supported."),
-				CardType.PHMaleChara => throw new UnsupportedCardException(cs.CardFile.FullName, $"{_friendlyName} cards are currently not supported."),
-				CardType.PHScene => throw new UnsupportedCardException(cs.CardFile.FullName, $"{_friendlyName} cards are currently not supported."),
-				CardType.ECChara => throw new UnsupportedCardException(cs.CardFile.FullName, $"{_friendlyName} cards are currently not supported."),
-				_ => throw new Exception($"How did we end up here? ({cs.CardType})"),
+				CardType.AIChara => new AI.Cards.AiCharaCard(cs, _breader),
+				CardType.AICoordinate => new AI.Cards.AiCoordinateCard(cs, _breader),
+				CardType.AIScene => new AI.Cards.AiSceneCard(cs, _breader),
+				//CardType.KKChara => new KKCharaCard(cs),
+				//CardType.KKPartyChara => new KKPartyCharaCard(cs),
+				//CardType.KKPartySPChara => new KKPartySPCharaCard(cs),
+				//CardType.KKScene => new KKSceneCard(cs),
+				//CardType.PHFemaleChara => new PHFemaleCharaCard(cs),
+				//CardType.PHFemaleClothes => new PHFemaleClothingCard(cs),
+				//CardType.PHMaleChara => new PHMaleCharaCard(cs),
+				//CardType.PHScene => new PHSceneCard(cs),
+				//CardType.ECChara => new ECCharaCard(cs),
+				_ => throw new UnsupportedCardException($"{_friendlyName} cards are currently not supported.", cardFile?.FullName ?? "")
 			};
+		}
+
+
+
+
+
+		internal static string ReadStringAndReset(BinaryReader binaryReader, long? offset = null, bool noReset = false)
+		{
+			// BinaryReader.ReadString() is prone to overflows in its character buffer :(
+			if (offset is null)
+				offset = binaryReader.BaseStream.Position;
+			try
+			{
+				string _string = Encoding.UTF8.GetString(binaryReader.ReadBytes(binaryReader.Read7BitEncodedInt()));
+				if (!noReset) binaryReader.BaseStream.Seek((long)offset, SeekOrigin.Begin);
+				return _string;
+			}
+			catch (Exception ex) { throw new InvalidCardException("Could not parse card.", ex); }
 		}
 	}
 }

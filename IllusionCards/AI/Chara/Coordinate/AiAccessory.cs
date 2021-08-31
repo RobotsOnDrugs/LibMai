@@ -7,7 +7,7 @@ using MessagePack;
 namespace IllusionCards.AI.Chara
 {
 	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-	public readonly struct AiAccessory
+	public record AiAccessory
 	{
 		public Version version { get; init; } = null!;
 		public AccessoryPartsInfo[] parts { get; init; } = null!;

@@ -59,14 +59,12 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			{ BUTT + GRAVITY_Y, "Butt Gravity Y" },
 			{ BUTT + GRAVITY_Z, "Butt Gravity Z" }
 		}.ToImmutableDictionary();
-
 		public static readonly ImmutableDictionary<string, float> FloatMultipliers = new Dictionary<string, float>()
 		{
 			{ GRAVITY_X, 100f },
 			{ GRAVITY_Y, 100f },
 			{ GRAVITY_Z, 100f }
 		}.ToImmutableDictionary();
-
 		public static readonly ImmutableDictionary<string, bool> boolDefaults = new Dictionary<string, bool>()
 		{
 			{ OVERRIDE_PHYSICS, false },
@@ -93,12 +91,12 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			{ BUTT + GRAVITY_Y, 0f },
 			{ BUTT + GRAVITY_Z, 0f }
 		}.ToImmutableDictionary();
-
 		public static readonly ImmutableArray<string> prefixKeys = new string[2]
 		{
 			string.Empty, // Boob
 			BUTT
 		}.ToImmutableArray();
+
 		[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Mirrors original variable names")]
 		public readonly struct BoobController
 		{

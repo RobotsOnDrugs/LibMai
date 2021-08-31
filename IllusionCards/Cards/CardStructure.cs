@@ -1,53 +1,35 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿using System.Text;
 
 using IllusionCards.Util;
 
-using MessagePack;
-
 using NLog;
+
+using static IllusionCards.Cards.IllusionCard;
 
 namespace IllusionCards.Cards
 {
 	public readonly struct CardStructure
 	{
 		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-		public FileInfo CardFile { get; init; }
-		public const long PngStartOffset = 0;
-		public long DataStartOffset { get; init; }
-		public int? LoadProductNo { get; init; } = null;
-		public CardType CardType { get; init; } = CardType.Unknown;
-		internal FileStream CardFileStream { get; init; }
-		internal BinaryReader CardBinaryReader { get; init; }
-		// internal BinaryWriter CardBinaryWriter { get; init; }
 
-		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-		public readonly struct BlockHeader
-		{
-			public ImmutableArray<Info> lstInfo { get; init; }
-
-			[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-			public readonly struct Info
-			{
-				public string name { get; init; }
-				public string version { get; init; }
-				public long pos { get; init; }
-				public long size { get; init; }
-			}
-		}
-		private CardType? TrySceneParse()
+		internal const long PngStartOffset = 0;
+		internal long DataStartOffset { get; init; }
+		internal FileInfo? CardFile { get; init; }
+		internal CardType CardType { get; init; }
+		internal BinaryReader BinaryReader { get; init; }
+		private static CardType? TrySceneParse(BinaryReader binaryReader)
 		{
 			// Studio scene files for AI, KK, and PH all start with a version number.
-			if (Version.TryParse(CardBinaryReader.ReadString(), out Version? _))
+			if (Version.TryParse(ReadStringAndReset(binaryReader, noReset: true), out Version? _))
 			{
-				long? _pos = Helpers.FindSequence(CardFileStream, Constants.MarkerOpener) ?? throw new InvalidCardException(CardFile.FullName, "This card contains no card identifiers.");
-				CardFileStream.Seek((long)_pos, SeekOrigin.Begin);
-				long? _pos2 = Helpers.FindSequence(CardFileStream, Constants.MarkerCloser) ?? throw new InvalidCardException(CardFile.FullName, "This card contains no card identifiers.");
+				Stream _stream = binaryReader.BaseStream;
+				long? _pos = Helpers.FindSequence(_stream, Constants.MarkerOpener) ?? throw new InvalidCardException("This card contains no card identifiers.");
+				_stream.Seek((long)_pos, SeekOrigin.Begin);
+				long? _pos2 = Helpers.FindSequence(_stream, Constants.MarkerCloser) ?? throw new InvalidCardException("This card contains no card identifiers.");
 				while (_pos is not null && _pos2 is not null)
 				{
-					CardFileStream.Seek((long)_pos, SeekOrigin.Begin);
-					byte[] _potentialMarkerBytes = CardBinaryReader.ReadBytes((int)_pos2 - (int)_pos + Constants.MarkerCloser.Length);
+					_stream.Seek((long)_pos, SeekOrigin.Begin);
+					byte[] _potentialMarkerBytes = binaryReader.ReadBytes((int)_pos2 - (int)_pos + Constants.MarkerCloser.Length);
 					string _potentialMarker = Encoding.UTF8.GetString(_potentialMarkerBytes);
 					if (_potentialMarker == Constants.StudioNEOV2Identifier)
 						return CardType.AIScene;
@@ -55,20 +37,20 @@ namespace IllusionCards.Cards
 						return CardType.PHScene;
 					if (_potentialMarker == Constants.KStudioIdentifier)
 						return CardType.KKScene;
-					_pos = Helpers.FindSequence(CardFileStream, Constants.MarkerOpener);
+					_pos = Helpers.FindSequence(_stream, Constants.MarkerOpener);
 					if (_pos is null)
 						break;
-					CardFileStream.Seek((long)_pos, SeekOrigin.Begin);
-					_pos2 = Helpers.FindSequence(CardFileStream, Constants.MarkerCloser);
+					_stream.Seek((long)_pos, SeekOrigin.Begin);
+					_pos2 = Helpers.FindSequence(_stream, Constants.MarkerCloser);
 				}
 				return CardType.Unknown;
 			}
 			return null;
 		}
-		private CardType? TryPHParse()
+		private static CardType? TryPHParse(string identifier)
 		{
 			// PH non-scene cards start with the identifier.
-			switch (CardBinaryReader.ReadString())
+			switch (identifier)
 			{
 				case Constants.PHFemaleCharaIdentifier:
 					return CardType.PHFemaleChara;
@@ -95,60 +77,36 @@ namespace IllusionCards.Cards
 				_ => null,
 			};
 		}
-		public void CleanupStreams()
+		internal CardStructure(BinaryReader binaryReader, FileInfo? cardFile)
 		{
-			CardBinaryReader.Close();
-			CardFileStream.Close();
-		}
-
-		internal CardStructure(string filePath, bool keepStreams = false) : this(new FileInfo(filePath), keepStreams) { }
-		internal CardStructure(FileInfo cardFile, bool keepStreams = false)
-		{
+			BinaryReader = binaryReader;
+			Stream _stream = BinaryReader.BaseStream;
 			CardFile = cardFile;
-			CardFileStream = new(CardFile.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
-			CardBinaryReader = new(CardFileStream, Encoding.UTF8);
-			byte[] _header = CardBinaryReader.ReadBytes(Constants.pngHeader.Length);
-			if (!_header.SequenceEqual(Constants.pngHeader)) { throw new InvalidCardException(CardFile.FullName, "No PNG header was found at the beginning of the file."); }
-			long _pngEndOffset = Helpers.FindSequence(CardFileStream, Constants.pngFooter) ?? throw new InvalidCardException(CardFile.FullName, "No PNG footer was found.");
+			byte[] _header = BinaryReader.ReadBytes(Constants.pngHeader.Length);
+			if (!_header.SequenceEqual(Constants.pngHeader)) { throw new InvalidCardException("No PNG header was found at the beginning of the file."); }
+			long _pngEndOffset = Helpers.FindSequence(_stream, Constants.pngFooter) ?? throw new InvalidCardException("No PNG footer was found.");
 			DataStartOffset = _pngEndOffset + Constants.pngFooter.Length;
-			if (CardFileStream.Length <= DataStartOffset) { throw new InvalidCardException(CardFile.FullName, "This is a normal PNG file with no extra data."); }
-			CardFileStream.Seek(DataStartOffset, SeekOrigin.Begin);
-			Logger.Debug("Data offset for {CardName:l}: {DataStartOffset}", CardFile.Name, DataStartOffset);
-			CardType? _cardType = TrySceneParse();
-			CardFileStream.Seek(DataStartOffset, SeekOrigin.Begin);
+			if (_stream.Length <= DataStartOffset) { throw new InvalidCardException("This is a normal PNG file with no extra data."); }
+			_stream.Seek(DataStartOffset, SeekOrigin.Begin);
+			Logger.Debug("Data offset for {CardName:l}: {DataStartOffset}", cardFile?.FullName ?? "Unknown card", DataStartOffset);
+			CardType? _cardType = TrySceneParse(BinaryReader);
+			_stream.Seek(DataStartOffset, SeekOrigin.Begin);
 			if (_cardType is not null)
 			{
 				if (_cardType is CardType.Unknown)
-					throw new UnsupportedCardException(CardFile.FullName, $"Unknown scene card.");
+					throw new UnsupportedCardException($"Unknown scene card.");
 				CardType = (CardType)_cardType;
-				if (!keepStreams) { CleanupStreams(); }
 				return;
 			}
-			_cardType = TryPHParse();
-			CardFileStream.Seek(DataStartOffset, SeekOrigin.Begin);
-			if (_cardType is not null)
+			_cardType = TryPHParse(ReadStringAndReset(BinaryReader));
+			if (_cardType is not null) { CardType = (CardType)_cardType; return; }
+			if (BinaryReader.ReadInt32() == 100)
 			{
-				CardType = (CardType)_cardType;
-				if (!keepStreams) { CleanupStreams(); }
+				string _gameId = ReadStringAndReset(BinaryReader);
+				CardType = GetCardType(_gameId) ?? throw new InvalidCardException($"Looks like an AI or KK card, but could not determine card type from this identifier: {_gameId}");
 				return;
 			}
-			CardFileStream.Seek(DataStartOffset, SeekOrigin.Begin);
-			if (CardBinaryReader.ReadInt32() == 100)
-			{
-				//string _gameId = CardBinaryReader.ReadString(); // ReadString() is prone to overflows in its character buffer :(
-				byte[] _idBytes = CardBinaryReader.ReadBytes(CardBinaryReader.Read7BitEncodedInt());
-				string _gameId = Encoding.UTF8.GetString(_idBytes);
-				CardType = GetCardType(_gameId) ?? throw new InvalidCardException(CardFile.FullName, $"Looks like an AI or KK card, but could not determine card type from this identifier: {_gameId}");
-				LoadProductNo = 100;
-				if (!keepStreams) { CleanupStreams(); }
-				return;
-			}
-			else
-			{
-				CleanupStreams();
-				throw new InvalidCardException(CardFile.FullName, $"Could not determine card type.");
-			}
-
+			else { throw new InvalidCardException($"Could not determine card type."); }
 		}
 
 	}
