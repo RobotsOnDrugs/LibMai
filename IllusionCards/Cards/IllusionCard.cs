@@ -23,6 +23,7 @@ namespace IllusionCards.Cards
 		internal IllusionCard(CardStructure cs, BinaryReader binaryReader)
 		{
 			CardStructure = cs;
+			CardFile = CardStructure.CardFile;
 			DataStartOffset = cs.DataStartOffset;
 			binaryReader.BaseStream.Seek(0, SeekOrigin.Begin);
 			PngData = ImmutableArray.Create<byte>(binaryReader.ReadBytes((int)DataStartOffset));

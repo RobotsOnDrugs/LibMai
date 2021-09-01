@@ -11,7 +11,6 @@ namespace IllusionCards.AI.Chara
 	{
 		public Version version { get; init; } = null!;
 		public AccessoryPartsInfo[] parts { get; init; } = null!;
-		public object? ExtendedSaveData { get; init; } = null;
 		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 		public readonly struct AccessoryPartsInfo
 		{

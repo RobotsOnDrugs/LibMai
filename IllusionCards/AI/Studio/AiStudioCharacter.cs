@@ -51,7 +51,7 @@ namespace IllusionCards.AI.Studio
 		public AiStudioCharacter(BinaryReader binaryReader) : base(binaryReader)
 		{
 			int _sex = binaryReader.ReadInt32();
-			Chara = AiChara.ParseAiCharaData(binaryReader);
+			Chara = new(binaryReader);
 			if ((CharaSex)_sex != Sex)
 				throw new InvalidDataException($"Sex data from the scene card {(CharaSex)_sex} does not match character data {Sex}");
 			int _numBones = binaryReader.ReadInt32();

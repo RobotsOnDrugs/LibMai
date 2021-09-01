@@ -11,8 +11,6 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 
-using static IllusionCards.AI.Chara.AiAccessory;
-
 namespace IllusionCards
 {
 	class CardManagerCLI

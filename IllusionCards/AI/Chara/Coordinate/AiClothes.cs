@@ -13,7 +13,6 @@ namespace IllusionCards.AI.Chara
 		private Version _version { get; init; } = null!;
 		public PartsInfo[] parts { get; init; } = null!;
 		//internal void ComplementWithVersion() { _version = AiCharaCardDefinitions.AiClothesVersion; }
-		public object? ExtendedSaveData { get; init; }
 		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 		public readonly struct PartsInfo
 		{

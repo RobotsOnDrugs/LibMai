@@ -18,30 +18,27 @@ namespace IllusionCards.AI.Chara
 	{
 		public IIllusionChara.CharaSex Sex
 		{
-			get
+			get => Parameter.sex switch
 			{
-				return Parameter.sex switch
-				{
-					0b0 => IIllusionChara.CharaSex.Male,
-					0b1 => IIllusionChara.CharaSex.Female,
-					_ => IIllusionChara.CharaSex.Unknown
-				};
-			}
+				0b0 => IIllusionChara.CharaSex.Male,
+				0b1 => IIllusionChara.CharaSex.Female,
+				_ => IIllusionChara.CharaSex.Unknown
+			};
 		}
 		public string Name { get => Parameter.fullname; }
 
 		public string UserID { get; init; }
 		public string DataID { get; init; }
 
-		public AiCustom Custom { get; init; }
-		public AiCoordinate Coordinate { get; init; }
-		public AiParameter Parameter { get; init; }
-		public AiParameter2? Parameter2 { get; init; }
-		public AiGameInfo GameInfo { get; init; }
-		public AiGameInfo2? GameInfo2 { get; init; }
-		public AiStatus Status { get; init; }
-		public ImmutableHashSet<AiPluginData>? ExtendedData { get; init; }
-		public ImmutableHashSet<NullPluginData>? NullData { get; init; }
+		public AiCustom Custom { get; init; } = new();
+		public AiCoordinate Coordinate { get; init; } = new();
+		public AiParameter Parameter { get; init; } = new();
+		public AiParameter2? Parameter2 { get; init; } = null;
+		public AiGameInfo GameInfo { get; init; } = new();
+		public AiGameInfo2? GameInfo2 { get; init; } = null;
+		public AiStatus Status { get; init; } = new();
+		public ImmutableHashSet<AiPluginData>? ExtendedData { get; init; } = null;
+		public ImmutableHashSet<NullPluginData>? NullData { get; init; } = null;
 		public AiFriendlyCharaData FriendlyCharaData { get => GetAiFriendlyCharaData(Custom); }
 		public static AiFriendlyCharaData GetAiFriendlyCharaData(AiCustom custom)
 		{
@@ -279,7 +276,7 @@ namespace IllusionCards.AI.Chara
 				public long size { get; init; } = 0;
 			}
 		}
-		internal static AiChara ParseAiCharaData(BinaryReader binaryReader)
+		public AiChara(BinaryReader binaryReader)
 		{
 			string _userID;
 			string _dataID;
@@ -300,19 +297,12 @@ namespace IllusionCards.AI.Chara
 			{
 				throw new InternalCardException("Could not parse character header information", ex);
 			}
-
-			AiCustom? Custom = null;
-			AiCoordinate? Coordinate = null;
-			AiParameter? Parameter = null;
-			AiParameter2? Parameter2 = null;
-			AiGameInfo? GameInfo = null;
-			AiGameInfo2? GameInfo2 = null;
-			AiStatus? Status = null;
-			ImmutableHashSet<AiPluginData>? ExtendedData = null;
-			ImmutableHashSet<NullPluginData>? NullData = null;
+			UserID = _userID;
+			DataID = _dataID;
 
 			long _postNumPosition = binaryReader.BaseStream.Position;
 			List<InvalidDataException> _exList = new();
+			bool[] _blockHits = new bool[5] { false, false, false, false, false };
 			foreach (BlockHeader.Info info in _blockHeader.lstInfo)
 			{
 				long _infoPos = _postNumPosition + info.pos;
@@ -329,21 +319,18 @@ namespace IllusionCards.AI.Chara
 					{
 						case Constants.AiCustomBlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiCustomVersion);
-							Custom = new(_infoData);
-							if (!(Custom?.IsInitialized ?? false))
-								throw new InvalidDataException("No Custom data was found on this card");
+							Custom = new AiCustom(_infoData);
+							_blockHits[0] = true;
 							break;
 						case Constants.AiCoordinateBlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiCoordinateVersion);
 							Coordinate = new(_infoData);
-							if (!(Coordinate?.IsInitialized ?? false))
-								throw new InvalidDataException("No Coordinate data was found on this card");
+							_blockHits[1] = true;
 							break;
 						case Constants.AiParameterBlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiParameterVersion);
 							Parameter = MessagePackSerializer.Deserialize<AiParameter>(_infoData);
-							if (Parameter?.version is null)
-								throw new InvalidDataException("No Parameter data was found on this card");
+							_blockHits[2] = true;
 							break;
 						case Constants.AiParameter2BlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiParameter2Version);
@@ -352,8 +339,7 @@ namespace IllusionCards.AI.Chara
 						case Constants.AiGameInfoBlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiGameInfoVersion);
 							GameInfo = MessagePackSerializer.Deserialize<AiGameInfo>(_infoData);
-							if (GameInfo?.version is null)
-								throw new InvalidDataException("No GameInfo data was found on this card");
+							_blockHits[3] = true;
 							break;
 						case Constants.AiGameInfo2BlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiGameInfo2Version);
@@ -362,8 +348,7 @@ namespace IllusionCards.AI.Chara
 						case Constants.AiStatusBlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiStatusVersion);
 							Status = MessagePackSerializer.Deserialize<AiStatus>(_infoData);
-							if (Status?.version is null)
-								throw new InvalidDataException("No Status data was found on this card");
+							_blockHits[4] = true;
 							break;
 						case Constants.AiPluginDataBlockName:
 							Dictionary<string, AiRawPluginData?> _rawExtendedData = MessagePackSerializer.Deserialize<Dictionary<string, AiRawPluginData?>>(_infoData);
@@ -390,27 +375,21 @@ namespace IllusionCards.AI.Chara
 							NullData = _nullData.ToImmutable();
 							break;
 						default:
-							throw new InternalCardException($"This card has an unknown data section {info.name}");
+							throw new InternalCardException($"This character has an unknown data section {info.name}");
 					}
 				}
 				catch (InvalidDataException ex) { _exList.Add(ex); }
 			}
-			return _exList.Count == 0 ?
-			(new()
-			{
-				UserID = _userID,
-				DataID = _dataID,
-				Custom = Custom ?? throw new InternalCardException("This card contains no Custom data"),
-				Coordinate = Coordinate ?? throw new InternalCardException("This card contains no Coordinate data"),
-				Parameter = Parameter ?? throw new InternalCardException("This card contains no Parameter data"),
-				Parameter2 = Parameter2,
-				GameInfo = GameInfo ?? throw new InternalCardException("This card contains no GameInfo data"),
-				GameInfo2 = GameInfo2,
-				Status = Status ?? throw new InternalCardException("This card contains no Status data"),
-				ExtendedData = ExtendedData,
-				NullData = NullData
-			}) :
-			throw new AggregateException("Some critical data was missing from this card.", _exList);
+			if (_exList.Count != 0) throw new AggregateException("Some critical data was missing from this character.", _exList);
+
+			if (!Custom.IsInitialized) throw new InvalidDataException("This character has no Custom data");
+			if (!Coordinate.IsInitialized) throw new InvalidDataException("This character has no Coordinate data");
+			if (Parameter.version is null) throw new InvalidDataException("This character has no Parameter data");
+			if (GameInfo.version is null) throw new InvalidDataException("This character has no GameInfo data");
+			if (Status.version is null) throw new InvalidDataException("This character has no Status data");
+
+			for (int i = 0; i < _blockHits.Length; i++)
+				if (!_blockHits[i]) throw new InternalCardException($"Failed to detect missing blocks normally. This is a bug. (Missed block at index {i})");
 		}
 	}
 }
