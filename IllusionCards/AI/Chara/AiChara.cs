@@ -11,6 +11,7 @@ using MessagePack;
 
 using static IllusionCards.AI.Chara.FriendlyNameLookup;
 using static IllusionCards.Cards.IllusionCard;
+using static IllusionCards.AI.Chara.AiCharaType;
 
 namespace IllusionCards.AI.Chara
 {
@@ -27,6 +28,8 @@ namespace IllusionCards.AI.Chara
 		}
 		public string Name { get => Parameter.fullname; }
 
+		public Version LoadVersion { get; init; }
+		public int Language { get; init; }
 		public string UserID { get; init; }
 		public string DataID { get; init; }
 
@@ -278,6 +281,9 @@ namespace IllusionCards.AI.Chara
 		}
 		public AiChara(BinaryReader binaryReader)
 		{
+			ParseAiCharaTypeData(binaryReader, Constants.AICharaIdentifier, out Version _version, out int _language);
+			LoadVersion = _version;
+			Language = _language;
 			string _userID;
 			string _dataID;
 			int _count;
@@ -286,8 +292,8 @@ namespace IllusionCards.AI.Chara
 			long _num;
 			try
 			{
-				_userID = ReadStringAndReset(binaryReader, noReset: true);
-				_dataID = ReadStringAndReset(binaryReader, noReset: true);
+				_userID = ReadString(binaryReader);
+				_dataID = ReadString(binaryReader);
 				_count = binaryReader.ReadInt32();
 				_bhBytes = binaryReader.ReadBytes(_count);
 				_blockHeader = MessagePackSerializer.Deserialize<BlockHeader>(_bhBytes);
@@ -324,7 +330,7 @@ namespace IllusionCards.AI.Chara
 							break;
 						case Constants.AiCoordinateBlockName:
 							CheckInfoVersion(info, AiCharaCardDefinitions.AiCoordinateVersion);
-							Coordinate = new(_infoData);
+							Coordinate = new(_infoData, LoadVersion, Language);
 							_blockHits[1] = true;
 							break;
 						case Constants.AiParameterBlockName:
@@ -380,6 +386,8 @@ namespace IllusionCards.AI.Chara
 				}
 				catch (InvalidDataException ex) { _exList.Add(ex); }
 			}
+			binaryReader.BaseStream.Seek(_postNumPosition + _num, SeekOrigin.Begin);
+
 			if (_exList.Count != 0) throw new AggregateException("Some critical data was missing from this character.", _exList);
 
 			if (!Custom.IsInitialized) throw new InvalidDataException("This character has no Custom data");

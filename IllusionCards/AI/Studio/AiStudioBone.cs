@@ -5,10 +5,8 @@
 		public override int Kind { get => -1; }
 		public BoneGroup Group { get; init; } = BoneGroup.None;
 		public int Level { get; init; } = 0;
-		public AiStudioBone(BinaryReader binaryReader) : base(binaryReader)
-		{
-
-		}
+		public AiStudioBone(BinaryReader binaryReader) : base(binaryReader, false)
+		{ }
 
 		[Flags]
 		public enum BoneGroup

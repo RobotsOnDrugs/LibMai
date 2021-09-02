@@ -72,6 +72,7 @@ namespace IllusionCards
 			//int _i = 0;
 			foreach (FileInfo CardFile in CardFiles)
 			{
+				GC.Collect();
 				Logger.Info("Processing {cardfile:l}.", CardFile.Name);
 				try { _card = IllusionCard.NewCard(CardFile); }
 				catch (UnsupportedCardException ex) { Logger.Error(ex, "Could not parse card: {card}: {reason:l}", ex.CardPath, ex.Message); continue; }

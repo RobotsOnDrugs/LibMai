@@ -24,6 +24,7 @@ namespace IllusionCards.Cards
 		{
 			CardStructure = cs;
 			CardFile = CardStructure.CardFile;
+			CardType = CardStructure.CardType;
 			DataStartOffset = cs.DataStartOffset;
 			binaryReader.BaseStream.Seek(0, SeekOrigin.Begin);
 			PngData = ImmutableArray.Create<byte>(binaryReader.ReadBytes((int)DataStartOffset));
@@ -67,11 +68,10 @@ namespace IllusionCards.Cards
 
 
 
-		internal static string ReadStringAndReset(BinaryReader binaryReader, long? offset = null, bool noReset = false)
+		internal static string ReadString(BinaryReader binaryReader, bool noReset = true)
 		{
 			// BinaryReader.ReadString() is prone to overflows in its character buffer :(
-			if (offset is null)
-				offset = binaryReader.BaseStream.Position;
+			long offset = binaryReader.BaseStream.Position;
 			try
 			{
 				string _string = Encoding.UTF8.GetString(binaryReader.ReadBytes(binaryReader.Read7BitEncodedInt()));

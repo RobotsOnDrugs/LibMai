@@ -20,7 +20,7 @@ namespace IllusionCards.Cards
 		private static CardType? TrySceneParse(BinaryReader binaryReader)
 		{
 			// Studio scene files for AI, KK, and PH all start with a version number.
-			if (Version.TryParse(ReadStringAndReset(binaryReader, noReset: true), out Version? _))
+			if (Version.TryParse(ReadString(binaryReader), out Version? _))
 			{
 				Stream _stream = binaryReader.BaseStream;
 				long? _pos = Helpers.FindSequence(_stream, Constants.MarkerOpener) ?? throw new InvalidCardException("This card contains no card identifiers.");
@@ -98,11 +98,11 @@ namespace IllusionCards.Cards
 				CardType = (CardType)_cardType;
 				return;
 			}
-			_cardType = TryPHParse(ReadStringAndReset(BinaryReader));
+			_cardType = TryPHParse(ReadString(BinaryReader, false));
 			if (_cardType is not null) { CardType = (CardType)_cardType; return; }
 			if (BinaryReader.ReadInt32() == 100)
 			{
-				string _gameId = ReadStringAndReset(BinaryReader);
+				string _gameId = ReadString(BinaryReader, false);
 				CardType = GetCardType(_gameId) ?? throw new InvalidCardException($"Looks like an AI or KK card, but could not determine card type from this identifier: {_gameId}");
 				return;
 			}

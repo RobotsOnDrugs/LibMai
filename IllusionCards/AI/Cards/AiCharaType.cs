@@ -1,28 +1,22 @@
 ﻿using IllusionCards.Cards;
 
-namespace IllusionCards.AI.Cards
+using static IllusionCards.Cards.IllusionCard;
+
+namespace IllusionCards.AI.Chara
 {
-	public abstract record AiCharaTypeCard : IllusionCard
+	public static class AiCharaType
 	{
 		public const int LoadProductNumber = 100;
-		public Version LoadVersion { get; init; }
-		public int Language { get; init; }
-		public AiCharaTypeCard(CardStructure cs, BinaryReader binaryReader, string identifier) : base(cs, binaryReader)
-		{
-			ParseAiCharaTypeCard(binaryReader, identifier, out Version _version, out int _language);
-			LoadVersion = _version;
-			Language = _language;
-		}
-		private static void ParseAiCharaTypeCard(BinaryReader binaryReader, string identifier, out Version version, out int language)
+		internal static void ParseAiCharaTypeData(BinaryReader binaryReader, string identifier, out Version version, out int language)
 		{
 			try
 			{
 				if (binaryReader.ReadInt32() != LoadProductNumber)
 					throw new InternalCardException($"Wrong card type or stream position {binaryReader.BaseStream.Position} for AI character type data");
-				string _typeId = ReadStringAndReset(binaryReader, noReset: true);
+				string _typeId = ReadString(binaryReader);
 				if (_typeId != identifier)
 					throw new InternalCardException($"Wrong card type or stream position {binaryReader.BaseStream.Position} for AI character type data");
-				string _version = ReadStringAndReset(binaryReader, noReset: true);
+				string _version = ReadString(binaryReader);
 				version = new(_version);
 				language = binaryReader.ReadInt32();
 			}
