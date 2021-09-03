@@ -2,9 +2,7 @@
 {
 	public record AiStudioLookAtTarget : AiStudioObject
 	{
-		public AiStudioLookAtTarget(BinaryReader binaryReader) : base(binaryReader)
-		{
-
-		}
+		public override int Kind { get => -1; }
+		public AiStudioLookAtTarget(BinaryReader binaryReader) : base(binaryReader, false) { }
 	}
 }

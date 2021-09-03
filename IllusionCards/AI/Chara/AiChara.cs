@@ -9,9 +9,9 @@ using IllusionCards.Util;
 
 using MessagePack;
 
+using static IllusionCards.AI.Chara.AiCharaType;
 using static IllusionCards.AI.Chara.FriendlyNameLookup;
 using static IllusionCards.Cards.IllusionCard;
-using static IllusionCards.AI.Chara.AiCharaType;
 
 namespace IllusionCards.AI.Chara
 {
@@ -314,9 +314,6 @@ namespace IllusionCards.AI.Chara
 				long _infoPos = _postNumPosition + info.pos;
 				binaryReader.BaseStream.Seek(_infoPos, SeekOrigin.Begin);
 				byte[] _infoData = binaryReader.ReadBytes((int)info.size);
-				Version _dataVersion;
-				if (info.name != Constants.AiPluginDataBlockName)
-					_dataVersion = new(info.version);
 				ImmutableHashSet<AiPluginData>.Builder _pluginData = ImmutableHashSet.CreateBuilder<AiPluginData>();
 				ImmutableHashSet<NullPluginData>.Builder _nullData = ImmutableHashSet.CreateBuilder<NullPluginData>();
 				try

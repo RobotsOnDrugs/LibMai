@@ -1,6 +1,5 @@
 ﻿using IllusionCards.AI.Chara;
 using IllusionCards.Cards;
-using IllusionCards.Util;
 
 namespace IllusionCards.AI.Cards
 {
