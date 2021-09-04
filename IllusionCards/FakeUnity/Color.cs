@@ -1,6 +1,8 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 
+using IllusionCards.Util;
+
 using MessagePack;
 using MessagePack.Formatters;
 

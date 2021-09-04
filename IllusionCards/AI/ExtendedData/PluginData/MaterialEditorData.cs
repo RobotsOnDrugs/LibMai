@@ -1,8 +1,11 @@
 ﻿using System.Collections.Immutable;
+using System.Numerics;
 
 using IllusionCards.FakeUnity;
 
 using MessagePack;
+
+using static IllusionCards.Util.MathTypesResolver;
 
 namespace IllusionCards.AI.ExtendedData.PluginData
 {
@@ -372,7 +375,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			/// Load a byte array containing texture data.
 			/// </summary>
 			/// <param name="data"></param>
-			public TextureContainer(byte[] data) { Data = data; }
+			public TextureContainer(byte[] data) => Data = data;
 
 			/// <summary>
 			/// Byte array containing the texture data.
@@ -410,6 +413,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 		}
 		public MaterialEditorData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		{
+			MessagePackSerializer.DefaultOptions = WithMathTypes;
 			Dictionary<int, TextureContainer> _texDict = new();
 			Dictionary<int, byte[]> _rawTexDict = dataDict.TryGetValue("TextureDictionary", out object? _tryval) && (_tryval is not null) ?
 				MessagePackSerializer.Deserialize<Dictionary<int, byte[]>>((byte[])_tryval) : new();

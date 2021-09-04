@@ -2,3 +2,9 @@
 
 # CS0642: Possible mistaken empty statement
 dotnet_diagnostic.CS0642.severity = silent
+
+# IDE0058: Expression value is never used
+dotnet_diagnostic.IDE0058.severity = none
+
+# IDE0003: Remove qualification
+dotnet_diagnostic.IDE0003.severity = suggestion

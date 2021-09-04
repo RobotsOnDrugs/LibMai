@@ -97,7 +97,6 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 						catch (ArgumentException) { }
 						break;
 				}
-
 			}
 			return _v1data.ToImmutableDictionary();
 		}

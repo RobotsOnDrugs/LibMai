@@ -1,10 +1,11 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using System.Reflection;
 
-using IllusionCards.FakeUnity;
-
 using MessagePack;
+
+using static System.Math;
 
 namespace IllusionCards.AI.ExtendedData.PluginData
 {
@@ -67,15 +68,10 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 				private float _frameWeight = 100;
 				public float frameWeight
 				{
-					set { _frameWeight = Mathf.Clamp(value, 0, 100); }
-					get { return _frameWeight <= 0 ? 100 : _frameWeight; }
+					set => _frameWeight = Clamp(value, 0, 100);
+					get => _frameWeight <= 0 ? 100 : _frameWeight;
 				}
-				private float _weight = 100;
-				public float weight
-				{
-					set { _weight = value; }
-					get { return _weight; }
-				}
+				public float weight { set; get; } = 100;
 				public Vector3[] verticies { get; init; } = null!;
 				public Vector3[] normals { get; init; } = null!;
 				public Vector3[] tangents { get; init; } = null!;

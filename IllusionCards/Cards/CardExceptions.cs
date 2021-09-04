@@ -3,8 +3,8 @@
 	public class UnsupportedCardException : Exception
 	{
 		public string? CardPath;
-		public UnsupportedCardException(string message, string? cardPath = null) : base(message) { CardPath = cardPath; }
-		public UnsupportedCardException(string message, Exception ex, string? cardPath = null) : base(message, ex) { CardPath = cardPath; }
+		public UnsupportedCardException(string message, string? cardPath = null) : base(message) => CardPath = cardPath;
+		public UnsupportedCardException(string message, Exception ex, string? cardPath = null) : base(message, ex) => CardPath = cardPath;
 	}
 	public class InvalidCardException : UnsupportedCardException
 	{

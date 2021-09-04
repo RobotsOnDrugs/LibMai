@@ -13,7 +13,7 @@ namespace IllusionCards.AI.Chara
 		public int personality { get; init; }
 		public float voiceRate { get; init; }
 		[IgnoreMember]
-		public float voicePitch { get => Mathf.Lerp(0.94f, 1.06f, this.voiceRate); }
+		public float voicePitch => Mathf.Lerp(0.94f, 1.06f, voiceRate);
 		public byte trait { get; init; }
 		public byte mind { get; init; }
 		public byte hAttribute { get; init; }

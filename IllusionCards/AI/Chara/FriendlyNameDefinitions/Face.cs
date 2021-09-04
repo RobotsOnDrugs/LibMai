@@ -60,6 +60,5 @@
 			StockType4_19,
 			Unknown = -1
 		}
-
 	}
 }

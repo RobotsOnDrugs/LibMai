@@ -9,6 +9,5 @@ namespace IllusionCards.Chara
 			Unknown
 		}
 		public string Name { get; }
-
 	}
 }

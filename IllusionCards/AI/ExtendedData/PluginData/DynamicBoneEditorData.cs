@@ -19,9 +19,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 		public override Type DataType { get; } = typeof(ImmutableArray<DynamicBoneData>);
 		public ImmutableArray<DynamicBoneData> Data { get; init; }
 		public DynamicBoneEditorData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
-		{
-			Data = MessagePackSerializer.Deserialize<List<DynamicBoneData>>((byte[])dataDict["AccessoryDynamicBoneData"]).ToImmutableArray();
-		}
+			=> Data = MessagePackSerializer.Deserialize<List<DynamicBoneData>>((byte[])dataDict["AccessoryDynamicBoneData"]).ToImmutableArray();
 	}
 	[MessagePackObject]
 	public record DynamicBoneData

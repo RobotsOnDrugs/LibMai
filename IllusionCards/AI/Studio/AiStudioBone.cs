@@ -2,7 +2,7 @@
 {
 	public record AiStudioBone : AiStudioObject
 	{
-		public override int Kind { get => -1; }
+		public override int Kind => -1;
 		public BoneGroup Group { get; init; } = BoneGroup.None;
 		public int Level { get; init; } = 0;
 		public AiStudioBone(BinaryReader binaryReader) : base(binaryReader, false)

@@ -14,8 +14,8 @@ namespace IllusionCards.AI.Chara
 		public int Slavery { get; init; }
 		public int Broken { get; init; }
 		public int Dependence { get; init; }
-		public AiCharaCardDefinitions.State nowState { get; init; }
-		public AiCharaCardDefinitions.State nowDrawState { get; init; }
+		public AiCharaCardDefinitions.HS2CharaStatus nowState { get; init; }
+		public AiCharaCardDefinitions.HS2CharaStatus nowDrawState { get; init; }
 		public bool lockNowState { get; init; }
 		public bool lockBroken { get; init; }
 		public bool lockDependence { get; init; }
@@ -24,7 +24,7 @@ namespace IllusionCards.AI.Chara
 		public int Toilet { get; init; }
 		public int Libido { get; init; }
 		public int alertness { get; init; }
-		public AiCharaCardDefinitions.State calcState { get; init; }
+		public AiCharaCardDefinitions.HS2CharaStatus calcState { get; init; }
 		public byte escapeFlag { get; init; }
 		public bool escapeExperienced { get; init; }
 		public bool firstHFlag { get; init; }

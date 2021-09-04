@@ -16,8 +16,6 @@
 		public readonly struct KK_InvisibleBodyOptions { public bool Visible { get; init; } }
 		public KK_InvisibleBodyOptions Data { get; init; }
 		public KK_InvisibleBodyData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
-		{
-			Data = new() { Visible = (bool)dataDict["Visible"] };
-		}
+			=> Data = new() { Visible = (bool)dataDict["Visible"] };
 	}
 }

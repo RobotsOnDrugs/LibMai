@@ -1,8 +1,9 @@
 ﻿using System.Collections.Immutable;
-
-using IllusionCards.FakeUnity;
+using System.Numerics;
 
 using MessagePack;
+
+using static IllusionCards.Util.MathTypesResolver;
 
 namespace IllusionCards.AI.ExtendedData.PluginData
 {
@@ -50,7 +51,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 		}
 		public AdvancedBoneModData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		{
-			MessagePackSerializerOptions _lz4Option = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4Block);
+			MessagePackSerializerOptions _lz4Option = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4Block).WithResolver(MathResolver);
 			Data = dataDict.TryGetValue((object)"boneData", out object? _rawData)
 				? MessagePackSerializer.Deserialize<List<BoneModifier>>((byte[])_rawData, _lz4Option).ToImmutableArray()
 				: ImmutableArray<BoneModifier>.Empty;

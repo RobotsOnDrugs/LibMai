@@ -16,19 +16,19 @@ namespace IllusionCards.AI.Chara
 		public byte birthMonth { get; init; }
 		public byte birthDay { get; init; }
 		[IgnoreMember]
-		public string strBirthDay { get => $"{birthMonth}/{birthDay}"; }
+		public string strBirthDay => $"{birthMonth}/{birthDay}";
 		public float voiceRate { get; init; }
 		[IgnoreMember]
-		public float voicePitch { get => Mathf.Lerp(0.94f, 1.06f, this.voiceRate); }
+		public float voicePitch => Mathf.Lerp(0.94f, 1.06f, voiceRate);
 		public HashSet<int> hsWish { get; init; } = null!;
 		[IgnoreMember]
-		public int wish01 { get => hsWish.Count == 0 ? -1 : this.hsWish.ToArray<int>()[0]; }
+		public int wish01 => hsWish.Count == 0 ? -1 : hsWish.ToArray()[0];
 
 		[IgnoreMember]
-		public int wish02 { get => hsWish.Count == 0 ? -1 : this.hsWish.ToArray<int>()[1]; }
+		public int wish02 => hsWish.Count == 0 ? -1 : hsWish.ToArray()[1];
 		[IgnoreMember]
 
-		public int wish03 { get => hsWish.Count == 0 ? -1 : this.hsWish.ToArray<int>()[2]; }
+		public int wish03 => hsWish.Count == 0 ? -1 : hsWish.ToArray()[2];
 		public bool futanari { get; init; }
 		public object? ExtendedSaveData { get; init; }
 	}

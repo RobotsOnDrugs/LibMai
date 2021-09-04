@@ -19,8 +19,6 @@
 			public bool ForceMaleAnimations { get; init; }
 		}
 		public ReverseTrapData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
-		{
-			Data = new() { ForceMaleAnimations = NullCheckDictionaryEntries(ref dataDict, "ForceMaleAnimations", false) ?? false };
-		}
+			=> Data = new() { ForceMaleAnimations = NullCheckDictionaryEntries(ref dataDict, "ForceMaleAnimations", false) ?? false };
 	}
 }

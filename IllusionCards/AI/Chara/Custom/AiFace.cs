@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 
 using IllusionCards.FakeUnity;
 
@@ -65,7 +66,7 @@ namespace IllusionCards.AI.Chara
 			public float lipGloss { get; init; }
 			[Key("paintInfo")]
 			[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Required for MessagePack initialization")]
-			private PaintInfo[] _paintInfo { init { paintInfo = value.ToImmutableArray(); } }
+			private PaintInfo[] _paintInfo { init => paintInfo = value.ToImmutableArray(); }
 			public ImmutableArray<PaintInfo> paintInfo { get; init; }
 		}
 	}

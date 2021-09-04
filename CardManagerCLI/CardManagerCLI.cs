@@ -72,7 +72,7 @@ namespace IllusionCards
 			//int _i = 0;
 			foreach (FileInfo CardFile in CardFiles)
 			{
-				GC.Collect();
+				//GC.Collect();
 				Logger.Info("Processing {cardfile:l}.", CardFile.Name);
 				try { _card = IllusionCard.NewCard(CardFile); }
 				catch (UnsupportedCardException ex) { Logger.Error(ex, "Could not parse card: {card}: {reason:l}", ex.CardPath, ex.Message); continue; }
@@ -172,9 +172,9 @@ namespace IllusionCards
 				_fileInfo = new(filePath);
 			}
 			catch (Exception ex) when (ex is SecurityException
-				|| ex is UnauthorizedAccessException
-				|| ex is NotSupportedException
-				|| ex is FileNotFoundException)
+				or UnauthorizedAccessException
+				or NotSupportedException
+				or FileNotFoundException)
 			{ Logger.Error(ex, "{filePath} could not be accessed: {reason:l}", filePath, ex.Message); }
 			fileInfo = _fileInfo;
 		}

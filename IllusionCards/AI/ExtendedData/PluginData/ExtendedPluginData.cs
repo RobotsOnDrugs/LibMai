@@ -46,6 +46,6 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 
 		[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Signature is useful for inherited records")]
 		public ExtendedPluginData(int version, Dictionary<object, object> dataDict) { RawData = null; Version = version; }
-		public ExtendedPluginData() { RawData = null; }
+		public ExtendedPluginData() => RawData = null;
 	}
 }

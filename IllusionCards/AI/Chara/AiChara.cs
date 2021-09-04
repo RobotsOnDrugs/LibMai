@@ -17,16 +17,13 @@ namespace IllusionCards.AI.Chara
 {
 	public readonly struct AiChara : IIllusionChara
 	{
-		public IIllusionChara.CharaSex Sex
+		public IIllusionChara.CharaSex Sex => Parameter.sex switch
 		{
-			get => Parameter.sex switch
-			{
-				0b0 => IIllusionChara.CharaSex.Male,
-				0b1 => IIllusionChara.CharaSex.Female,
-				_ => IIllusionChara.CharaSex.Unknown
-			};
-		}
-		public string Name { get => Parameter.fullname; }
+			0b0 => IIllusionChara.CharaSex.Male,
+			0b1 => IIllusionChara.CharaSex.Female,
+			_ => IIllusionChara.CharaSex.Unknown
+		};
+		public string Name => Parameter.fullname;
 
 		public Version LoadVersion { get; init; }
 		public int Language { get; init; }
@@ -42,12 +39,12 @@ namespace IllusionCards.AI.Chara
 		public AiStatus Status { get; init; } = new();
 		public ImmutableHashSet<AiPluginData>? ExtendedData { get; init; } = null;
 		public ImmutableHashSet<NullPluginData>? NullData { get; init; } = null;
-		public AiFriendlyCharaData FriendlyCharaData { get => GetAiFriendlyCharaData(Custom); }
+		public AiFriendlyCharaData FriendlyCharaData => GetAiFriendlyCharaData(Custom);
 		public static AiFriendlyCharaData GetAiFriendlyCharaData(AiCustom custom)
 		{
 			return new()
 			{
-				BodyStats = new()
+				Body = new()
 				{
 					Overall = new()
 					{
@@ -104,15 +101,15 @@ namespace IllusionCards.AI.Chara
 						Ankles = custom.body.shapeValueBody[28],
 					}
 				},
-				FaceStats = new()
+				Face = new()
 				{
-					FaceTypeStats = new()
+					FaceType = new()
 					{
 						Contour = GetFriendlyFaceContourName(custom.face.headId),
 						Skin = GetFriendlyFaceSkinName(custom.face.skinId),
 						Wrinkles = GetFriendlyFaceSkinName(custom.face.detailId),
 					},
-					OverallStats = new()
+					Overall = new()
 					{
 						HeadWidth = custom.face.shapeValueFace[0],
 						UpperDepth = custom.face.shapeValueFace[1],
@@ -120,7 +117,7 @@ namespace IllusionCards.AI.Chara
 						LowerDepth = custom.face.shapeValueFace[3],
 						LowerWidth = custom.face.shapeValueFace[4],
 					},
-					JawStats = new()
+					Jaw = new()
 					{
 						JawWidth = custom.face.shapeValueFace[5],
 						JawHeight = custom.face.shapeValueFace[6],
@@ -131,7 +128,7 @@ namespace IllusionCards.AI.Chara
 						ChinHeight = custom.face.shapeValueFace[11],
 						ChinDepth = custom.face.shapeValueFace[12]
 					},
-					CheeksStats = new()
+					Cheeks = new()
 					{
 						LowerHeight = custom.face.shapeValueFace[13],
 						LowerDepth = custom.face.shapeValueFace[14],
@@ -140,15 +137,15 @@ namespace IllusionCards.AI.Chara
 						UpperDepth = custom.face.shapeValueFace[17],
 						UpperWidth = custom.face.shapeValueFace[18]
 					},
-					EyebrowsStats = new()
+					Eyebrows = new()
 					{
-						Width = custom.face.eyebrowLayout.z,
-						Height = custom.face.eyebrowLayout.w,
-						PositionX = custom.face.eyebrowLayout.x,
-						PositionY = custom.face.eyebrowLayout.y,
+						Width = custom.face.eyebrowLayout.Z,
+						Height = custom.face.eyebrowLayout.W,
+						PositionX = custom.face.eyebrowLayout.X,
+						PositionY = custom.face.eyebrowLayout.Y,
 						AngleTilt = custom.face.eyebrowTilt
 					},
-					EyeStats = new()
+					Eye = new()
 					{
 						EyeHeight = custom.face.shapeValueFace[23],
 						EyeSpacing = custom.face.shapeValueFace[20],
@@ -164,7 +161,7 @@ namespace IllusionCards.AI.Chara
 						EyelidShape1 = custom.face.shapeValueFace[30],
 						EyelidShape2 = custom.face.shapeValueFace[31]
 					},
-					NoseStats = new()
+					Nose = new()
 					{
 						NoseHeight = custom.face.shapeValueFace[32],
 						NoseDepth = custom.face.shapeValueFace[33],
@@ -182,7 +179,7 @@ namespace IllusionCards.AI.Chara
 						NoseTipHeight = custom.face.shapeValueFace[45],
 						NoseTipSize = custom.face.shapeValueFace[46]
 					},
-					MouthStats = new()
+					Mouth = new()
 					{
 						MouthHeight = custom.face.shapeValueFace[47],
 						MouthWidth = custom.face.shapeValueFace[48],
@@ -192,7 +189,7 @@ namespace IllusionCards.AI.Chara
 						LowerLipThickness = custom.face.shapeValueFace[52],
 						CornerShape = custom.face.shapeValueFace[53]
 					},
-					EarsStats = new()
+					Ears = new()
 					{
 						EarSize = custom.face.shapeValueFace[54],
 						EarAngle = custom.face.shapeValueFace[55],
@@ -200,55 +197,55 @@ namespace IllusionCards.AI.Chara
 						UpEarShape = custom.face.shapeValueFace[57],
 						LowEarShape = custom.face.shapeValueFace[58]
 					},
-					MolesStats = new()
+					Moles = new()
 					{
 						MoleType = GetFriendlyMoleName(custom.face.moleId),
-						MoleWidth = custom.face.moleLayout.z,
-						MoleHeight = custom.face.moleLayout.w,
-						MolePositionX = custom.face.moleLayout.x,
-						MolePositionY = custom.face.moleLayout.y
+						MoleWidth = custom.face.moleLayout.Z,
+						MoleHeight = custom.face.moleLayout.W,
+						MolePositionX = custom.face.moleLayout.X,
+						MolePositionY = custom.face.moleLayout.Y
 					},
 					SetBothLeftAndRightEyes = custom.face.pupilSameSetting,
 					LeftEyeInfo = custom.face.pupil[0],
 					RightEyeInfo = custom.face.pupil[1],
-					IrisSettingsStats = new()
+					IrisSettings = new()
 					{
 						AdjustHeight = custom.face.pupilY,
 						ShadowRange = custom.face.whiteShadowScale
 					},
-					EyeHighlightsStats = new()
+					EyeHighlights = new()
 					{
 						Type = custom.face.hlId,
 						Color = custom.face.hlColor,
-						Width = custom.face.hlLayout.z,
-						Height = custom.face.hlLayout.w,
-						PositionX = custom.face.hlLayout.x,
-						PositionY = custom.face.hlLayout.y,
+						Width = custom.face.hlLayout.Z,
+						Height = custom.face.hlLayout.W,
+						PositionX = custom.face.hlLayout.X,
+						PositionY = custom.face.hlLayout.Y,
 						Tilt = custom.face.hlTilt
 					},
-					EyebrowTypeStats = new()
+					EyebrowType = new()
 					{
 						Type = custom.face.eyebrowId,
 						Color = custom.face.eyebrowColor
 					},
-					EyelashTypeStats = new()
+					EyelashType = new()
 					{
 						Type = custom.face.eyelashesId,
 						Color = custom.face.eyelashesColor
 					},
-					EyeshadowStats = new()
+					Eyeshadow = new()
 					{
 						Type = custom.face.makeup.eyeshadowId,
 						Color = custom.face.makeup.eyeshadowColor,
 						Shine = custom.face.makeup.eyeshadowGloss,
 					},
-					BlushStats = new()
+					Blush = new()
 					{
 						Type = custom.face.makeup.cheekId,
 						Color = custom.face.makeup.cheekColor,
 						Shine = custom.face.makeup.cheekGloss
 					},
-					LipstickStats = new()
+					Lipstick = new()
 					{
 						Type = custom.face.makeup.lipId,
 						Color = custom.face.makeup.lipColor,

@@ -26,7 +26,6 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 
 			[Key(1)]
 			public bool Override { get; init; }
-
 		}
 		public enum CoordinateType
 		{

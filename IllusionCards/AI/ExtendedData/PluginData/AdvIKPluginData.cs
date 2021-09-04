@@ -1,6 +1,5 @@
 ﻿using System.Collections.Immutable;
-
-using IllusionCards.FakeUnity;
+using System.Numerics;
 
 namespace IllusionCards.AI.ExtendedData.PluginData
 {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Numerics;
 using System.Text.Json;
 
 using IllusionCards.AI.Chara;
@@ -12,9 +13,9 @@ namespace IllusionCards.AI.Studio
 {
 	public record AiStudioCharacter : AiStudioObject
 	{
-		private CharaSex Sex { get => (CharaSex)Chara.Parameter.sex; }
+		private CharaSex Sex => (CharaSex)Chara.Parameter.sex;
 		private int Index { get; init; }
-		public override int Kind { get => 0; }
+		public override int Kind => 0;
 
 		public AiChara Chara { get; init; }
 
@@ -42,8 +43,8 @@ namespace IllusionCards.AI.Studio
 		}
 		public CumSplatterStatus CumSplatter { get; init; }
 		public float NippleStiffness { get; init; }
-		public float Wetness { get => Chara.Status.wetRate; }
-		public float SkinGloss { get => Chara.Status.skinTuyaRate; }
+		public float Wetness => Chara.Status.wetRate;
+		public float SkinGloss => Chara.Status.skinTuyaRate;
 		public bool CharaIsMonochrome { get; init; }
 		public Color MonochromeColor { get; init; }
 		public bool PenisIsVisible { get; init; } // Illusion calls it "son"
@@ -85,8 +86,8 @@ namespace IllusionCards.AI.Studio
 			FORWARD,
 			CONTROL
 		}
-		public EyeLookType EyePosition { get => (EyeLookType)Chara.Status.eyesLookPtn; }
-		public ImmutableArray<Quarternion> EyeAngles { get; init; }
+		public EyeLookType EyePosition => (EyeLookType)Chara.Status.eyesLookPtn;
+		public ImmutableArray<Quaternion> EyeAngles { get; init; }
 		//public enum NECK_LOOK_TYPE
 		//{
 		//	NO_LOOK,
@@ -106,12 +107,12 @@ namespace IllusionCards.AI.Studio
 			CONTROL
 		}
 		public NeckLookType NeckPosition { get; init; }
-		public ImmutableArray<Quarternion> NeckAngles { get; init; }
+		public ImmutableArray<Quaternion> NeckAngles { get; init; }
 		public float MouthOpen { get; init; }
 		public bool LipSync { get; init; } = true;
 		private ImmutableArray<int> HandPosition { get; init; } = new int[2] { 0, 0 }.ToImmutableArray();
-		public int LeftHandPosition { get => HandPosition[0]; }
-		public int RightHandPosition { get => HandPosition[1]; }
+		public int LeftHandPosition => HandPosition[0];
+		public int RightHandPosition => HandPosition[1];
 
 		// Animation
 		public AnimeInfo AnimeInfoStatus { get; init; }
@@ -298,15 +299,15 @@ namespace IllusionCards.AI.Studio
 			AnimeOptionParams = _animeOptions.ToImmutableArray();
 			_ = binaryReader.ReadInt32();
 			NeckPosition = (NeckLookType)binaryReader.ReadInt32();
-			var _neckAngleBuilder = ImmutableArray.CreateBuilder<Quarternion>();
+			var _neckAngleBuilder = ImmutableArray.CreateBuilder<Quaternion>();
 			_count = binaryReader.ReadInt32();
 			for (int i = 0; i < _count; i++)
-				_neckAngleBuilder.Add(new(binaryReader));
+				_neckAngleBuilder.Add(new(binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle()));
 			NeckAngles = _neckAngleBuilder.ToImmutable();
 			_ = binaryReader.ReadInt32();
-			Quarternion[] _eyeAngles = new Quarternion[2];
-			_eyeAngles[0] = new(binaryReader);
-			_eyeAngles[1] = new(binaryReader);
+			Quaternion[] _eyeAngles = new Quaternion[2];
+			_eyeAngles[0] = new(binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle());
+			_eyeAngles[1] = new(binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle());
 			EyeAngles = _eyeAngles.ToImmutableArray();
 			AnimeNormalizedTime = binaryReader.ReadSingle();
 			var _acsGroup = ImmutableDictionary.CreateBuilder<int, TreeNode.TreeState>();
@@ -348,7 +349,7 @@ namespace IllusionCards.AI.Studio
 			public int Group { get; init; } = -1;
 			public int Category { get; init; } = -1;
 			public int Number { get; init; } = -1;
-			public bool Exists { get => Group != -1 && Category != -1 && Number != -1; }
+			public bool Exists => Group != -1 && Category != -1 && Number != -1;
 
 			public AnimeInfo(BinaryReader binaryReader)
 			{

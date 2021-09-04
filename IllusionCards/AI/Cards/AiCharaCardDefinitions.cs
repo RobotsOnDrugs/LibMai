@@ -308,7 +308,7 @@ namespace IllusionCards.AI.Cards
 			SiruBackBot
 		}
 
-		public enum State
+		public enum HS2CharaStatus
 		{
 			Blank,
 			Favor,

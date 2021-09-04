@@ -26,7 +26,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 		{
 			[Key(0)]
 			[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
-			private List<OutfitPainterChannel> ChannelsList { init { Channels = value.ToImmutableArray(); } }
+			private List<OutfitPainterChannel> ChannelsList { init => Channels = value.ToImmutableArray(); }
 			[IgnoreMember]
 			public ImmutableArray<OutfitPainterChannel> Channels { get; init; }
 		}
@@ -51,7 +51,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 
 			[Key(5)]
 			[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
-			private List<OutfitPainterChannelAssignment> AssignmentsList { init { Assignments = value.ToImmutableArray(); } }
+			private List<OutfitPainterChannelAssignment> AssignmentsList { init => Assignments = value.ToImmutableArray(); }
 			[IgnoreMember]
 			public ImmutableArray<OutfitPainterChannelAssignment> Assignments { get; init; } = ImmutableArray<OutfitPainterChannelAssignment>.Empty;
 		}

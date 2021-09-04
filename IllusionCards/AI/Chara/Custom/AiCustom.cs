@@ -6,6 +6,8 @@ using IllusionCards.Util;
 
 using MessagePack;
 
+using static IllusionCards.Util.MathTypesResolver;
+
 namespace IllusionCards.AI.Chara
 {
 	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
@@ -22,6 +24,7 @@ namespace IllusionCards.AI.Chara
 		// HeightKind is determined by body.shapeValueBody[0] - 0 if =< 0.33f, 2 if >= 0.66f, 1 if in between
 		public AiCustom(byte[] customData)
 		{
+			MessagePackSerializer.DefaultOptions = WithMathTypes;
 			byte[][] _dataChunks = Helpers.GetDataChunks(customData, 3);
 			face = MessagePackSerializer.Deserialize<AiFace>(_dataChunks[0]);
 			body = MessagePackSerializer.Deserialize<AiBody>(_dataChunks[1]);

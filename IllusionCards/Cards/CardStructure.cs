@@ -108,6 +108,5 @@ namespace IllusionCards.Cards
 			}
 			else { throw new InvalidCardException($"Could not determine card type."); }
 		}
-
 	}
 }

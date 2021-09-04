@@ -6,6 +6,8 @@ using IllusionCards.Util;
 
 using MessagePack;
 
+using static IllusionCards.Util.MathTypesResolver;
+
 namespace IllusionCards.AI.Chara
 {
 	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
@@ -19,6 +21,7 @@ namespace IllusionCards.AI.Chara
 		internal bool IsInitialized { get; init; } = false;
 		public AiCoordinate(byte[] coordinateData, Version loadVersion, int language)
 		{
+			MessagePackSerializer.DefaultOptions = WithMathTypes;
 			byte[][] _dataChunks = Helpers.GetDataChunks(coordinateData, 2);
 			clothes = MessagePackSerializer.Deserialize<AiClothes>(_dataChunks[0]);
 			accessory = MessagePackSerializer.Deserialize<AiAccessory>(_dataChunks[1]);

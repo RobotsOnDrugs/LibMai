@@ -14,7 +14,7 @@ namespace IllusionCards.AI.Chara
 		public Version version { get; init; } = null!;
 		[Key("shapeValueBody")]
 		[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Required for MessagePack initialization")]
-		private float[] _shapeValueBody { init { shapeValueBody = value.ToImmutableArray(); } }
+		private float[] _shapeValueBody { init => shapeValueBody = value.ToImmutableArray(); }
 		public ImmutableArray<float> shapeValueBody { get; init; }
 		public float bustSoftness { get; init; }
 		public float bustWeight { get; init; }
@@ -28,7 +28,7 @@ namespace IllusionCards.AI.Chara
 		public Color sunburnColor { get; init; }
 		[Key("paintInfo")]
 		[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Required for MessagePack initialization")]
-		private PaintInfo[] _paintInfo { init { paintInfo = value.ToImmutableArray(); } }
+		private PaintInfo[] _paintInfo { init => paintInfo = value.ToImmutableArray(); }
 		public ImmutableArray<PaintInfo> paintInfo { get; init; }
 		public int nipId { get; init; }
 		public Color nipColor { get; init; }
