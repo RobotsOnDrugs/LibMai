@@ -1,5 +1,5 @@
-﻿namespace IllusionCards.AI.Studio
-{
+﻿namespace IllusionCards.AI.Studio;
+
 	public record AiStudioBone : AiStudioObject
 	{
 		public override int Kind => -1;
@@ -25,4 +25,3 @@
 			Skirt = 1024
 		}
 	}
-}

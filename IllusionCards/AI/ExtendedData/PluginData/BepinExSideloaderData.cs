@@ -1,31 +1,26 @@
-﻿using System.Collections.Immutable;
+﻿namespace IllusionCards.AI.ExtendedData.PluginData;
 
-using MessagePack;
-
-namespace IllusionCards.AI.ExtendedData.PluginData
+public record BepinExSideloaderData : ExtendedPluginData
 {
-	public record BepinExSideloaderData : ExtendedPluginData
+	public const string DataKey = DefinitionMetadata.DataKey;
+	private readonly struct DefinitionMetadata
 	{
-		public const string DataKey = DefinitionMetadata.DataKey;
-		private readonly struct DefinitionMetadata
-		{
-			internal const string PluginGUID = "com.bepis.bepinex.sideloader";
-			internal const string DataKey = "com.bepis.sideloader.universalautoresolver";
-			internal const string OldDataKey = "EC.Core.Sideloader.UniversalAutoResolver";
-			internal readonly Version PluginVersion = new("16.4");
-			internal const string RepoURL = "https://github.com/IllusionMods/BepisPlugins";
-			internal const string ClassDefinitionsURL = "https://github.com/IllusionMods/BepisPlugins/blob/master/src/Core_Sideloader/UniversalAutoResolver/Core.UAR.ResolveInfo.cs";
-			internal const string License = "GPL 3.0";
-		}
-		public override Type DataType { get; } = typeof(ImmutableArray<ModInfo>);
-		public ImmutableArray<ModInfo> Data { get; init; }
-		public BepinExSideloaderData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
-		{
-			ImmutableArray<ModInfo>.Builder _modInfos = ImmutableArray.CreateBuilder<ModInfo>();
-			object[] _rawData = (object[])dataDict["info"];
-			foreach (byte[] chunk in _rawData)
-				_modInfos.Add(MessagePackSerializer.Deserialize<ModInfo>(chunk));
-			Data = _modInfos.ToImmutable();
-		}
+		internal const string PluginGUID = "com.bepis.bepinex.sideloader";
+		internal const string DataKey = "com.bepis.sideloader.universalautoresolver";
+		internal const string OldDataKey = "EC.Core.Sideloader.UniversalAutoResolver";
+		internal readonly Version PluginVersion = new("16.4");
+		internal const string RepoURL = "https://github.com/IllusionMods/BepisPlugins";
+		internal const string ClassDefinitionsURL = "https://github.com/IllusionMods/BepisPlugins/blob/master/src/Core_Sideloader/UniversalAutoResolver/Core.UAR.ResolveInfo.cs";
+		internal const string License = "GPL 3.0";
+	}
+	public override Type DataType { get; } = typeof(ImmutableArray<ModInfo>);
+	public ImmutableArray<ModInfo> Data { get; init; }
+	public BepinExSideloaderData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	{
+		ImmutableArray<ModInfo>.Builder _modInfos = ImmutableArray.CreateBuilder<ModInfo>();
+		object[] _rawData = (object[])dataDict["info"];
+		foreach (byte[] chunk in _rawData)
+			_modInfos.Add(MessagePackSerializer.Deserialize<ModInfo>(chunk));
+		Data = _modInfos.ToImmutable();
 	}
 }

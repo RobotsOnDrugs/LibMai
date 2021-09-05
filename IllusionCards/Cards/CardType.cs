@@ -1,19 +1,18 @@
-﻿namespace IllusionCards.Cards
+﻿namespace IllusionCards.Cards;
+
+public enum CardType
 {
-	public enum CardType
-	{
-		AIChara,
-		AICoordinate,
-		AIScene,
-		KKChara,
-		KKPartyChara,
-		KKPartySPChara,
-		KKScene,
-		PHFemaleChara,
-		PHFemaleClothes,
-		PHMaleChara,
-		PHScene,
-		ECChara,
-		Unknown
-	}
+	AIChara,
+	AICoordinate,
+	AIScene,
+	KKChara,
+	KKPartyChara,
+	KKPartySPChara,
+	KKScene,
+	PHFemaleChara,
+	PHFemaleClothes,
+	PHMaleChara,
+	PHScene,
+	ECChara,
+	Unknown
 }

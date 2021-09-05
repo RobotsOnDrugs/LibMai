@@ -1,13 +1,9 @@
-﻿using System.Collections.Immutable;
+﻿namespace IllusionCards.AI.Studio;
 
-using IllusionCards.FakeUnity;
-
-namespace IllusionCards.AI.Studio
-{
 	public readonly struct AiScene
 	{
-		private Version Version { get; init; } = new(1, 1, 1);
-		private HashSet<int> HashIndex { get; init; } = new();
+		public Version Version { get; init; } = new(1, 1, 1);
+		//private HashSet<int> HashIndex { get; init; } = new();
 		public ImmutableDictionary<int, AiStudioObject> DicObject { get; init; } = ImmutableDictionary<int, AiStudioObject>.Empty;
 		public MapInfo MapInfoData { get; init; }
 		public int CGLookupTexture { get; init; }
@@ -72,4 +68,3 @@ namespace IllusionCards.AI.Studio
 		{
 		}
 	}
-}

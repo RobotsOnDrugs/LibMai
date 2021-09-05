@@ -1,24 +1,16 @@
-﻿using IllusionCards.AI.Chara;
-using IllusionCards.Cards;
-using IllusionCards.Util;
+﻿namespace IllusionCards.AI.Cards;
 
-using static IllusionCards.AI.Chara.AiCharaType;
-
-
-namespace IllusionCards.AI.Cards
+public record AiCoordinateCard : IllusionCard
 {
-	public record AiCoordinateCard : IllusionCard
+	public string CoordinateName { get; init; }
+	public AiCoordinate Coordinate { get; init; }
+	public override CardType CardType { get; } = CardType.AICoordinate;
+	public AiCoordinateCard(CardStructure cs, BinaryReader binaryReader) : base(cs, binaryReader)
 	{
-		public string CoordinateName { get; init; }
-		public AiCoordinate Coordinate { get; init; }
-		public override CardType CardType { get; } = CardType.AICoordinate;
-		public AiCoordinateCard(CardStructure cs, BinaryReader binaryReader) : base(cs, binaryReader)
-		{
-			ParseAiCharaTypeData(binaryReader, Constants.AIClothesIdentifier, out Version _version, out int _language);
-			CoordinateName = ReadString(binaryReader);
-			int _count = binaryReader.ReadInt32();
-			byte[] _coordinateData = binaryReader.ReadBytes(_count);
-			Coordinate = new(_coordinateData, _version, _language);
-		}
+		ParseAiCharaTypeData(binaryReader, Constants.AIClothesIdentifier, out Version _version, out int _language);
+		CoordinateName = ReadString(binaryReader);
+		int _count = binaryReader.ReadInt32();
+		byte[] _coordinateData = binaryReader.ReadBytes(_count);
+		Coordinate = new(_coordinateData, _version, _language);
 	}
 }

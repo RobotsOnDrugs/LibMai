@@ -1,10 +1,9 @@
-﻿namespace IllusionCards.FakeUnity
+﻿namespace IllusionCards.FakeUnity;
+
+public enum TextureWrapMode
 {
-	public enum TextureWrapMode
-	{
-		Repeat,
-		Clamp,
-		Mirror,
-		MirrorOnce
-	}
+	Repeat,
+	Clamp,
+	Mirror,
+	MirrorOnce
 }

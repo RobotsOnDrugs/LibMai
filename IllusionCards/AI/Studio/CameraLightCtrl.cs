@@ -1,13 +1,12 @@
-﻿namespace IllusionCards.AI.Studio
-{
-	public record CameraLightCtrl
-	{
-		public record LightInfo
-		{
-		}
+﻿namespace IllusionCards.AI.Studio;
 
-		public record MapLightInfo
-		{
-		}
+public record CameraLightCtrl
+{
+	public record LightInfo
+	{
+	}
+
+	public record MapLightInfo
+	{
 	}
 }

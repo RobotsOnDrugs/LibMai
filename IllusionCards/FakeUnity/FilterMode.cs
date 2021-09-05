@@ -1,9 +1,3 @@
-﻿namespace IllusionCards.FakeUnity
-{
-	public enum FilterMode
-	{
-		Point,
-		Bilinear,
-		Trilinear
-	}
-}
+﻿namespace IllusionCards.FakeUnity;
+
+public enum FilterMode { Point, Bilinear, Trilinear }

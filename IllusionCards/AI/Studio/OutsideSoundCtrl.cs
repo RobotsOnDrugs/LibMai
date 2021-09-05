@@ -1,6 +1,6 @@
-﻿namespace IllusionCards.AI.Studio
+﻿namespace IllusionCards.AI.Studio;
+
+public record OutsideSoundCtrl
 {
-	public record OutsideSoundCtrl
-	{
-	}
+
 }

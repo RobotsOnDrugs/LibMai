@@ -1,14 +1,5 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
-using System.Numerics;
-using System.Reflection;
+﻿namespace IllusionCards.AI.ExtendedData.PluginData;
 
-using MessagePack;
-
-using static System.Math;
-
-namespace IllusionCards.AI.ExtendedData.PluginData
-{
 	public record KK_PregnancyPlusData : ExtendedPluginData
 	{
 		public const string DataKey = DefinitionMetadata.DataKey;
@@ -44,7 +35,7 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			public float inflationRoundness { get; init; }
 			public float inflationDrop { get; init; }
 			public int clothingOffsetVersion { get; init; }
-			public byte[] meshBlendShape { get; init; } = Array.Empty<Byte>();
+			public byte[] meshBlendShape { get; init; } = Array.Empty<byte>();
 			public ImmutableArray<MeshBlendShape> meshBlendShapes { get; init; } = ImmutableArray<MeshBlendShape>.Empty;
 			public Version? pluginVersion { get; init; }
 		}
@@ -82,7 +73,6 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			}
 		}
 
-
 		public KK_PregnancyPlusData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		{
 			FieldInfo[] _fields = typeof(KK_PregnancyPlusOptions).GetFields();
@@ -117,4 +107,3 @@ namespace IllusionCards.AI.ExtendedData.PluginData
 			}
 		}
 	}
-}

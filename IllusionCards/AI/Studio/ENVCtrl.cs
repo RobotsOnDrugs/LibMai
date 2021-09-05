@@ -1,6 +1,6 @@
-﻿namespace IllusionCards.AI.Studio
+﻿namespace IllusionCards.AI.Studio;
+
+public record ENVCtrl
 {
-	public record ENVCtrl
-	{
-	}
+
 }

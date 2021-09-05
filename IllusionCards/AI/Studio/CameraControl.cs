@@ -1,9 +1,8 @@
-﻿namespace IllusionCards.AI.Studio
+﻿namespace IllusionCards.AI.Studio;
+
+public record CameraControl
 {
-	public record CameraControl
+	public record CameraData
 	{
-		public record CameraData
-		{
-		}
 	}
 }

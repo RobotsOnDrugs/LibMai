@@ -1,6 +1,6 @@
-﻿namespace IllusionCards.AI.Studio
+﻿namespace IllusionCards.AI.Studio;
+
+public class ChangeAmount
 {
-	public class ChangeAmount
-	{
-	}
+
 }

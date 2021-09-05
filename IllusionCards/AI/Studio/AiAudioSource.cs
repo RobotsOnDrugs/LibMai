@@ -1,6 +1,6 @@
-﻿namespace IllusionCards.AI.Studio
+﻿namespace IllusionCards.AI.Studio;
+
+public record AiAudioSource
 {
-	public record AiAudioSource
-	{
-	}
+
 }
