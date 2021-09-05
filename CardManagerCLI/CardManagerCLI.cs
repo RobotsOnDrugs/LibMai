@@ -4,7 +4,6 @@ using System.CommandLine.Invocation;
 using System.Security;
 
 using IllusionCards.AI.Cards;
-using IllusionCards.AI.Chara;
 using IllusionCards.AI.ExtendedData.PluginData;
 using IllusionCards.Cards;
 
@@ -25,9 +24,9 @@ class CardManagerCLI
 		if (_logconfig.LoggingRules.Count != 0)
 		{
 #if DEBUG
-				const string _debugLayout = "[${longdate}][${logger}][${callsite-fileName:includeSourcePath=false}:${callsite-linenumber}] ${level:uppercase=true}: ${message}";
-				_logconfig.FindTargetByName<ColoredConsoleTarget>("logcolors").Layout = _debugLayout;
-				_logconfig.FindRuleByName("console").SetLoggingLevels(LogLevel.Error, LogLevel.Fatal);
+			const string _debugLayout = "[${longdate}][${logger}][${callsite-fileName:includeSourcePath=false}:${callsite-linenumber}] ${level:uppercase=true}: ${message}";
+			_logconfig.FindTargetByName<ColoredConsoleTarget>("logcolors").Layout = _debugLayout;
+			_logconfig.FindRuleByName("console").SetLoggingLevels(LogLevel.Error, LogLevel.Fatal);
 #else
 			_logconfig.FindRuleByName("console").SetLoggingLevels(LogLevel.Warn, LogLevel.Fatal);
 #endif
@@ -49,19 +48,19 @@ class CardManagerCLI
 			{
 				Logger.Info("Adding cards from the command line.");
 				bool _successArgList = QueueCardsFromArgList(cards, ref CardFiles);
-					// if (!_success) { return; }
+				// if (!_success) { return; }
 			}
 			if (cardList.Length != 0)
 			{
 				Logger.Info("Adding cards from the text file.");
 				bool _successFileList = QueueCardsFromFile(cardList, ref CardFiles);
-					// if (!_success) { return; }
-				}
+				// if (!_success) { return; }
+			}
 			if (gameDir.Length != 0)
 			{
 				Logger.Info("Adding cards from the game directory.");
 				bool _successGameDir = QueueCardsFromGameDir(gameDir, ref CardFiles, chara, coordinate, scene);
-					// if (!_success) { return; }
+				// if (!_success) { return; }
 			}
 		});
 		RootCommand.Invoke(args);
