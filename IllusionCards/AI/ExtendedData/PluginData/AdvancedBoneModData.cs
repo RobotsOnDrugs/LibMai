@@ -3,17 +3,19 @@
 public record AdvancedBoneModData : ExtendedPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	private readonly struct DefinitionMetadata
+	public readonly struct DefinitionMetadata
 	{
-		internal const string PluginGUID = "KKABMX.Core";
-		internal const string DataKey = "KKABMPlugin.ABMData";
-		internal readonly Version PluginVersion = new("4.4.2");
-		internal const string RepoURL = "https://github.com/ManlyMarco/ABMX";
-		internal const string ClassDefinitionsURL = "https://github.com/ManlyMarco/ABMX/blob/master/Shared/Core/BoneModifierData.cs";
-		internal const string License = "LGPL 3.0";
+		public const string PluginGUID = "KKABMX.Core";
+		public const string DataKey = "KKABMPlugin.ABMData";
+		public static readonly Version PluginVersion = new("4.4.2");
+		public const string RepoURL = "https://github.com/ManlyMarco/ABMX";
+		public const string ClassDefinitionsURL = "https://github.com/ManlyMarco/ABMX/blob/master/Shared/Core/BoneModifierData.cs";
+		public const string License = "LGPL 3.0";
 	}
+	public static readonly DefinitionMetadata Metadata = new();
 	public override Type DataType { get; } = typeof(List<BoneModifier>);
 	public ImmutableArray<BoneModifier> Data { get; }
+
 	[MessagePackObject]
 	public record BoneModifierData
 	{

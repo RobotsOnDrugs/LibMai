@@ -3,16 +3,19 @@
 public record PushUpAIData : ExtendedPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	private readonly struct DefinitionMetadata
+	public readonly struct DefinitionMetadata
 	{
-		internal const string PluginGUID = "mikke.pushUpAI";
-		internal const string DataKey = PluginGUID;
-		internal readonly Version PluginVersion = new("2.1.1");
-		internal const string RepoURL = "https://bitbucket.org/mikkemikke/mikkeplugins/src/master/PushUpAI/";
-		internal const string ClassDefinitionsURL = "https://bitbucket.org/mikkemikke/mikkeplugins/src/master/PushUpAI/PushUpController.cs";
-		internal const string? License = null;
+		public const string PluginGUID = "mikke.pushUpAI";
+		public const string DataKey = PluginGUID;
+		public static readonly Version PluginVersion = new("2.1.1");
+		public const string RepoURL = "https://bitbucket.org/mikkemikke/mikkeplugins/src/master/PushUpAI/";
+		public const string ClassDefinitionsURL = "https://bitbucket.org/mikkemikke/mikkeplugins/src/master/PushUpAI/PushUpController.cs";
+		public const string? License = null;
 	}
+	public static readonly DefinitionMetadata Metadata = new();
 	public override Type DataType { get; } = typeof(PushUpAIOptions);
+	public PushUpAIOptions Data { get; init; }
+
 	public readonly struct PushUpAIOptions
 	{
 		public ClothData BraClothData { get; init; }
@@ -32,7 +35,6 @@ public record PushUpAIData : ExtendedPluginData
 			public bool? CorsetHalf { get; init; }
 		}
 	}
-	public PushUpAIOptions Data { get; init; }
 	public PushUpAIData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		Data = new()

@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Concurrent;
+using System.Collections.Immutable;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.Security;
@@ -64,17 +65,30 @@ class CardManagerCLI
 			}
 		});
 		RootCommand.Invoke(args);
-		HashSet<IllusionCard> Cards = new();
-		HashSet<string> UnknownPlugins = new();
-		IllusionCard _card;
+
+		ConcurrentBag<IllusionCard> Cards = new();
+		ConcurrentBag<string> UnknownPlugins = new();
 		//int _i = 0;
-		foreach (FileInfo CardFile in CardFiles)
+		Parallel.ForEach(CardFiles, (CardFile) =>
 		{
+			IllusionCard _card;
 			//GC.Collect();
 			Logger.Info("Processing {cardfile:l}.", CardFile.Name);
-			try { _card = IllusionCard.NewCard(CardFile); }
-			catch (UnsupportedCardException ex) { Logger.Error(ex, "Could not parse card: {card}: {reason:l}", ex.CardPath, ex.Message); continue; }
-			_ = Cards.Add(_card);
+			try
+			{
+				_card = IllusionCard.NewCard(CardFile);
+				Cards.Add(_card);
+				if (_card.GetType() == typeof(AiCharaCard))
+				{
+					AiCharaCard __card = (AiCharaCard)_card;
+					ImmutableHashSet<AiPluginData>? _extendedData = __card.Chara.ExtendedData;
+					if (_extendedData is not null)
+						foreach (AiPluginData pluginData in _extendedData)
+							if (pluginData.PluginDataInfo?.GetType() == typeof(UnknownPluginData))
+								UnknownPlugins.Add(pluginData.DataKey);
+				}
+			}
+			catch (UnsupportedCardException ex) { Logger.Error(ex, "Could not parse card: {card}: {reason:l}", ex.CardPath, ex.Message); }
 			//if (_i < 1)
 			//{
 			//	using FileStream _fstream = new("dump.json", FileMode.Create, FileAccess.Write, FileShare.None);
@@ -82,22 +96,12 @@ class CardManagerCLI
 			//	//_swriter.Write(ObjectDumper.Dump(((AiCharaCard)_card).Custom, new DumpOptions() { DumpStyle = DumpStyle.Console }));
 			//	_i++;
 			//}
-			if (_card.GetType() == typeof(AiCharaCard))
-			{
-				AiCharaCard __card = (AiCharaCard)_card;
-				ImmutableHashSet<AiPluginData>? _extendedData = __card.Chara.ExtendedData;
-				if (_extendedData is null)
-					continue;
-				foreach (AiPluginData pluginData in _extendedData)
-					if (pluginData.PluginDataInfo?.GetType() == typeof(UnknownPluginData))
-						_ = UnknownPlugins.Add(pluginData.DataKey);
-			}
-		}
+		});
 		foreach (string unknownPlugin in UnknownPlugins)
 		{
 			Logger.Warn(unknownPlugin);
 		}
-		Console.WriteLine(Cards.Count);
+		//Console.WriteLine(Cards.Count);
 		NLog.LogManager.Shutdown();
 	}
 

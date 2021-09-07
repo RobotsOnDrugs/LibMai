@@ -131,7 +131,9 @@ public record AiStudioCharacter : AiStudioObject
 	{
 		// TODO: verify mapping of sex - I think female is 1 here but 0 in AiChara
 		int _sex = binaryReader.ReadInt32();
+
 		Chara = new(binaryReader);
+
 		int _count = binaryReader.ReadInt32();
 		Dictionary<int, AiStudioBone> _bones = new();
 		for (int i = 0; i < _count; i++)
@@ -164,11 +166,14 @@ public record AiStudioCharacter : AiStudioObject
 
 		KinematicModeStatus = (KinematicMode)binaryReader.ReadInt32();
 		AnimeInfoStatus = new(binaryReader);
+
 		int[] _hPos = new int[2];
 		_hPos[0] = binaryReader.ReadInt32();
 		_hPos[1] = binaryReader.ReadInt32();
 		HandPosition = _hPos.ToImmutableArray();
+
 		NippleStiffness = binaryReader.ReadSingle();
+
 		CumSplatterStatusBytes = binaryReader.ReadBytes(5).ToImmutableArray();
 		CumSplatter = new()
 		{
@@ -178,9 +183,11 @@ public record AiStudioCharacter : AiStudioObject
 			Back = (CumSplatterState)CumSplatterStatusBytes[3],
 			Ass = (CumSplatterState)CumSplatterStatusBytes[4]
 		};
+
 		MouthOpen = binaryReader.ReadSingle();
 		LipSync = binaryReader.ReadBoolean();
 		LookAtTarget = new(binaryReader);
+
 		IKEnabled = binaryReader.ReadBoolean();
 		bool[] _activeIK = new bool[5];
 		for (int i = 0; i < 5; i++)
@@ -197,6 +204,7 @@ public record AiStudioCharacter : AiStudioObject
 			RightArm = ActiveIKArray[3],
 			LeftArm = ActiveIKArray[4]
 		};
+
 		FKEnabled = binaryReader.ReadBoolean();
 		bool[] _activeFK = new bool[7];
 		for (int i = 0; i < 7; i++)
@@ -215,6 +223,7 @@ public record AiStudioCharacter : AiStudioObject
 			LeftHand = ActiveFKArray[5],
 			Skirt = ActiveFKArray[6]
 		};
+
 		bool[] _jc = new bool[8];
 		for (int i = 0; i < 8; i++)
 		{
@@ -232,6 +241,7 @@ public record AiStudioCharacter : AiStudioObject
 			RightFat = JCArray[6],
 			LeftFat = JCArray[7],
 		};
+
 		AnimeSpeed = binaryReader.ReadSingle();
 		AnimePattern = binaryReader.ReadSingle();
 		AnimeShowAttachedItem = binaryReader.ReadBoolean();
@@ -240,64 +250,29 @@ public record AiStudioCharacter : AiStudioObject
 		PenisIsVisible = binaryReader.ReadBoolean();
 		PenisLength = binaryReader.ReadSingle();
 		CharaIsMonochrome = binaryReader.ReadBoolean();
-		_count = binaryReader.Read7BitEncodedInt();
-		Utf8JsonReader _colorJsonReader = new(binaryReader.ReadBytes(_count), new() { MaxDepth = 64 });
-		float? _r = null;
-		float? _g = null;
-		float? _b = null;
-		float? _a = null;
-		while (_colorJsonReader.Read())
-		{
-			Console.WriteLine(_colorJsonReader.TokenType);
-			string? _prop;
-			switch (_colorJsonReader.TokenType)
-			{
-				case JsonTokenType.PropertyName:
-					_prop = _colorJsonReader.GetString();
-					_colorJsonReader.Read();
-					switch (_prop)
-					{
-						case "r":
-							_r = _colorJsonReader.GetSingle();
-							break;
-						case "g":
-							_g = _colorJsonReader.GetSingle();
-							break;
-						case "b":
-							_b = _colorJsonReader.GetSingle();
-							break;
-						case "a":
-							_a = _colorJsonReader.GetSingle();
-							break;
-					}
-					break;
-				case JsonTokenType.StartObject:
-				case JsonTokenType.EndObject:
-					break;
-				default:
-					throw new InvalidCardException("Could not read color JSON.");
-			};
-		}
-		if (_r is null || _g is null || _b is null || _a is null)
-			throw new InvalidCardException("Could not read color JSON.");
-		MonochromeColor = new() { r = (float)_r, g = (float)_g, b = (float)_b, a = (float)_a };
+		MonochromeColor = JsonBytesToColor(binaryReader.ReadBytes(binaryReader.Read7BitEncodedInt()));
+
 		float[] _animeOptions = new float[2] { 0f, 0f };
 		_animeOptions[0] = binaryReader.ReadSingle();
 		_animeOptions[1] = binaryReader.ReadSingle();
 		AnimeOptionParams = _animeOptions.ToImmutableArray();
-		_ = binaryReader.ReadInt32();
+
+		_ = binaryReader.ReadInt32(); // Parse the data here rather than save as bytes and parse later
 		NeckPosition = (NeckLookType)binaryReader.ReadInt32();
 		var _neckAngleBuilder = ImmutableArray.CreateBuilder<Quaternion>();
 		_count = binaryReader.ReadInt32();
 		for (int i = 0; i < _count; i++)
 			_neckAngleBuilder.Add(new(binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle()));
 		NeckAngles = _neckAngleBuilder.ToImmutable();
-		_ = binaryReader.ReadInt32();
+
+		_ = binaryReader.ReadInt32(); // Same for the eyes - parse it now
 		Quaternion[] _eyeAngles = new Quaternion[2];
 		_eyeAngles[0] = new(binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle());
 		_eyeAngles[1] = new(binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle());
 		EyeAngles = _eyeAngles.ToImmutableArray();
+
 		AnimeNormalizedTime = binaryReader.ReadSingle();
+
 		var _acsGroup = ImmutableDictionary.CreateBuilder<int, TreeNode.TreeState>();
 		_count = binaryReader.ReadInt32();
 		for (int i = 0; i < _count; i++)
@@ -306,6 +281,7 @@ public record AiStudioCharacter : AiStudioObject
 			_acsGroup[_key] = (TreeNode.TreeState)binaryReader.ReadInt32();
 		}
 		AccessoryGroup = _acsGroup.ToImmutable();
+
 		var _acsNum = ImmutableDictionary.CreateBuilder<int, TreeNode.TreeState>();
 		_count = binaryReader.ReadInt32();
 		for (int i = 0; i < _count; i++)

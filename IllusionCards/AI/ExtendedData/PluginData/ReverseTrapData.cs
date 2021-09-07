@@ -3,17 +3,19 @@
 public record ReverseTrapData : ExtendedPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	private readonly struct DefinitionMetadata
+	public readonly struct DefinitionMetadata
 	{
-		internal const string PluginGUID = "ReverseTrap";
-		internal const string DataKey = PluginGUID;
-		internal readonly Version PluginVersion = new("1.0");
-		internal const string RepoURL = "https://github.com/ManlyMarco/IllusionTrapMods";
-		internal const string ClassDefinitionsURL = "https://github.com/ManlyMarco/IllusionTrapMods/blob/master/AI_ReverseTrap/ReverseTrapController.cs";
-		internal const string License = "GPL 3.0";
+		public const string PluginGUID = "ReverseTrap";
+		public const string DataKey = PluginGUID;
+		public static readonly Version PluginVersion = new("1.0");
+		public const string RepoURL = "https://github.com/ManlyMarco/IllusionTrapMods";
+		public const string ClassDefinitionsURL = "https://github.com/ManlyMarco/IllusionTrapMods/blob/master/AI_ReverseTrap/ReverseTrapController.cs";
+		public const string License = "GPL 3.0";
 	}
+	public static readonly DefinitionMetadata Metadata = new();
 	public override Type DataType { get; } = typeof(ReverseTrapOptions);
 	public ReverseTrapOptions Data { get; init; }
+
 	public readonly struct ReverseTrapOptions
 	{
 		public bool ForceMaleAnimations { get; init; }

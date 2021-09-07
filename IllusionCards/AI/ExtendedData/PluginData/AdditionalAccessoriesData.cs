@@ -3,17 +3,19 @@
 public record AdditionalAccessoriesData : ExtendedPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	private readonly struct DefinitionMetadata
+	public readonly struct DefinitionMetadata
 	{
-		internal const string PluginGUID = "com.joan6694.illusionplugins.moreaccessories";
-		internal const string DataKey = "moreAccessories";
-		internal readonly Version PluginVersion = new("1.2.2");
-		internal const string RepoURL = "https://bitbucket.org/Joan6694/hsplugins";
-		internal const string ClassDefinitionsURL = "https://bitbucket.org/Joan6694/hsplugins/src/master/MoreAccessoriesAI/MoreAccessories.cs";
-		internal const string? License = null;
+		public const string PluginGUID = "com.joan6694.illusionplugins.moreaccessories";
+		public const string DataKey = "moreAccessories";
+		public static readonly Version PluginVersion = new("1.2.2");
+		public const string RepoURL = "https://bitbucket.org/Joan6694/hsplugins";
+		public const string ClassDefinitionsURL = "https://bitbucket.org/Joan6694/hsplugins/src/master/MoreAccessoriesAI/MoreAccessories.cs";
+		public const string? License = null;
 	}
+	public static readonly DefinitionMetadata Metadata = new();
 	public override Type DataType { get; } = typeof(XmlDocument);
 	public XmlDocument Data { get; init; }
+
 	public AdditionalAccessoriesData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		string _rawData = NullCheckDictionaryEntries(ref dataDict, "additionalAccessories", "") ?? "";

@@ -8,16 +8,18 @@ namespace IllusionCards.AI.ExtendedData.PluginData;
 public record BoobSettingsData : ExtendedPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	private readonly struct DefinitionMetadata
+	public readonly struct DefinitionMetadata
 	{
-		internal const string PluginGUID = "com.fairbair.hs2_boobsettings";
-		internal const string DataKey = PluginGUID;
-		internal readonly Version PluginVersion = new("1.1.0");
-		internal const string RepoURL = "https://github.com/FairBear/HS2_BoobSettings";
-		internal const string ClassDefinitionsURL = "https://github.com/FairBear/HS2_BoobSettings/blob/master/BoobController.cs";
-		internal const string License = "MIT";
+		public const string PluginGUID = "com.fairbair.hs2_boobsettings";
+		public const string DataKey = PluginGUID;
+		public static readonly Version PluginVersion = new("1.1.0");
+		public const string RepoURL = "https://github.com/FairBear/HS2_BoobSettings";
+		public const string ClassDefinitionsURL = "https://github.com/FairBear/HS2_BoobSettings/blob/master/BoobController.cs";
+		public const string License = "MIT";
 	}
+	public static readonly DefinitionMetadata Metadata = new();
 	public override Type DataType { get; } = typeof(BoobController);
+	public BoobController Data { get; }
 
 	internal const string BUTT = "butt_";
 
@@ -100,7 +102,8 @@ public record BoobSettingsData : ExtendedPluginData
 		public ImmutableDictionary<string, bool> boolData { get; init; }
 		public ImmutableDictionary<string, float> floatData { get; init; }
 	}
-	public BoobController Data { get; }
+
+	[SuppressMessage("Style", "IDE0008:Use explicit type", Justification = "Analyzer doesn't recognize immutable builder methods as apparent")]
 	public BoobSettingsData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		ImmutableDictionary<string, bool>.Builder _boolDataBuilder = boolDefaults.ToBuilder();

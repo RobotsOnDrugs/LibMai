@@ -3,18 +3,20 @@
 public record KK_PregnancyPlusData : ExtendedPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	private readonly struct DefinitionMetadata
+	public readonly struct DefinitionMetadata
 	{
-		internal const string PluginGUID = "KK_PregnancyPlus";
-		internal const string DataKey = PluginGUID;
-		internal readonly Version PluginVersion = new("4.7");
-		internal readonly Version ClassVersion = new("3.16");
-		internal const string RepoURL = "https://github.com/thojmr/KK_PregnancyPlus";
-		internal const string ClassDefinitionsURL = "https://github.com/thojmr/KK_PregnancyPlus/blob/5a912edc4b09a2195d2e44d7c08627644f0ebb30/PregnancyPlus/PregnancyPlus.Core/Data/PPData.cs";
-		internal const string License = "GPL 3.0";
+		public const string PluginGUID = "KK_PregnancyPlus";
+		public const string DataKey = PluginGUID;
+		public static readonly Version PluginVersion = new("4.7");
+		public static readonly Version ClassVersion = new("3.16");
+		public const string RepoURL = "https://github.com/thojmr/KK_PregnancyPlus";
+		public const string ClassDefinitionsURL = "https://github.com/thojmr/KK_PregnancyPlus/blob/5a912edc4b09a2195d2e44d7c08627644f0ebb30/PregnancyPlus/PregnancyPlus.Core/Data/PPData.cs";
+		public const string License = "GPL 3.0";
 	}
+	public static readonly DefinitionMetadata Metadata = new();
 	public override Type DataType { get; } = typeof(KK_PregnancyPlusOptions);
 	public KK_PregnancyPlusOptions Data { get; }
+
 	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Mirrors original variable names")]
 	public readonly struct KK_PregnancyPlusOptions
 	{

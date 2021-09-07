@@ -3,16 +3,19 @@
 public record UncensorSelectorData : ExtendedPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	private readonly struct DefinitionMetadata
+	public readonly struct DefinitionMetadata
 	{
-		internal const string PluginGUID = "com.deathweasel.bepinex.uncensorselector";
-		internal const string DataKey = PluginGUID;
-		internal readonly Version PluginVersion = new("3.11.2");
-		internal const string RepoURL = "https://github.com/IllusionMods/KK_Plugins";
-		internal const string ClassDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/UncensorSelector.Core/Core.UncensorSelector.Controller.cs";
-		internal const string License = "GPL 3.0";
+		public const string PluginGUID = "com.deathweasel.bepinex.uncensorselector";
+		public const string DataKey = PluginGUID;
+		public static readonly Version PluginVersion = new("3.11.2");
+		public const string RepoURL = "https://github.com/IllusionMods/KK_Plugins";
+		public const string ClassDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/UncensorSelector.Core/Core.UncensorSelector.Controller.cs";
+		public const string License = "GPL 3.0";
 	}
+	public static readonly DefinitionMetadata Metadata = new();
 	public override Type DataType { get; } = typeof(UncensorOptions);
+	public UncensorOptions Data { get; init; }
+
 	public readonly struct UncensorOptions
 	{
 		public string? BodyGUID { get; init; }
@@ -22,7 +25,6 @@ public record UncensorSelectorData : ExtendedPluginData
 		public bool DisplayBalls { get; init; }
 		public ImmutableArray<object>? Unrecognized { get; init; }
 	}
-	public UncensorOptions Data { get; init; }
 	public UncensorSelectorData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		ImmutableArray<object>.Builder? _unrecognized = null;

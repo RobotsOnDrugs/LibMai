@@ -3,17 +3,19 @@
 public record KoiClothesOverlayXData : ExtendedPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	private readonly struct DefinitionMetadata
+	public readonly struct DefinitionMetadata
 	{
-		internal const string PluginGUID = "Clothes Overlay Mod";
-		internal const string DataKey = "KCOX";
-		internal readonly Version PluginVersion = new("6.0.2");
-		internal const string RepoURL = "https://github.com/ManlyMarco/Illusion-Overlay-Mods";
-		internal const string ClassDefinitionsURL = "https://github.com/ManlyMarco/Illusion-Overlay-Mods/blob/master/Core_OverlayMods/Clothes/KoiClothesOverlayController.cs";
-		internal const string License = "LGPL 3.0";
+		public const string PluginGUID = "Clothes Overlay Mod";
+		public const string DataKey = "KCOX";
+		public static readonly Version PluginVersion = new("6.0.2");
+		public const string RepoURL = "https://github.com/ManlyMarco/Illusion-Overlay-Mods";
+		public const string ClassDefinitionsURL = "https://github.com/ManlyMarco/Illusion-Overlay-Mods/blob/master/Core_OverlayMods/Clothes/KoiClothesOverlayController.cs";
+		public const string License = "LGPL 3.0";
 	}
+	public static readonly DefinitionMetadata Metadata = new();
 	public override Type DataType { get; } = typeof(ImmutableDictionary<string, ClothesTexData>);
 	public ImmutableDictionary<string, ClothesTexData> Data { get; }
+
 	[MessagePackObject]
 	public readonly struct ClothesTexData
 	{

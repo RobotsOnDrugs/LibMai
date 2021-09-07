@@ -1,21 +1,23 @@
-﻿namespace IllusionCards.AI.ExtendedData.PluginData;
+namespace IllusionCards.AI.ExtendedData.PluginData;
 
 public record AIHS2PEData : ExtendedPluginData
 {
 	public const string DataKeyAI = DefinitionMetadata.DataKeyAI;
 	public const string DataKeyHS2 = DefinitionMetadata.DataKeyHS2;
-	private readonly struct DefinitionMetadata
+	public readonly struct DefinitionMetadata
 	{
-		internal const string PluginGUID = "com.joan6694.illusionplugins.poseeditor";
-		internal const string DataKeyAI = "aipe";
-		internal const string DataKeyHS2 = "hs2pe";
-		internal readonly Version PluginVersion = new("2.12.0");
-		internal const string RepoURL = "https://bitbucket.org/Joan6694/hsplugins";
-		internal const string ClassDefinitionsURL = "https://bitbucket.org/Joan6694/hsplugins/src/master/HSPE/CharaPoseController.cs";
-		internal const string? License = null;
+		public const string PluginGUID = "com.joan6694.illusionplugins.poseeditor";
+		public const string DataKeyAI = "aipe";
+		public const string DataKeyHS2 = "hs2pe";
+		public static readonly Version PluginVersion = new("2.12.0");
+		public const string RepoURL = "https://bitbucket.org/Joan6694/hsplugins";
+		public const string ClassDefinitionsURL = "https://bitbucket.org/Joan6694/hsplugins/src/master/HSPE/CharaPoseController.cs";
+		public const string? License = null;
 	}
+	public static readonly DefinitionMetadata Metadata = new();
 	public override Type DataType { get; } = typeof(XmlDocument);
 	public XmlDocument Data { get; init; }
+
 	public AIHS2PEData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		string _rawData = (string)dataDict["characterInfo"];

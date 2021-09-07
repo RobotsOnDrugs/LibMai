@@ -1,18 +1,21 @@
-﻿namespace IllusionCards.AI.ExtendedData.PluginData;
+namespace IllusionCards.AI.ExtendedData.PluginData;
 
 public record AdvIKPluginData : ExtendedPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	private readonly struct DefinitionMetadata
+	public readonly struct DefinitionMetadata
 	{
-		internal const string PluginGUID = "orange.spork.advikplugin";
-		internal const string DataKey = PluginGUID;
-		internal readonly Version PluginVersion = new("1.6.3");
-		internal const string RepoURL = "https://github.com/OrangeSpork/AdvIKPlugin";
-		internal const string ClassDefinitionsURL = "https://github.com/OrangeSpork/AdvIKPlugin/blob/master/AdvIKPlugin/AdvIKCharaController.cs";
-		internal const string? License = null;
+		public const string PluginGUID = "orange.spork.advikplugin";
+		public const string DataKey = PluginGUID;
+		public static readonly Version PluginVersion = new("1.6.3");
+		public const string RepoURL = "https://github.com/OrangeSpork/AdvIKPlugin";
+		public const string ClassDefinitionsURL = "https://github.com/OrangeSpork/AdvIKPlugin/blob/master/AdvIKPlugin/AdvIKCharaController.cs";
+		public const string? License = null;
 	}
+	public static readonly DefinitionMetadata Metadata = new();
 	public override Type DataType { get; } = typeof(AdvIKPluginOptions);
+	public AdvIKPluginOptions Data { get; init; }
+
 	public readonly struct AdvIKPluginOptions
 	{
 		public bool? ShoulderRotationEnabled { get; init; }
@@ -79,7 +82,8 @@ public record AdvIKPluginData : ExtendedPluginData
 		ELBOW_LEFT = 19,
 		ELBOW_RIGHT = 20
 	}
-	public AdvIKPluginOptions Data { get; init; }
+
+	[SuppressMessage("Style", "IDE0008:Use explicit type", Justification = "MessagePack deserialization makes it obvious")]
 	public AdvIKPluginData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		bool _magnitudeData = NullCheckDictionaryEntries(ref dataDict, "MagnitudeData", false) ?? false;

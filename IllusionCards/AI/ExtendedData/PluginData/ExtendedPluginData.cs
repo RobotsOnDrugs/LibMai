@@ -31,12 +31,10 @@ public abstract record ExtendedPluginData
 		_ => new UnknownPluginData(version, dataDict)
 	};
 
-#pragma warning disable IDE0060 // Remove unused parameter - somewhat hacky way to overload for type checking
-	internal static int? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, int _throwaway) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (int)_tryval : null;
-	internal static float? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, float _throwaway) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (float)_tryval : null;
-	internal static bool? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, bool _throwaway) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (bool)_tryval : null;
-	internal static string? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, string _throwaway) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (string)_tryval : null;
-#pragma warning restore IDE0060 // Remove unused parameter
+	internal static int? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, int _) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (int)_tryval : null;
+	internal static float? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, float _) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (float)_tryval : null;
+	internal static bool? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, bool _) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (bool)_tryval : null;
+	internal static string? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, string _) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (string)_tryval : null;
 
 	public object? RawData { get; init; }
 	public int? Version { get; init; }

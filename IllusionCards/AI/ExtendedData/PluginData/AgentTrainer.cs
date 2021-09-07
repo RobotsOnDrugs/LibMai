@@ -1,18 +1,21 @@
-﻿namespace IllusionCards.AI.ExtendedData.PluginData;
+namespace IllusionCards.AI.ExtendedData.PluginData;
 
 public record AgentTrainerData : ExtendedPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	private readonly struct DefinitionMetadata
+	public readonly struct DefinitionMetadata
 	{
-		internal const string PluginGUID = "com.fairbair.agenttrainer";
-		internal const string DataKey = "AgentTrainer.StatsController";
-		internal readonly Version PluginVersion = new("1.2.0");
-		internal const string RepoURL = "https://github.com/IllusionMods/KK_Plugins";
-		internal const string ClassDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/EyeControl.Core/EyeControl.CharaController.cs";
-		internal const string License = "GPL 3.0";
+		public const string PluginGUID = "com.fairbair.agenttrainer";
+		public const string DataKey = "AgentTrainer.StatsController";
+		public static readonly Version PluginVersion = new("1.2.0");
+		public const string RepoURL = "https://github.com/IllusionMods/KK_Plugins";
+		public const string ClassDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/EyeControl.Core/EyeControl.CharaController.cs";
+		public const string License = "GPL 3.0";
 	}
+	public static readonly DefinitionMetadata Metadata = new();
 	public override Type DataType { get; } = typeof(AgentTrainerOptions);
+	public AgentTrainerOptions Data { get; }
+
 	// The integer indices of these have meaning for "AgentActors" in the game, but it seems to be very specific to AI
 	public readonly struct AgentTrainerOptions
 	{
@@ -20,7 +23,6 @@ public record AgentTrainerData : ExtendedPluginData
 		public ImmutableDictionary<int, float> LockedDesires { get; init; }
 		public ImmutableDictionary<int, int> LockedFlavors { get; init; }
 	}
-	public AgentTrainerOptions Data { get; }
 	public AgentTrainerData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		MessagePackSerializerOptions _lz4Option = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4Block);

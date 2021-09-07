@@ -3,16 +3,19 @@
 public record BetterPenetrationData : ExtendedPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	private readonly struct DefinitionMetadata
+	public readonly struct DefinitionMetadata
 	{
-		internal const string PluginGUID = "com.animal42069.studiobetterpenetration";
-		internal const string DataKey = "BetterPenetrationController";
-		internal readonly Version PluginVersion = new("4.3.0.0");
-		internal const string RepoURL = "https://github.com/Animal42069/BetterPenetration";
-		internal const string ClassDefinitionsURL = "https://github.com/Animal42069/BetterPenetration/blob/master/Core_BetterPenetration/BetterPenetrationController.cs";
-		internal const string License = "GPL 3.0";
+		public const string PluginGUID = "com.animal42069.studiobetterpenetration";
+		public const string DataKey = "BetterPenetrationController";
+		public static readonly Version PluginVersion = new("4.3.0.0");
+		public const string RepoURL = "https://github.com/Animal42069/BetterPenetration";
+		public const string ClassDefinitionsURL = "https://github.com/Animal42069/BetterPenetration/blob/master/Core_BetterPenetration/BetterPenetrationController.cs";
+		public const string License = "GPL 3.0";
 	}
+	public static readonly DefinitionMetadata Metadata = new();
 	public override Type DataType { get; } = typeof(BetterPenetrationOptions);
+	public BetterPenetrationOptions Data { get; init; }
+
 	public const float DefaultLengthSquish = 0.6f;
 	public const float DefaultGirthSquish = 0.2f;
 	public const float DefaultSquishThreshold = 0.2f;
@@ -59,7 +62,6 @@ public record BetterPenetrationData : ExtendedPluginData
 			}
 		}
 	}
-	public BetterPenetrationOptions Data { get; init; }
 	public BetterPenetrationData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		Data = new()

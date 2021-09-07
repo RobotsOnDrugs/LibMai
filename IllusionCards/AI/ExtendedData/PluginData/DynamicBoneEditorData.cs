@@ -3,17 +3,19 @@
 public record DynamicBoneEditorData : ExtendedPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	private readonly struct DefinitionMetadata
+	public readonly struct DefinitionMetadata
 	{
-		internal const string PluginGUID = "com.deathweasel.bepinex.dynamicboneeditor";
-		internal const string DataKey = PluginGUID;
-		internal readonly Version PluginVersion = new("1.0.1");
-		internal const string RepoURL = "https://github.com/IllusionMods/KK_Plugins";
-		internal const string ClassDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/DynamicBoneEditor.Core/DynamicBoneEditor.Controller.cs";
-		internal const string License = "GPL 3.0";
+		public const string PluginGUID = "com.deathweasel.bepinex.dynamicboneeditor";
+		public const string DataKey = PluginGUID;
+		public static readonly Version PluginVersion = new("1.0.1");
+		public const string RepoURL = "https://github.com/IllusionMods/KK_Plugins";
+		public const string ClassDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/DynamicBoneEditor.Core/DynamicBoneEditor.Controller.cs";
+		public const string License = "GPL 3.0";
 	}
+	public static readonly DefinitionMetadata Metadata = new();
 	public override Type DataType { get; } = typeof(ImmutableArray<DynamicBoneData>);
 	public ImmutableArray<DynamicBoneData> Data { get; init; }
+
 	public DynamicBoneEditorData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		=> Data = MessagePackSerializer.Deserialize<List<DynamicBoneData>>((byte[])dataDict["AccessoryDynamicBoneData"]).ToImmutableArray();
 }

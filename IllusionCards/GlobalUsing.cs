@@ -28,4 +28,5 @@ global using static IllusionCards.AI.Chara.AiFace;
 global using static IllusionCards.AI.Chara.FriendlyNameLookup;
 global using static IllusionCards.Cards.IllusionCard;
 global using static IllusionCards.Chara.IIllusionChara;
+global using static IllusionCards.AI.Studio.StudioCardHelpers;
 global using static IllusionCards.Util.MathTypesResolver;

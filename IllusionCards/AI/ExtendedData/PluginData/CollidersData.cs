@@ -4,18 +4,20 @@ public record CollidersData : ExtendedPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
 	public const string OldDataKey = DefinitionMetadata.OldDataKey;
-	private readonly struct DefinitionMetadata
+	public readonly struct DefinitionMetadata
 	{
-		internal const string PluginGUID = "com.deathweasel.bepinex.colliders";
-		internal const string DataKey = PluginGUID;
-		internal const string OldDataKey = "com.deathweasel.bepinex.studiocolliders";
-		internal readonly Version PluginVersion = new("1.2");
-		internal const string RepoURL = "https://github.com/IllusionMods/KK_Plugins";
-		internal const string ClassDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/Colliders.Core/Core.Colliders.Controller.cs";
-		internal const string License = "GPL 3.0";
+		public const string PluginGUID = "com.deathweasel.bepinex.colliders";
+		public const string DataKey = PluginGUID;
+		public const string OldDataKey = "com.deathweasel.bepinex.studiocolliders";
+		public static readonly Version PluginVersion = new("1.2");
+		public const string RepoURL = "https://github.com/IllusionMods/KK_Plugins";
+		public const string ClassDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/Colliders.Core/Core.Colliders.Controller.cs";
+		public const string License = "GPL 3.0";
 	}
+	public static readonly DefinitionMetadata Metadata = new();
 	public override Type DataType { get; } = typeof(CollidersOptions);
 	public CollidersOptions Data { get; init; }
+
 	public readonly struct CollidersOptions
 	{
 		public bool BreastCollidersEnabled { get; init; }

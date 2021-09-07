@@ -3,17 +3,19 @@
 public record OutfitPainterData : ExtendedPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	private readonly struct DefinitionMetadata
+	public readonly struct DefinitionMetadata
 	{
-		internal const string PluginGUID = "orange.spork.outfitpainter";
-		internal const string DataKey = PluginGUID;
-		internal readonly Version PluginVersion = new("1.0.0");
-		internal const string RepoURL = "https://github.com/OrangeSpork/OutfitPainter";
-		internal const string DefinitionsURL = "https://github.com/OrangeSpork/OutfitPainter/blob/master/OutfitPainter/OutfitPainterCharacterController.cs";
-		internal const string License = "LGPL 3.0";
+		public const string PluginGUID = "orange.spork.outfitpainter";
+		public const string DataKey = PluginGUID;
+		public static readonly Version PluginVersion = new("1.0.0");
+		public const string RepoURL = "https://github.com/OrangeSpork/OutfitPainter";
+		public const string DefinitionsURL = "https://github.com/OrangeSpork/OutfitPainter/blob/master/OutfitPainter/OutfitPainterCharacterController.cs";
+		public const string License = "LGPL 3.0";
 	}
+	public static readonly DefinitionMetadata Metadata = new();
 	public override Type DataType { get; } = typeof(OutfitPainterOptions);
 	public OutfitPainterOptions Data { get; }
+
 	[MessagePackObject]
 	public readonly struct OutfitPainterOptions
 	{

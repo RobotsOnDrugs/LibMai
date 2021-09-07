@@ -3,22 +3,24 @@
 public record AdditionalAccessoryControlsData : ExtendedPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	private readonly struct DefinitionMetadata
+	public readonly struct DefinitionMetadata
 	{
-		internal const string PluginGUID = "orange.spork.additionalaccessorycontrolsplugin";
-		internal const string DataKey = PluginGUID;
-		internal readonly Version PluginVersion = new("1.1.8");
-		internal const string RepoURL = "https://github.com/OrangeSpork/AdditionalAccessoryControls";
-		internal const string ClassDefinitionsURL = "https://github.com/OrangeSpork/AdditionalAccessoryControls/blob/master/AdditionalAccessoryControls/AdditionalAccessoryControlsController.cs";
-		internal const string? License = null;
+		public const string PluginGUID = "orange.spork.additionalaccessorycontrolsplugin";
+		public const string DataKey = PluginGUID;
+		public static readonly Version PluginVersion = new("1.1.8");
+		public const string RepoURL = "https://github.com/OrangeSpork/AdditionalAccessoryControls";
+		public const string ClassDefinitionsURL = "https://github.com/OrangeSpork/AdditionalAccessoryControls/blob/master/AdditionalAccessoryControls/AdditionalAccessoryControlsController.cs";
+		public const string? License = null;
 	}
+	public static readonly DefinitionMetadata Metadata = new();
 	public override Type DataType { get; } = typeof(AdditionalAccessoryControlsOptions);
+	public AdditionalAccessoryControlsOptions Data { get; init; }
+
 	public readonly struct AdditionalAccessoryControlsOptions
 	{
 		public AdditionalAccessorySlotData[] SlotData { get; init; }
 		public AdditionalAccessoryCoordinateData CoordinateOverrideData { get; init; }
 	}
-	public AdditionalAccessoryControlsOptions Data { get; init; }
 	[MessagePackObject]
 	public record AdditionalAccessorySlotData
 	{

@@ -3,16 +3,19 @@
 public record MaterialEditorData : ExtendedPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	private readonly struct DefinitionMetadata
+	public readonly struct DefinitionMetadata
 	{
-		internal const string PluginGUID = "com.deathweasel.bepinex.materialeditor";
-		internal const string DataKey = PluginGUID;
-		internal readonly Version PluginVersion = new("1.0");
-		internal const string RepoURL = "https://github.com/IllusionMods/KK_Plugins";
-		internal const string recordDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/MaterialEditor.Core/Core.MaterialEditor.CharaController.cs";
-		internal const string License = "GPL 3.0";
+		public const string PluginGUID = "com.deathweasel.bepinex.materialeditor";
+		public const string DataKey = PluginGUID;
+		public static readonly Version PluginVersion = new("1.0");
+		public const string RepoURL = "https://github.com/IllusionMods/KK_Plugins";
+		public const string recordDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/MaterialEditor.Core/Core.MaterialEditor.CharaController.cs";
+		public const string License = "GPL 3.0";
 	}
+	public static readonly DefinitionMetadata Metadata = new();
 	public override Type DataType { get; } = typeof(MaterialEditorOptions);
+	public MaterialEditorOptions Data { get; init; }
+
 	public readonly struct MaterialEditorOptions
 	{
 		public readonly ImmutableArray<RendererProperty> RendererPropertyList { get; init; }
@@ -23,8 +26,6 @@ public record MaterialEditorData : ExtendedPluginData
 		public readonly ImmutableArray<MaterialCopy> MaterialCopyList { get; init; }
 		public readonly ImmutableDictionary<int, TextureContainer> TextureDictionary { get; init; }
 	}
-
-	public MaterialEditorOptions Data { get; init; }
 
 	/// <summary>
 	/// Type of object, used for saving MaterialEditor data.
