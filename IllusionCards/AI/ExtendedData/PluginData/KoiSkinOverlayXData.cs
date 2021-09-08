@@ -13,6 +13,7 @@ public record KoiSkinOverlayXData : ExtendedPluginData
 		public const string License = "LGPL 3.0";
 	}
 	public static readonly DefinitionMetadata Metadata = new();
+	public override string Name => "Koi Skin Overlay X";
 	public override Type DataType { get; } = typeof(ImmutableDictionary<TexType, ClothesTexData>);
 	public ImmutableDictionary<TexType, ClothesTexData> Data { get; }
 

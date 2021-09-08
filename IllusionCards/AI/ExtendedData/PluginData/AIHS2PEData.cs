@@ -15,6 +15,7 @@ public record AIHS2PEData : ExtendedPluginData
 		public const string? License = null;
 	}
 	public static readonly DefinitionMetadata Metadata = new();
+	public override string Name => "AIPE/HS2PE";
 	public override Type DataType { get; } = typeof(XmlDocument);
 	public XmlDocument Data { get; init; }
 

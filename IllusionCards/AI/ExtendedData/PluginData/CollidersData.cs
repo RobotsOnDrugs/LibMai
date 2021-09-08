@@ -15,6 +15,7 @@ public record CollidersData : ExtendedPluginData
 		public const string License = "GPL 3.0";
 	}
 	public static readonly DefinitionMetadata Metadata = new();
+	public override string Name => "Colliders";
 	public override Type DataType { get; } = typeof(CollidersOptions);
 	public CollidersOptions Data { get; init; }
 

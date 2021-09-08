@@ -2,7 +2,7 @@
 
 public record AiStudioCharacter : AiStudioObject
 {
-	public CharaSex Sex => (CharaSex)Chara.Parameter.sex;
+	public CharaSex Sex => Chara.Sex;
 	//private int Index { get; init; }
 	public override int Kind => 0;
 
@@ -31,8 +31,8 @@ public record AiStudioCharacter : AiStudioObject
 	}
 	public CumSplatterStatus CumSplatter { get; init; }
 	public float NippleStiffness { get; init; }
-	public float Wetness => Chara.Status.wetRate;
-	public float SkinGloss => Chara.Status.skinTuyaRate;
+	public float Wetness => 0f;// Chara.Status.wetRate;
+	public float SkinGloss => 0f;// Chara.Status.skinTuyaRate;
 	public bool CharaIsMonochrome { get; init; }
 	public Color MonochromeColor { get; init; }
 	public bool PenisIsVisible { get; init; } // Illusion calls it "son"
@@ -66,26 +66,9 @@ public record AiStudioCharacter : AiStudioObject
 	}
 	public ActiveIKStruct ActiveIK { get; init; }
 	public AiStudioLookAtTarget LookAtTarget { get; init; }
-	public enum EyeLookType
-	{
-		NO_LOOK,
-		TARGET,
-		AWAY,
-		FORWARD,
-		CONTROL
-	}
-	public EyeLookType EyePosition => (EyeLookType)Chara.Status.eyesLookPtn;
+	public EyeLookType EyePosition => EyeLookType.NO_LOOK;// (EyeLookType)Chara.Status.eyesLookPtn;
 	public ImmutableArray<Quaternion> EyeAngles { get; init; }
-	//public enum NECK_LOOK_TYPE
-	//{
-	//	NO_LOOK,
-	//	TARGET,
-	//	AWAY,
-	//	FORWARD,
-	//	FIX,
-	//	CONTROL
-	//}
-	public enum NeckLookType // NECK_LOOK_TYPE_VER2
+	public enum NeckLookTypeStudio // NECK_LOOK_TYPE_VER2
 	{
 		ANIMATION,
 		TARGET,
@@ -94,7 +77,7 @@ public record AiStudioCharacter : AiStudioObject
 		FIX,
 		CONTROL
 	}
-	public NeckLookType NeckPosition { get; init; }
+	public NeckLookTypeStudio NeckPosition { get; init; }
 	public ImmutableArray<Quaternion> NeckAngles { get; init; }
 	public float MouthOpen { get; init; }
 	public bool LipSync { get; init; } = true;
@@ -258,7 +241,7 @@ public record AiStudioCharacter : AiStudioObject
 		AnimeOptionParams = _animeOptions.ToImmutableArray();
 
 		_ = binaryReader.ReadInt32(); // Parse the data here rather than save as bytes and parse later
-		NeckPosition = (NeckLookType)binaryReader.ReadInt32();
+		NeckPosition = (NeckLookTypeStudio)binaryReader.ReadInt32();
 		var _neckAngleBuilder = ImmutableArray.CreateBuilder<Quaternion>();
 		_count = binaryReader.ReadInt32();
 		for (int i = 0; i < _count; i++)

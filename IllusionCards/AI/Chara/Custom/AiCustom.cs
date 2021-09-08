@@ -1,7 +1,7 @@
 ﻿namespace IllusionCards.AI.Chara;
 
 [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-public readonly struct AiCustom
+public readonly record struct AiCustom
 {
 	public AiFace face { get; init; }
 	public AiBody body { get; init; }

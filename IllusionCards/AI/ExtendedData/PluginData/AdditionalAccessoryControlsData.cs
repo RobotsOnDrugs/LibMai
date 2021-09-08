@@ -13,6 +13,7 @@ public record AdditionalAccessoryControlsData : ExtendedPluginData
 		public const string? License = null;
 	}
 	public static readonly DefinitionMetadata Metadata = new();
+	public override string Name => "Additional Accessory Controls";
 	public override Type DataType { get; } = typeof(AdditionalAccessoryControlsOptions);
 	public AdditionalAccessoryControlsOptions Data { get; init; }
 

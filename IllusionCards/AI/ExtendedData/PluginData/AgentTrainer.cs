@@ -8,11 +8,12 @@ public record AgentTrainerData : ExtendedPluginData
 		public const string PluginGUID = "com.fairbair.agenttrainer";
 		public const string DataKey = "AgentTrainer.StatsController";
 		public static readonly Version PluginVersion = new("1.2.0");
-		public const string RepoURL = "https://github.com/IllusionMods/KK_Plugins";
-		public const string ClassDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/EyeControl.Core/EyeControl.CharaController.cs";
-		public const string License = "GPL 3.0";
+		public const string RepoURL = "https://github.com/FairBear/AgentTrainer";
+		public const string ClassDefinitionsURL = "https://github.com/FairBear/AgentTrainer/blob/master/StatsController.cs";
+		public const string? License = null;
 	}
 	public static readonly DefinitionMetadata Metadata = new();
+	public override string Name => "Agent Trainer";
 	public override Type DataType { get; } = typeof(AgentTrainerOptions);
 	public AgentTrainerOptions Data { get; }
 

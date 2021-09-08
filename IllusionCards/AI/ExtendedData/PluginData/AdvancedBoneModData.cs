@@ -13,6 +13,7 @@ public record AdvancedBoneModData : ExtendedPluginData
 		public const string License = "LGPL 3.0";
 	}
 	public static readonly DefinitionMetadata Metadata = new();
+	public override string Name => "Advanced Bone Modifier eXtended";
 	public override Type DataType { get; } = typeof(List<BoneModifier>);
 	public ImmutableArray<BoneModifier> Data { get; }
 

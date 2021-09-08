@@ -13,6 +13,7 @@ public record BeaverAIData : ExtendedPluginData
 		public const string? License = null;
 	}
 	public static readonly DefinitionMetadata Metadata = new();
+	public override string Name => "BeaverAI";
 	public override Type DataType { get; } = typeof(BeaverInfo);
 	public BeaverInfo Data { get; }
 

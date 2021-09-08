@@ -12,6 +12,7 @@ public record EyeControlData : ExtendedPluginData
 		public const string License = "GPL 3.0";
 	}
 	public static readonly DefinitionMetadata Metadata = new();
+	public override string Name => "Eye Control";
 	public override Type DataType { get; } = typeof(MaterialEditorOptions);
 	public MaterialEditorOptions Data { get; }
 

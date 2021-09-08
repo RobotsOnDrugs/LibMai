@@ -13,6 +13,7 @@ public record ReverseTrapData : ExtendedPluginData
 		public const string License = "GPL 3.0";
 	}
 	public static readonly DefinitionMetadata Metadata = new();
+	public override string Name => "Reverse Trap";
 	public override Type DataType { get; } = typeof(ReverseTrapOptions);
 	public ReverseTrapOptions Data { get; init; }
 

@@ -22,11 +22,14 @@ global using MessagePack.Resolvers;
 global using NLog;
 
 global using static System.Math;
+global using static IllusionCards.AI.Cards.AiCharaCardDefinitions;
 global using static IllusionCards.AI.Cards.AiSceneCard;
+global using static IllusionCards.AI.Chara.AiChara;
 global using static IllusionCards.AI.Chara.AiCharaType;
 global using static IllusionCards.AI.Chara.AiFace;
+global using static IllusionCards.AI.Chara.AiFriendlyCharaData;
 global using static IllusionCards.AI.Chara.FriendlyNameLookup;
+global using static IllusionCards.AI.Studio.StudioCardHelpers;
 global using static IllusionCards.Cards.IllusionCard;
 global using static IllusionCards.Chara.IIllusionChara;
-global using static IllusionCards.AI.Studio.StudioCardHelpers;
 global using static IllusionCards.Util.MathTypesResolver;

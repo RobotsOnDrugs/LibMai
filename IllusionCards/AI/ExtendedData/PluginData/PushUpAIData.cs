@@ -13,6 +13,7 @@ public record PushUpAIData : ExtendedPluginData
 		public const string? License = null;
 	}
 	public static readonly DefinitionMetadata Metadata = new();
+	public override string Name => "PushUp AI";
 	public override Type DataType { get; } = typeof(PushUpAIOptions);
 	public PushUpAIOptions Data { get; init; }
 

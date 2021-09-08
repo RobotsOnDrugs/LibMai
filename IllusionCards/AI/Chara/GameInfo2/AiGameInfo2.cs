@@ -1,7 +1,7 @@
 ﻿namespace IllusionCards.AI.Chara;
 
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-public readonly struct AiGameInfo2
+public readonly record struct AiGameInfo2
 {
 	public int Favor { get; init; }
 	public int Enjoyment { get; init; }
@@ -9,8 +9,8 @@ public readonly struct AiGameInfo2
 	public int Slavery { get; init; }
 	public int Broken { get; init; }
 	public int Dependence { get; init; }
-	public AiCharaCardDefinitions.HS2CharaStatus nowState { get; init; }
-	public AiCharaCardDefinitions.HS2CharaStatus nowDrawState { get; init; }
+	public HS2CharaStatus nowState { get; init; }
+	public HS2CharaStatus nowDrawState { get; init; }
 	public bool lockNowState { get; init; }
 	public bool lockBroken { get; init; }
 	public bool lockDependence { get; init; }
@@ -19,7 +19,7 @@ public readonly struct AiGameInfo2
 	public int Toilet { get; init; }
 	public int Libido { get; init; }
 	public int alertness { get; init; }
-	public AiCharaCardDefinitions.HS2CharaStatus calcState { get; init; }
+	public HS2CharaStatus calcState { get; init; }
 	public byte escapeFlag { get; init; }
 	public bool escapeExperienced { get; init; }
 	public bool firstHFlag { get; init; }

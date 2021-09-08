@@ -13,6 +13,7 @@ public record OutfitPainterData : ExtendedPluginData
 		public const string License = "LGPL 3.0";
 	}
 	public static readonly DefinitionMetadata Metadata = new();
+	public override string Name => "Outfit Painter";
 	public override Type DataType { get; } = typeof(OutfitPainterOptions);
 	public OutfitPainterOptions Data { get; }
 

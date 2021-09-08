@@ -12,6 +12,7 @@ public record KK_InvisibleBodyData : ExtendedPluginData
 		public const string License = "GPL 3.0";
 	}
 	public static readonly DefinitionMetadata Metadata = new();
+	public override string Name => "Invisible Body";
 	public override Type DataType { get; } = typeof(KK_InvisibleBodyOptions);
 	public KK_InvisibleBodyOptions Data { get; init; }
 

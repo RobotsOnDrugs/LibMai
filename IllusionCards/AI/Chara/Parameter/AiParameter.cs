@@ -1,7 +1,7 @@
 ﻿namespace IllusionCards.AI.Chara;
 
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-public readonly struct AiParameter
+public readonly record struct AiParameter
 {
 	public Version version { get; init; } = null!;
 	public byte sex { get; init; }

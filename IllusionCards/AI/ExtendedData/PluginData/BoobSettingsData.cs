@@ -18,6 +18,7 @@ public record BoobSettingsData : ExtendedPluginData
 		public const string License = "MIT";
 	}
 	public static readonly DefinitionMetadata Metadata = new();
+	public override string Name => "Boob Settings";
 	public override Type DataType { get; } = typeof(BoobController);
 	public BoobController Data { get; }
 

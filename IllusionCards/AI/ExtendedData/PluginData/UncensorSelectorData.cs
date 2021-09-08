@@ -13,6 +13,7 @@ public record UncensorSelectorData : ExtendedPluginData
 		public const string License = "GPL 3.0";
 	}
 	public static readonly DefinitionMetadata Metadata = new();
+	public override string Name => "Uncensor Selector";
 	public override Type DataType { get; } = typeof(UncensorOptions);
 	public UncensorOptions Data { get; init; }
 

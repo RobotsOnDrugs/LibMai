@@ -13,6 +13,7 @@ public record AdditionalAccessoriesData : ExtendedPluginData
 		public const string? License = null;
 	}
 	public static readonly DefinitionMetadata Metadata = new();
+	public override string Name => "MoreAccessories";
 	public override Type DataType { get; } = typeof(XmlDocument);
 	public XmlDocument Data { get; init; }
 

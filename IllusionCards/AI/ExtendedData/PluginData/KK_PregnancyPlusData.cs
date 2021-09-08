@@ -14,6 +14,7 @@ public record KK_PregnancyPlusData : ExtendedPluginData
 		public const string License = "GPL 3.0";
 	}
 	public static readonly DefinitionMetadata Metadata = new();
+	public override string Name => "Pregnancy+";
 	public override Type DataType { get; } = typeof(KK_PregnancyPlusOptions);
 	public KK_PregnancyPlusOptions Data { get; }
 

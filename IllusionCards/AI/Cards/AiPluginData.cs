@@ -6,6 +6,7 @@ public readonly struct AiPluginData
 	public int Version { get; init; }
 	[IgnoreMember]
 	public string DataKey { get; init; }
+	public override string ToString() => PluginDataInfo?.Name ?? DataKey;
 
 	public AiPluginData(string dataKey, AiRawPluginData rawPluginData)
 	{

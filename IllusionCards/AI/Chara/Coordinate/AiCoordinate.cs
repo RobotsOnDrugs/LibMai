@@ -1,7 +1,7 @@
 ﻿namespace IllusionCards.AI.Chara;
 
 [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-public readonly struct AiCoordinate
+public readonly record struct AiCoordinate
 {
 	public Version LoadVersion { get; init; }
 	public int Language { get; init; }

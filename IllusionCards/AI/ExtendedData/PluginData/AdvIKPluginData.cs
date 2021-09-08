@@ -13,6 +13,7 @@ public record AdvIKPluginData : ExtendedPluginData
 		public const string? License = null;
 	}
 	public static readonly DefinitionMetadata Metadata = new();
+	public override string Name => "AdvIKPlugin";
 	public override Type DataType { get; } = typeof(AdvIKPluginOptions);
 	public AdvIKPluginOptions Data { get; init; }
 

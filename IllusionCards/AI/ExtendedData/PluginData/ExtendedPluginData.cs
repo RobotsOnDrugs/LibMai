@@ -36,11 +36,12 @@ public abstract record ExtendedPluginData
 	internal static bool? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, bool _) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (bool)_tryval : null;
 	internal static string? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, string _) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (string)_tryval : null;
 
+	public abstract string Name { get; }
 	public object? RawData { get; init; }
 	public int? Version { get; init; }
 	public virtual Type DataType { get; } = typeof(object);
+	public sealed override string ToString() => Name;
 
-	[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Signature is useful for inherited records")]
-	public ExtendedPluginData(int version, Dictionary<object, object> dataDict) { RawData = null; Version = version; }
+	public ExtendedPluginData(int version, Dictionary<object, object> _) { RawData = null; Version = version; }
 	public ExtendedPluginData() => RawData = null;
 }
