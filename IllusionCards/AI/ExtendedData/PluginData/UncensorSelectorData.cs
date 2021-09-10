@@ -1,9 +1,10 @@
 ﻿namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record UncensorSelectorData : ExtendedPluginData
+public record UncensorSelectorData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "com.deathweasel.bepinex.uncensorselector";
 		public const string DataKey = PluginGUID;
@@ -17,7 +18,7 @@ public record UncensorSelectorData : ExtendedPluginData
 	public override Type DataType { get; } = typeof(UncensorOptions);
 	public UncensorOptions Data { get; init; }
 
-	public readonly struct UncensorOptions
+	public readonly record struct UncensorOptions
 	{
 		public string? BodyGUID { get; init; }
 		public string? PenisGUID { get; init; }

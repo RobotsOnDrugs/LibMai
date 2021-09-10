@@ -1,9 +1,10 @@
 namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record BeaverAIData : ExtendedPluginData
+public record BeaverAIData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "mikke.BeaverAI";
 		public const string DataKey = PluginGUID;
@@ -17,7 +18,7 @@ public record BeaverAIData : ExtendedPluginData
 	public override Type DataType { get; } = typeof(BeaverInfo);
 	public BeaverInfo Data { get; }
 
-	public readonly struct BeaverInfo
+	public readonly record struct BeaverInfo
 	{
 		public bool PantiesHiding { get; init; }
 		public bool PantyHoseHiding { get; init; }

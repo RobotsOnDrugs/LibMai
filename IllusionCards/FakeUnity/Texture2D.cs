@@ -1,7 +1,7 @@
 ﻿namespace IllusionCards.FakeUnity;
 
 [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Mirrors original variable names")]
-public readonly struct Texture2D
+public readonly record struct Texture2D
 {
 	public int desiredMipmapLevel { get; init; }
 	public int loadedMipmapLevel { get; init; }

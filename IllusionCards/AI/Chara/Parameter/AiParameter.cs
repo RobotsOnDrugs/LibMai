@@ -24,5 +24,4 @@ public readonly record struct AiParameter
 
 	public int wish03 => hsWish.Count == 0 ? -1 : hsWish.ToArray()[2];
 	public bool futanari { get; init; }
-	public object? ExtendedSaveData { get; init; }
 }

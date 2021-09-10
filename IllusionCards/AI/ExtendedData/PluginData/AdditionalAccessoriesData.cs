@@ -1,9 +1,10 @@
 ﻿namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record AdditionalAccessoriesData : ExtendedPluginData
+public record AdditionalAccessoriesData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "com.joan6694.illusionplugins.moreaccessories";
 		public const string DataKey = "moreAccessories";

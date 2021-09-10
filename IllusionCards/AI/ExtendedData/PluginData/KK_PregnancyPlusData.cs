@@ -1,9 +1,10 @@
 ﻿namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record KK_PregnancyPlusData : ExtendedPluginData
+public record KK_PregnancyPlusData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "KK_PregnancyPlus";
 		public const string DataKey = PluginGUID;
@@ -19,7 +20,7 @@ public record KK_PregnancyPlusData : ExtendedPluginData
 	public KK_PregnancyPlusOptions Data { get; }
 
 	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Mirrors original variable names")]
-	public readonly struct KK_PregnancyPlusOptions
+	public readonly record struct KK_PregnancyPlusOptions
 	{
 		public float inflationSize { get; init; }
 		public float inflationMoveY { get; init; }

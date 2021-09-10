@@ -1,9 +1,10 @@
 ﻿namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record KoiSkinOverlayXData : ExtendedPluginData
+public record KoiSkinOverlayXData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "Clothes Overlay Mod";
 		public const string DataKey = "KSOX";
@@ -18,7 +19,7 @@ public record KoiSkinOverlayXData : ExtendedPluginData
 	public ImmutableDictionary<TexType, ClothesTexData> Data { get; }
 
 	[MessagePackObject]
-	public readonly struct ClothesTexData
+	public readonly record struct ClothesTexData
 	{
 		[Key(0)]
 		public byte[] TextureBytes { get => TexturePNG?.ByteData.ToArray() ?? TexBytes; init => TexBytes = value; }

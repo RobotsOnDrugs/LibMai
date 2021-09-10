@@ -1,10 +1,11 @@
 namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record AIHS2PEData : ExtendedPluginData
+public record AIHS2PEData : AiPluginData
 {
 	public const string DataKeyAI = DefinitionMetadata.DataKeyAI;
 	public const string DataKeyHS2 = DefinitionMetadata.DataKeyHS2;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "com.joan6694.illusionplugins.poseeditor";
 		public const string DataKeyAI = "aipe";

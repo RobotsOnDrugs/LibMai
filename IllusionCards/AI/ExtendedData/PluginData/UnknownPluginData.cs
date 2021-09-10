@@ -1,8 +1,10 @@
 ﻿namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record UnknownPluginData : ExtendedPluginData
+public record UnknownPluginData : AiPluginData
 {
-	public override string Name => "";
+	public override string Name => $"<Unknown Plugin: {DataKey}>";
+	public override string GUID => "";
+	public string DataKey = "";
 	public new Type? DataType { get; init; } = null;
 	public UnknownPluginData(int version, Dictionary<object, object> dataDict) : base(version, dataDict) => RawData = dataDict;
 }

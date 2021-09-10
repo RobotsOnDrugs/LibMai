@@ -21,7 +21,7 @@ public record AiStudioCharacter : AiStudioObject
 		Half = 0b01,
 		Full = 0b10
 	}
-	public readonly struct CumSplatterStatus
+	public readonly record struct CumSplatterStatus
 	{
 		public CumSplatterState Face { get; init; }
 		public CumSplatterState Chest { get; init; }
@@ -42,7 +42,7 @@ public record AiStudioCharacter : AiStudioObject
 	public KinematicMode KinematicModeStatus { get; init; } // FK + IK is a mod
 	public bool FKEnabled { get; init; }
 	private ImmutableArray<bool> ActiveFKArray { get; init; } = new bool[7] { false, false, false, false, false, false, false, }.ToImmutableArray();
-	public readonly struct ActiveFKStruct
+	public readonly record struct ActiveFKStruct
 	{
 		public bool Hair { get; init; }
 		public bool Neck { get; init; }
@@ -56,7 +56,7 @@ public record AiStudioCharacter : AiStudioObject
 	public ImmutableDictionary<int, AiIKTarget> IKTargets { get; init; }
 	public bool IKEnabled { get; init; }
 	private ImmutableArray<bool> ActiveIKArray { get; init; } = new bool[5] { false, false, false, false, false, }.ToImmutableArray();
-	public readonly struct ActiveIKStruct
+	public readonly record struct ActiveIKStruct
 	{
 		public bool Body { get; init; }
 		public bool RightLeg { get; init; }
@@ -96,7 +96,7 @@ public record AiStudioCharacter : AiStudioObject
 	public AiVoiceControl VoiceControl { get; init; }
 	// Joint correction?
 	private ImmutableArray<bool> JCArray { get; init; }
-	public readonly struct JointCorrectionStruct
+	public readonly record struct JointCorrectionStruct
 	{
 		public bool RightShoulder { get; init; }
 		public bool LeftShoulder { get; init; }
@@ -291,7 +291,7 @@ public record AiStudioCharacter : AiStudioObject
 		RightFoot
 	}
 	public enum KinematicMode { None, IK, FK }
-	public readonly struct AnimeInfo
+	public readonly record struct AnimeInfo
 	{
 		public int Group { get; init; } = -1;
 		public int Category { get; init; } = -1;

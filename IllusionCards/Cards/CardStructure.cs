@@ -1,6 +1,6 @@
 ﻿namespace IllusionCards.Cards;
 
-public readonly struct CardStructure
+public readonly record struct CardStructure
 {
 	private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 

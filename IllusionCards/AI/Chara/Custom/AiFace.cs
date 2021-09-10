@@ -1,7 +1,7 @@
 ﻿namespace IllusionCards.AI.Chara;
 
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-public readonly struct AiFace
+public readonly record struct AiFace
 {
 	public Version version { get; init; } = null!;
 	public float[] shapeValueFace { get; init; } = null!;
@@ -29,9 +29,8 @@ public readonly struct AiFace
 	public MakeupInfo makeup { get; init; }
 	public int beardId { get; init; }
 	public Color beardColor { get; init; }
-	public object? ExtendedSaveData { get; init; }
 	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-	public readonly struct EyesInfo
+	public readonly record struct EyesInfo
 	{
 		public Color whiteColor { get; init; }
 		public int pupilId { get; init; }
@@ -45,7 +44,7 @@ public readonly struct AiFace
 		public float blackH { get; init; }
 	}
 	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-	public readonly struct MakeupInfo
+	public readonly record struct MakeupInfo
 	{
 		public int eyeshadowId { get; init; }
 		public Color eyeshadowColor { get; init; }

@@ -1,9 +1,10 @@
 ﻿namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record AdditionalAccessoryControlsData : ExtendedPluginData
+public record AdditionalAccessoryControlsData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "orange.spork.additionalaccessorycontrolsplugin";
 		public const string DataKey = PluginGUID;
@@ -17,7 +18,7 @@ public record AdditionalAccessoryControlsData : ExtendedPluginData
 	public override Type DataType { get; } = typeof(AdditionalAccessoryControlsOptions);
 	public AdditionalAccessoryControlsOptions Data { get; init; }
 
-	public readonly struct AdditionalAccessoryControlsOptions
+	public readonly record struct AdditionalAccessoryControlsOptions
 	{
 		public AdditionalAccessorySlotData[] SlotData { get; init; }
 		public AdditionalAccessoryCoordinateData CoordinateOverrideData { get; init; }
@@ -40,7 +41,7 @@ public record AdditionalAccessoryControlsData : ExtendedPluginData
 		[Key(6)]
 		public List<AdditionalAccessoryVisibilityRuleData> VisibilityRules { get; init; } = null!;
 		[Key(7)]
-		public string AdvancedParent { get; init; } = null!;
+		public string? AdvancedParent { get; init; }
 		[MessagePackObject]
 		public record AdditionalAccessoryVisibilityRuleData
 		{

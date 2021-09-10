@@ -1,6 +1,6 @@
 ﻿namespace IllusionCards.AI.Chara;
 
-public readonly struct AiFaceData
+public readonly record struct AiFaceData
 {
 	public FaceTypeData FaceType { get; init; }
 	public OverallData Overall { get; init; }
@@ -24,13 +24,13 @@ public readonly struct AiFaceData
 	public LipstickData Lipstick { get; init; } // "Lipstick" to avoid confusion with structure
 	public PaintInfo Paint1 { get; init; }
 	public PaintInfo Paint2 { get; init; }
-	public readonly struct FaceTypeData
+	public readonly record struct FaceTypeData
 	{
 		public string Contour { get; init; }
 		public string Skin { get; init; }
 		public string Wrinkles { get; init; }
 	}
-	public readonly struct OverallData
+	public readonly record struct OverallData
 	{
 		public float HeadWidth { get; init; }
 		public float UpperDepth { get; init; }
@@ -38,7 +38,7 @@ public readonly struct AiFaceData
 		public float LowerDepth { get; init; }
 		public float LowerWidth { get; init; }
 	}
-	public readonly struct JawData
+	public readonly record struct JawData
 	{
 		public float JawWidth { get; init; }
 		public float JawHeight { get; init; }
@@ -49,7 +49,7 @@ public readonly struct AiFaceData
 		public float ChinHeight { get; init; }
 		public float ChinDepth { get; init; }
 	}
-	public readonly struct CheeksData
+	public readonly record struct CheeksData
 	{
 		public float LowerHeight { get; init; }
 		public float LowerDepth { get; init; }
@@ -58,7 +58,7 @@ public readonly struct AiFaceData
 		public float UpperDepth { get; init; }
 		public float UpperWidth { get; init; }
 	}
-	public readonly struct EyebrowsData
+	public readonly record struct EyebrowsData
 	{
 		public float Width { get; init; }
 		public float Height { get; init; }
@@ -66,7 +66,7 @@ public readonly struct AiFaceData
 		public float PositionY { get; init; }
 		public float AngleTilt { get; init; }
 	}
-	public readonly struct EyeData
+	public readonly record struct EyeData
 	{
 		public float EyeHeight { get; init; }
 		public float EyeSpacing { get; init; }
@@ -82,7 +82,7 @@ public readonly struct AiFaceData
 		public float EyelidShape1 { get; init; }
 		public float EyelidShape2 { get; init; }
 	}
-	public readonly struct NoseData
+	public readonly record struct NoseData
 	{
 		public float NoseHeight { get; init; }
 		public float NoseDepth { get; init; }
@@ -100,7 +100,7 @@ public readonly struct AiFaceData
 		public float NoseTipHeight { get; init; }
 		public float NoseTipSize { get; init; }
 	}
-	public readonly struct MouthData
+	public readonly record struct MouthData
 	{
 		public float MouthHeight { get; init; }
 		public float MouthWidth { get; init; }
@@ -110,7 +110,7 @@ public readonly struct AiFaceData
 		public float LowerLipThickness { get; init; }
 		public float CornerShape { get; init; }
 	}
-	public readonly struct EarsData
+	public readonly record struct EarsData
 	{
 		public float EarSize { get; init; }
 		public float EarAngle { get; init; }
@@ -118,7 +118,7 @@ public readonly struct AiFaceData
 		public float UpEarShape { get; init; }
 		public float LowEarShape { get; init; }
 	}
-	public readonly struct MolesData
+	public readonly record struct MolesData
 	{
 		public string MoleType { get; init; }
 		public Color Color { get; init; }
@@ -127,12 +127,12 @@ public readonly struct AiFaceData
 		public float MolePositionX { get; init; }
 		public float MolePositionY { get; init; }
 	}
-	public readonly struct IrisData
+	public readonly record struct IrisData
 	{
 		public float AdjustHeight { get; init; }
 		public float ShadowRange { get; init; }
 	}
-	public readonly struct EyeHighlightsData
+	public readonly record struct EyeHighlightsData
 	{
 		public int Type { get; init; }
 		public Color Color { get; init; }
@@ -142,36 +142,36 @@ public readonly struct AiFaceData
 		public float PositionY { get; init; }
 		public float Tilt { get; init; }
 	}
-	public readonly struct EyebrowTypeData
+	public readonly record struct EyebrowTypeData
 	{
 		public int Type { get; init; }
 		public Color Color { get; init; }
 	}
-	public readonly struct EyelashTypeData
+	public readonly record struct EyelashTypeData
 	{
 		public int Type { get; init; }
 		public Color Color { get; init; }
 	}
-	public readonly struct EyeshadowData
-	{
-		public int Type { get; init; }
-		public Color Color { get; init; }
-		public float Shine { get; init; }
-	}
-	public readonly struct BlushData
+	public readonly record struct EyeshadowData
 	{
 		public int Type { get; init; }
 		public Color Color { get; init; }
 		public float Shine { get; init; }
 	}
-	public readonly struct LipstickData
+	public readonly record struct BlushData
+	{
+		public int Type { get; init; }
+		public Color Color { get; init; }
+		public float Shine { get; init; }
+	}
+	public readonly record struct LipstickData
 	{
 		public int Type { get; init; }
 		public Color Color { get; init; }
 		public float Shine { get; init; }
 	}
 }
-public readonly struct AiBodyData
+public readonly record struct AiBodyData
 {
 	public OverallData Overall { get; init; }
 	public BreastData Breast { get; init; }
@@ -188,12 +188,12 @@ public readonly struct AiBodyData
 	public PaintInfo Paint2 { get; init; }
 	public bool IsFuta { get; init; }
 
-	public readonly struct OverallData
+	public readonly record struct OverallData
 	{
 		public float Height { get; internal init; } // 0
 		public float HeadSize { get; init; } // 9
 	}
-	public readonly struct BreastData
+	public readonly record struct BreastData
 	{
 		public float Size { get; init; } // 1
 		public float Height { get; init; } // 2
@@ -208,7 +208,7 @@ public readonly struct AiBodyData
 		public float NippleWidth { get; init; } // 8
 		public float NippleDepth { get; init; } // 32
 	}
-	public readonly struct UpperBodyData
+	public readonly record struct UpperBodyData
 	{
 		public float NeckWidth { get; init; } // 10
 		public float NeckThickness { get; init; } // 11
@@ -219,7 +219,7 @@ public readonly struct AiBodyData
 		public float WaistWidth { get; init; } // 16
 		public float WaistThickness { get; init; } // 17
 	}
-	public readonly struct LowerBodyData
+	public readonly record struct LowerBodyData
 	{
 		public float WaistHeight { get; init; } // 18
 		public float PelvisWidth { get; init; } // 19
@@ -229,41 +229,41 @@ public readonly struct AiBodyData
 		public float Butt { get; init; } // 23
 		public float ButtAngle { get; init; } // 24
 	}
-	public readonly struct ArmsData
+	public readonly record struct ArmsData
 	{
 		public float Shoulder { get; init; } // 29
 		public float UpperArms { get; init; } // 30
 		public float Forearm { get; init; } // 31
 	}
-	public readonly struct LegsData
+	public readonly record struct LegsData
 	{
 		public float UpperThighs { get; init; } // 25
 		public float LowerThighs { get; init; } // 26
 		public float Calves { get; init; } // 27
 		public float Ankles { get; init; } // 28
 	}
-	public readonly struct SkinTypeData
+	public readonly record struct SkinTypeData
 	{
 
 	}
-	public readonly struct SuntanData
+	public readonly record struct SuntanData
 	{
 
 	}
-	public readonly struct NipplesData
+	public readonly record struct NipplesData
 	{
 
 	}
-	public readonly struct PubicHairData
+	public readonly record struct PubicHairData
 	{
 
 	}
-	public readonly struct NailColorData
+	public readonly record struct NailColorData
 	{
 
 	}
 }
-public readonly struct AiHairData
+public readonly record struct AiHairData
 {
 	public bool MatchBackHairAndBangs { get; init; }
 	public bool AutoSetRootAndTipColors { get; init; }
@@ -283,7 +283,7 @@ public readonly struct AiHairData
 		RenderType02
 	}
 }
-public readonly struct AiClothingData
+public readonly record struct AiClothingData
 {
 	public ClothingSettingsData Top { get; init; }
 	public ClothingSettingsData Bottom { get; init; }
@@ -293,15 +293,15 @@ public readonly struct AiClothingData
 	public ClothingSettingsData Pantyhose { get; init; }
 	public ClothingSettingsData Socks { get; init; }
 	public ClothingSettingsData Shoes { get; init; }
-	public readonly struct ClothingSettingsData
+	public readonly record struct ClothingSettingsData
 	{
 
 	}
 }
-public readonly struct AiAccessorySettingsData
+public readonly record struct AiAccessorySettingsData
 {
 }
-public readonly struct AiCharaStatusData // Status
+public readonly record struct AiCharaStatusData // Status
 {
 
 	public Version Version { get; init; }
@@ -358,7 +358,7 @@ public readonly struct AiCharaStatusData // Status
 	public ImmutableArray<float> shapeHandBlendValue { get; init; }
 	public float siriAkaRate { get; init; }
 }
-public readonly struct AiCharaInfoData // Parameter - this is common to both AIS and HS2
+public readonly record struct AiCharaInfoData // Parameter - this is common to both AIS and HS2
 {
 	public CharaSex Sex { get; init; }
 	public string Name { get; init; }
@@ -369,12 +369,12 @@ public readonly struct AiCharaInfoData // Parameter - this is common to both AIS
 	public float VoicePitch => Mathf.Lerp(0.94f, 1.06f, VoiceRate);
 	public bool IsFuta { get; init; }
 }
-public readonly struct AISGameData // GameInfo
+public readonly record struct AISGameData // GameInfo
 {
 	public ImmutableHashSet<int> Wishes => new HashSet<int>().ToImmutableHashSet(); // { get; init; } // This comes from Parameter and seems to be AIS-specific
 
 }
-public readonly struct HS2GameData // GameInfo2 and Parameter2
+public readonly record struct HS2GameData // GameInfo2 and Parameter2
 {
 	public SexTraitType SexTrait { get; init; }
 	public MentalityType Mentality { get; init; }

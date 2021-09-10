@@ -1,6 +1,6 @@
 ﻿namespace IllusionCards.AI.Chara;
 
-record FriendlyNameLookup
+public static class FriendlyNameLookup
 {
 	//cha_sample_m = 0
 	//cha_sample_f = 1,

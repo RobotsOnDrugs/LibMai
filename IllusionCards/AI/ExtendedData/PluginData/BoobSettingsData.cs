@@ -5,10 +5,11 @@
 
 namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record BoobSettingsData : ExtendedPluginData
+public record BoobSettingsData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "com.fairbair.hs2_boobsettings";
 		public const string DataKey = PluginGUID;
@@ -98,7 +99,7 @@ public record BoobSettingsData : ExtendedPluginData
 	}.ToImmutableArray();
 
 	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Mirrors original variable names")]
-	public readonly struct BoobController
+	public readonly record struct BoobController
 	{
 		public ImmutableDictionary<string, bool> boolData { get; init; }
 		public ImmutableDictionary<string, float> floatData { get; init; }

@@ -1,7 +1,7 @@
 ﻿namespace IllusionCards.AI.Chara;
 
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-public record AiHair
+public readonly record struct AiHair
 {
 	public Version version { get; init; } = null!;
 	public bool sameSetting { get; init; }
@@ -10,10 +10,8 @@ public record AiHair
 	public HairPartsInfo[] parts { get; init; } = null!;
 	public int kind { get; init; }
 	public int shaderType { get; init; }
-	public AiHair() { }
-	public object? ExtendedSaveData { get; init; }
 	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-	public readonly struct HairPartsInfo
+	public readonly record struct HairPartsInfo
 	{
 		public int id { get; init; }
 		public Color baseColor { get; init; }
@@ -28,20 +26,17 @@ public record AiHair
 		public int meshType { get; init; }
 		public Color meshColor { get; init; }
 		public Vector4 meshLayout { get; init; }
-		public object? ExtendedSaveData { get; init; }
 		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-		public readonly struct BundleInfo
+		public readonly record struct BundleInfo
 		{
 			public Vector3 moveRate { get; init; }
 			public Vector3 rotRate { get; init; }
 			public bool noShake { get; init; }
-			public object ExtendedSaveData { get; init; } = null!;
 		}
 		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-		public readonly struct ColorInfo
+		public readonly record struct ColorInfo
 		{
 			public Color color { get; init; }
-			public object ExtendedSaveData { get; init; } = null!;
 		}
 	}
 }

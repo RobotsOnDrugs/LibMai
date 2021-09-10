@@ -1,9 +1,10 @@
 ﻿namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record BetterPenetrationData : ExtendedPluginData
+public record BetterPenetrationData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "com.animal42069.studiobetterpenetration";
 		public const string DataKey = "BetterPenetrationController";
@@ -29,13 +30,13 @@ public record BetterPenetrationData : ExtendedPluginData
 	public const float DefaultPullRate = 18.0f;
 	public const float DefaultReturnRate = 0.3f;
 	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Mirrors original variable names")]
-	public readonly struct BetterPenetrationOptions
+	public readonly record struct BetterPenetrationOptions
 	{
 		public bool enabled { get; init; }
 		public DanOptions danOptions { get; init; } = new();
 		public CollisionOptions collisionOptions { get; init; } = new();
 		public ControllerOptions controllerOptions { get; init; } = new();
-		public readonly struct DanOptions
+		public readonly record struct DanOptions
 		{
 			public float lengthSquish { get; init; }
 			public float girthSquish { get; init; }
@@ -43,7 +44,7 @@ public record BetterPenetrationData : ExtendedPluginData
 			public float colliderRadiusScale { get; init; }
 			public float colliderLengthScale { get; init; }
 		}
-		public readonly struct CollisionOptions
+		public readonly record struct CollisionOptions
 		{
 			public bool enablePushPull { get; init; }
 			public float maxPush { get; init; }
@@ -51,7 +52,7 @@ public record BetterPenetrationData : ExtendedPluginData
 			public float pullRate { get; init; }
 			public float returnRate { get; init; }
 		}
-		public readonly struct ControllerOptions
+		public readonly record struct ControllerOptions
 		{
 			public AutoTarget autoTarget { get; init; }
 			public enum AutoTarget

@@ -1,6 +1,6 @@
 ﻿namespace IllusionCards.AI.Chara.FriendlyNameDefinitions;
 
-public readonly struct Face
+public readonly record struct Face
 {
 	public enum HeadID
 	{

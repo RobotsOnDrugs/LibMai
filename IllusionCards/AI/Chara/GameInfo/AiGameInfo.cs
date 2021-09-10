@@ -21,13 +21,11 @@ public readonly record struct AiGameInfo
 	public int immoral { get; init; }
 	public bool isHAddTaii0 { get; init; }
 	public bool isHAddTaii1 { get; init; }
-	public object? ExtendedSaveData { get; init; }
 
 	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-	public readonly struct MinMaxInfo
+	public readonly record struct MinMaxInfo
 	{
 		public float lower { get; init; }
 		public float upper { get; init; }
-		public object? ExtendedSaveData { get; init; }
 	}
 }

@@ -11,5 +11,4 @@ public readonly record struct AiParameter2
 	public byte trait { get; init; }
 	public byte mind { get; init; }
 	public byte hAttribute { get; init; }
-	public object? ExtendedSaveData { get; init; }
 }

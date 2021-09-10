@@ -84,8 +84,8 @@ class CardManagerCLI
 					ImmutableHashSet<AiPluginData>? _extendedData = __card.Chara.ExtendedData;
 					if (_extendedData is not null)
 						foreach (AiPluginData pluginData in _extendedData)
-							if (pluginData.PluginDataInfo?.GetType() == typeof(UnknownPluginData))
-								UnknownPlugins.Add(pluginData.DataKey);
+							if (pluginData.GetType() == typeof(UnknownPluginData))
+								UnknownPlugins.Add(pluginData.GUID);
 				}
 			}
 			catch (UnsupportedCardException ex) { Logger.Error(ex, "Could not parse card: {card}: {reason:l}", ex.CardPath, ex.Message); }

@@ -1,8 +1,9 @@
 ﻿namespace IllusionCards.AI.ExtendedData.PluginData;
-public record EyeControlData : ExtendedPluginData
+public record EyeControlData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "com.deathweasel.bepinex.eyecontrol";
 		public const string DataKey = PluginGUID;
@@ -16,7 +17,7 @@ public record EyeControlData : ExtendedPluginData
 	public override Type DataType { get; } = typeof(MaterialEditorOptions);
 	public MaterialEditorOptions Data { get; }
 
-	public readonly struct MaterialEditorOptions
+	public readonly record struct MaterialEditorOptions
 	{
 		public float EyeOpenMax { get; init; }
 		public bool DisableBlinking { get; init; }

@@ -1,10 +1,11 @@
 ﻿namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record CollidersData : ExtendedPluginData
+public record CollidersData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
 	public const string OldDataKey = DefinitionMetadata.OldDataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "com.deathweasel.bepinex.colliders";
 		public const string DataKey = PluginGUID;
@@ -19,7 +20,7 @@ public record CollidersData : ExtendedPluginData
 	public override Type DataType { get; } = typeof(CollidersOptions);
 	public CollidersOptions Data { get; init; }
 
-	public readonly struct CollidersOptions
+	public readonly record struct CollidersOptions
 	{
 		public bool BreastCollidersEnabled { get; init; }
 		public bool SkirtCollidersEnabled { get; init; }

@@ -48,5 +48,4 @@ public readonly record struct AiStatus
 	public int[,] shapeHandPtn { get; init; } = null!;
 	public float[] shapeHandBlendValue { get; init; } = null!;
 	public float siriAkaRate { get; init; }
-	public object? ExtendedSaveData { get; init; }
 }

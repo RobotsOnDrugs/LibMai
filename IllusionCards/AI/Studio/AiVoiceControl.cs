@@ -1,13 +1,13 @@
 ﻿namespace IllusionCards.AI.Studio;
 
-public readonly struct AiVoiceControl
+public readonly record struct AiVoiceControl
 {
 	// There are a bunch of other properties that the game uses internally, but they are calculated rather than stored
 	// Only these properties exist in the saved data.
 	public ImmutableArray<AiVoiceInfo> VoiceInfo { get; init; }
 	public Repeat RepeatMode { get; init; }
 
-	public readonly struct AiVoiceInfo
+	public readonly record struct AiVoiceInfo
 	{
 		public int Category { get; init; }
 		public int Group { get; init; }

@@ -24,7 +24,10 @@
 	<PackageReference Include="MasterMemory" Version="2.3.5" />
 	<PackageReference Include="morelinq" Version="3.3.2" />
 	<PackageReference Include="NLog" Version="5.0.0-preview.1" />
-	<PackageReference Include="ObjectDumper.NET" Version="3.2.1-pre" />
+	<PackageReference Include="ObjectDumper.NET" Version="3.3.10-pre" />
+	<PackageReference Include="RuntimeNullables.Fody" Version="1.0.2">
+	  <PrivateAssets>all</PrivateAssets>
+	</PackageReference>
 	<PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21308.1" />
   </ItemGroup>
 

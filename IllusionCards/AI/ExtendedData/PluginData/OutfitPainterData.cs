@@ -1,9 +1,10 @@
 ﻿namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record OutfitPainterData : ExtendedPluginData
+public record OutfitPainterData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "orange.spork.outfitpainter";
 		public const string DataKey = PluginGUID;
@@ -18,7 +19,7 @@ public record OutfitPainterData : ExtendedPluginData
 	public OutfitPainterOptions Data { get; }
 
 	[MessagePackObject]
-	public readonly struct OutfitPainterOptions
+	public readonly record struct OutfitPainterOptions
 	{
 		[Key(0)]
 		[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
@@ -28,7 +29,7 @@ public record OutfitPainterData : ExtendedPluginData
 	}
 
 	[MessagePackObject]
-	public readonly struct OutfitPainterChannel
+	public readonly record struct OutfitPainterChannel
 	{
 		[Key(0)]
 		public int ChannelId { get; init; }
@@ -52,7 +53,7 @@ public record OutfitPainterData : ExtendedPluginData
 		public ImmutableArray<OutfitPainterChannelAssignment> Assignments { get; init; } = ImmutableArray<OutfitPainterChannelAssignment>.Empty;
 	}
 	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-	public readonly struct OutfitPainterChannelAssignment
+	public readonly record struct OutfitPainterChannelAssignment
 	{
 		[Key(0)]
 		public OutfitPainterSlot slot { get; init; }

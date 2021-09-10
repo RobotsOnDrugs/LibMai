@@ -42,5 +42,4 @@ public readonly record struct AiGameInfo2
 	public int usedItem { get; init; }
 	public bool isChangeParameter { get; init; }
 	public bool isConcierge { get; init; }
-	public object? ExtendedSaveData { get; init; }
 }

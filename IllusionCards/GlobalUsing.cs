@@ -6,7 +6,6 @@ global using System.Text;
 global using System.Text.Json;
 global using System.Xml;
 
-global using IllusionCards.AI.Cards;
 global using IllusionCards.AI.Chara;
 global using IllusionCards.AI.ExtendedData.PluginData;
 global using IllusionCards.AI.Studio;

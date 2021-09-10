@@ -1,9 +1,10 @@
 ﻿namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record DynamicBoneEditorData : ExtendedPluginData
+public record DynamicBoneEditorData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "com.deathweasel.bepinex.dynamicboneeditor";
 		public const string DataKey = PluginGUID;
@@ -60,4 +61,4 @@ public record DynamicBoneData
 	[Key(nameof(RadiusOriginal))]
 	public float? RadiusOriginal;
 }
-public readonly struct DynamicBone { public enum FreezeAxis { None, X, Y, Z } }
+public readonly record struct DynamicBone { public enum FreezeAxis { None, X, Y, Z } }

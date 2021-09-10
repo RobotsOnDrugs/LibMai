@@ -1,8 +1,9 @@
 ﻿namespace IllusionCards.AI.ExtendedData.PluginData;
-public record KK_InvisibleBodyData : ExtendedPluginData
+public record KK_InvisibleBodyData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "com.deathweasel.bepinex.invisiblebody";
 		public const string DataKey = "KK_InvisibleBody";
@@ -16,7 +17,7 @@ public record KK_InvisibleBodyData : ExtendedPluginData
 	public override Type DataType { get; } = typeof(KK_InvisibleBodyOptions);
 	public KK_InvisibleBodyOptions Data { get; init; }
 
-	public readonly struct KK_InvisibleBodyOptions { public bool Visible { get; init; } }
+	public readonly record struct KK_InvisibleBodyOptions { public bool Visible { get; init; } }
 	public KK_InvisibleBodyData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 		=> Data = new() { Visible = (bool)dataDict["Visible"] };
 }

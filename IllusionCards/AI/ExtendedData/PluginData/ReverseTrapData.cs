@@ -1,9 +1,10 @@
 ﻿namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record ReverseTrapData : ExtendedPluginData
+public record ReverseTrapData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "ReverseTrap";
 		public const string DataKey = PluginGUID;
@@ -17,7 +18,7 @@ public record ReverseTrapData : ExtendedPluginData
 	public override Type DataType { get; } = typeof(ReverseTrapOptions);
 	public ReverseTrapOptions Data { get; init; }
 
-	public readonly struct ReverseTrapOptions
+	public readonly record struct ReverseTrapOptions
 	{
 		public bool ForceMaleAnimations { get; init; }
 	}

@@ -1,7 +1,7 @@
 ﻿namespace IllusionCards.FakeUnity;
 
 [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Mirrors original variable names")]
-public readonly struct Texture
+public readonly record struct Texture
 {
 	public int anisoLevel { get; init; }
 	public AnisotropicFiltering anisotropicFiltering { get; init; }

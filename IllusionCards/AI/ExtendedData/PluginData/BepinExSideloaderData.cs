@@ -1,9 +1,10 @@
 namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record BepinExSideloaderData : ExtendedPluginData
+public record BepinExSideloaderData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "com.bepis.bepinex.sideloader";
 		public const string DataKey = "com.bepis.sideloader.universalautoresolver";

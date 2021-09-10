@@ -2,7 +2,7 @@
 
 [MessagePackFormatter(typeof(ColorFormatter))]
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-public readonly struct Color
+public readonly record struct Color
 {
 	public float r { get; init; } = 0f;
 	public float g { get; init; } = 0f;

@@ -1,9 +1,10 @@
 ﻿namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record MaterialEditorData : ExtendedPluginData
+public record MaterialEditorData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "com.deathweasel.bepinex.materialeditor";
 		public const string DataKey = PluginGUID;
@@ -17,7 +18,7 @@ public record MaterialEditorData : ExtendedPluginData
 	public override Type DataType { get; } = typeof(MaterialEditorOptions);
 	public MaterialEditorOptions Data { get; init; }
 
-	public readonly struct MaterialEditorOptions
+	public readonly record struct MaterialEditorOptions
 	{
 		public readonly ImmutableArray<RendererProperty> RendererPropertyList { get; init; }
 		public readonly ImmutableArray<MaterialFloatProperty> MaterialFloatPropertyList { get; init; }
@@ -271,12 +272,12 @@ public record MaterialEditorData : ExtendedPluginData
 		/// Name of the shader
 		/// </summary>
 		[Key("ShaderName")]
-		public string ShaderName { get; init; } = null!;
+		public string? ShaderName { get; init; }
 		/// <summary>
 		/// Name of the original shader
 		/// </summary>
 		[Key("ShaderNameOriginal")]
-		public string ShaderNameOriginal;
+		public string? ShaderNameOriginal { get; init; }
 		/// <summary>
 		/// Render queue
 		/// </summary>
@@ -299,7 +300,7 @@ public record MaterialEditorData : ExtendedPluginData
 		/// <param name="shaderNameOriginal">Name of the original shader</param>
 		/// <param name="renderQueue">Render queue</param>
 		/// <param name="renderQueueOriginal">Original render queue</param>
-		public MaterialShader(ObjectType objectType, int coordinateIndex, int slot, string materialName, string shaderName, string shaderNameOriginal, int? renderQueue, int? renderQueueOriginal)
+		public MaterialShader(ObjectType objectType, int coordinateIndex, int slot, string materialName, string? shaderName, string? shaderNameOriginal, int? renderQueue, int? renderQueueOriginal)
 		{
 			ObjectType = objectType;
 			CoordinateIndex = coordinateIndex;

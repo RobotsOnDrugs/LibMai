@@ -1,9 +1,10 @@
 ﻿namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record PushUpAIData : ExtendedPluginData
+public record PushUpAIData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "mikke.pushUpAI";
 		public const string DataKey = PluginGUID;
@@ -17,11 +18,11 @@ public record PushUpAIData : ExtendedPluginData
 	public override Type DataType { get; } = typeof(PushUpAIOptions);
 	public PushUpAIOptions Data { get; init; }
 
-	public readonly struct PushUpAIOptions
+	public readonly record struct PushUpAIOptions
 	{
 		public ClothData BraClothData { get; init; }
 		public ClothData TopClothData { get; init; }
-		public readonly struct ClothData
+		public readonly record struct ClothData
 		{
 			public float? Firmness { get; init; }
 			public float? Lift { get; init; }

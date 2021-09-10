@@ -1,10 +1,10 @@
 ﻿namespace IllusionCards.AI.Chara;
 
-public readonly struct AiChara : IIllusionChara
+public readonly record struct AiChara : IIllusionChara
 {
 	public static AiChara Tsubomi { get; }
 	public static AiChara Hero { get; }
-	public static AiChara HanatoMiwa { get; }
+	public static AiChara HatanoMiwa { get; }
 	public static AiParameter2 HS2NewChara { get; }
 	public static AiGameInfo2 HS2NewGameData { get; }
 
@@ -43,12 +43,12 @@ public readonly struct AiChara : IIllusionChara
 	}
 
 	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-	public readonly struct BlockHeader
+	public readonly record struct BlockHeader
 	{
 		public ImmutableArray<Info> lstInfo { get; init; }
 
 		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-		public readonly struct Info
+		public readonly record struct Info
 		{
 			public string name { get; init; } = "";
 			public string version { get; init; } = "";
@@ -93,7 +93,7 @@ public readonly struct AiChara : IIllusionChara
 
 		long _postNumPosition = binaryReader.BaseStream.Position;
 		List<InvalidDataException> _exList = new();
-		bool[] _blockHits = new bool[5] { false, false, false, false, false };
+		bool[] _blockHits = new bool[5];
 		foreach (BlockHeader.Info info in _blockHeader.lstInfo)
 		{
 			long _infoPos = _postNumPosition + info.pos;
@@ -106,35 +106,35 @@ public readonly struct AiChara : IIllusionChara
 				switch (info.name)
 				{
 					case Constants.AiCustomBlockName:
-						CheckInfoVersion(info, AiCharaCardDefinitions.AiCustomVersion);
+						CheckInfoVersion(info, AiCustomVersion);
 						_custom = new AiCustom(_infoData);
 						_blockHits[0] = true;
 						break;
 					case Constants.AiCoordinateBlockName:
-						CheckInfoVersion(info, AiCharaCardDefinitions.AiCoordinateVersion);
+						CheckInfoVersion(info, AiCoordinateVersion);
 						_coordinate = new(_infoData, LoadVersion, Language);
 						_blockHits[1] = true;
 						break;
 					case Constants.AiParameterBlockName:
-						CheckInfoVersion(info, AiCharaCardDefinitions.AiParameterVersion);
+						CheckInfoVersion(info, AiParameterVersion);
 						_parameter = MessagePackSerializer.Deserialize<AiParameter>(_infoData);
 						_blockHits[2] = true;
 						break;
 					case Constants.AiParameter2BlockName:
-						CheckInfoVersion(info, AiCharaCardDefinitions.AiParameter2Version);
+						CheckInfoVersion(info, AiParameter2Version);
 						_parameter2 = MessagePackSerializer.Deserialize<AiParameter2>(_infoData);
 						break;
 					case Constants.AiGameInfoBlockName:
-						CheckInfoVersion(info, AiCharaCardDefinitions.AiGameInfoVersion);
+						CheckInfoVersion(info, AiGameInfoVersion);
 						_gameInfo = MessagePackSerializer.Deserialize<AiGameInfo>(_infoData);
 						_blockHits[3] = true;
 						break;
 					case Constants.AiGameInfo2BlockName:
-						CheckInfoVersion(info, AiCharaCardDefinitions.AiGameInfo2Version);
+						CheckInfoVersion(info, AiGameInfo2Version);
 						_gameInfo2 = MessagePackSerializer.Deserialize<AiGameInfo2>(_infoData);
 						break;
 					case Constants.AiStatusBlockName:
-						CheckInfoVersion(info, AiCharaCardDefinitions.AiStatusVersion);
+						CheckInfoVersion(info, AiStatusVersion);
 						_status = MessagePackSerializer.Deserialize<AiStatus>(_infoData);
 						_blockHits[4] = true;
 						break;
@@ -142,11 +142,6 @@ public readonly struct AiChara : IIllusionChara
 						Dictionary<string, AiRawPluginData?> _rawExtendedData = MessagePackSerializer.Deserialize<Dictionary<string, AiRawPluginData?>>(_infoData);
 						foreach (KeyValuePair<string, AiRawPluginData?> kvp in _rawExtendedData)
 						{
-							if (kvp.Value is null)
-							{
-								_nullData.Add(new NullPluginData() { DataKey = kvp.Key });
-								continue;
-							}
 							if (kvp.Value?.data is null)
 							{
 								_nullData.Add(new NullPluginData() { DataKey = kvp.Key });
@@ -155,7 +150,7 @@ public readonly struct AiChara : IIllusionChara
 							AiRawPluginData _rawPluginData = (AiRawPluginData)kvp.Value;
 							if (kvp.Value is not null)
 							{
-								AiPluginData _aiPluginData = new(kvp.Key, _rawPluginData);
+								AiPluginData _aiPluginData = AiPluginData.GetExtendedPluginData(kvp.Key, _rawPluginData);
 								_pluginData.Add(_aiPluginData);
 							}
 						}

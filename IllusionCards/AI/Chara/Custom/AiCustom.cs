@@ -19,9 +19,9 @@ public readonly record struct AiCustom
 		face = MessagePackSerializer.Deserialize<AiFace>(_dataChunks[0]);
 		body = MessagePackSerializer.Deserialize<AiBody>(_dataChunks[1]);
 		hair = MessagePackSerializer.Deserialize<AiHair>(_dataChunks[2]);
-		if (face.version < AiCharaCardDefinitions.AiFaceVersion) { throw new InternalCardException("Face data for this card is too old."); }
-		if (body.version < AiCharaCardDefinitions.AiBodyVersion) { throw new InternalCardException("Body data for this card is too old."); }
-		if (hair.version < AiCharaCardDefinitions.AiHairVersion) { throw new InternalCardException("Hair data for this card is too old."); }
+		if (face.version < AiFaceVersion) { throw new InternalCardException("Face data for this card is too old."); }
+		if (body.version < AiBodyVersion) { throw new InternalCardException("Body data for this card is too old."); }
+		if (hair.version < AiHairVersion) { throw new InternalCardException("Hair data for this card is too old."); }
 		IsInitialized = true;
 	}
 }

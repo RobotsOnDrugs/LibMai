@@ -1,6 +1,6 @@
 ﻿namespace IllusionCards.AI.Studio;
 
-public readonly struct AiScene
+public readonly record struct AiScene
 {
 	public Version Version { get; init; } = new(1, 1, 1);
 	//private HashSet<int> HashIndex { get; init; } = new();
@@ -60,11 +60,11 @@ public readonly struct AiScene
 	public string Background { get; init; } = null!;
 	public string Frame { get; init; } = null!;
 
-	public readonly struct SkyInfo
+	public readonly record struct SkyInfo
 	{
 	}
 
-	public readonly struct MapInfo
+	public readonly record struct MapInfo
 	{
 	}
 }

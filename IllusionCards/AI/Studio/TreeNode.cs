@@ -1,6 +1,6 @@
 ﻿namespace IllusionCards.AI.Studio;
 
-public readonly struct TreeNode
+public readonly record struct TreeNode
 {
 	public enum TreeState { Open, Closed }
 }

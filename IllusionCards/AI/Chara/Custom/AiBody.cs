@@ -1,7 +1,7 @@
 ﻿namespace IllusionCards.AI.Chara;
 
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-public readonly struct AiBody
+public readonly record struct AiBody
 {
 	public Version version { get; init; } = null!;
 	[Key("shapeValueBody")]
@@ -30,5 +30,4 @@ public readonly struct AiBody
 	public Color underhairColor { get; init; }
 	public Color nailColor { get; init; }
 	public float nailGlossPower { get; init; }
-	public object? ExtendedSaveData { get; init; }
 }

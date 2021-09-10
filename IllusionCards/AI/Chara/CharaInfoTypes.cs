@@ -1,7 +1,7 @@
 ﻿namespace IllusionCards.AI.Chara;
 
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-public readonly struct PaintInfo
+public readonly record struct PaintInfo
 {
 	public int id { get; init; }
 	public Color color { get; init; }

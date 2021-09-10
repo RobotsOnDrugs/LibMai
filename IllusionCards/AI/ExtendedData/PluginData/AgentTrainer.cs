@@ -1,9 +1,10 @@
 namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record AgentTrainerData : ExtendedPluginData
+public record AgentTrainerData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "com.fairbair.agenttrainer";
 		public const string DataKey = "AgentTrainer.StatsController";
@@ -18,7 +19,7 @@ public record AgentTrainerData : ExtendedPluginData
 	public AgentTrainerOptions Data { get; }
 
 	// The integer indices of these have meaning for "AgentActors" in the game, but it seems to be very specific to AI
-	public readonly struct AgentTrainerOptions
+	public readonly record struct AgentTrainerOptions
 	{
 		public ImmutableDictionary<int, float> LockedStats { get; init; }
 		public ImmutableDictionary<int, float> LockedDesires { get; init; }

@@ -1,9 +1,10 @@
 namespace IllusionCards.AI.ExtendedData.PluginData;
 
-public record AdvIKPluginData : ExtendedPluginData
+public record AdvIKPluginData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
-	public readonly struct DefinitionMetadata
+	public override string GUID => DefinitionMetadata.PluginGUID;
+	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "orange.spork.advikplugin";
 		public const string DataKey = PluginGUID;
@@ -17,7 +18,7 @@ public record AdvIKPluginData : ExtendedPluginData
 	public override Type DataType { get; } = typeof(AdvIKPluginOptions);
 	public AdvIKPluginOptions Data { get; init; }
 
-	public readonly struct AdvIKPluginOptions
+	public readonly record struct AdvIKPluginOptions
 	{
 		public bool? ShoulderRotationEnabled { get; init; }
 		public bool? IndependentShoulders { get; init; }
