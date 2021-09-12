@@ -3,7 +3,7 @@
 public record AiCoordinateCard : IllusionCard
 {
 	public string CoordinateName { get; init; }
-	public AiCoordinate Coordinate { get; init; }
+	public AiRawCoordinateData Coordinate { get; init; }
 	public override CardType CardType { get; } = CardType.AICoordinate;
 	public AiCoordinateCard(CardStructure cs, BinaryReader binaryReader) : base(cs, binaryReader)
 	{

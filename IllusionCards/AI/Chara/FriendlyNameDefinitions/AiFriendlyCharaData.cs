@@ -13,8 +13,9 @@ public readonly record struct AiFaceData
 	public EarsData Ears { get; init; }
 	public MolesData Moles { get; init; }
 	public bool SetBothLeftAndRightEyes { get; init; }
-	public EyesInfo LeftEyeInfo { get; init; }
-	public EyesInfo RightEyeInfo { get; init; }
+	public EyeInfo LeftEye { get; init; }
+	public EyeInfo RightEye { get => SetBothLeftAndRightEyes ? LeftEye : RightEye_ ?? throw new NullReferenceException(); }
+	internal EyeInfo? RightEye_ { get; init; }
 	public IrisData IrisSettings { get; init; }
 	public EyeHighlightsData EyeHighlights { get; init; }
 	public EyebrowTypeData EyebrowType { get; init; }
@@ -22,8 +23,8 @@ public readonly record struct AiFaceData
 	public EyeshadowData Eyeshadow { get; init; }
 	public BlushData Blush { get; init; } // It's called "Cheeks" for both the structure and the makeup, so this is "Blush" to avoid a naming conflict
 	public LipstickData Lipstick { get; init; } // "Lipstick" to avoid confusion with structure
-	public PaintInfo Paint1 { get; init; }
-	public PaintInfo Paint2 { get; init; }
+	public AiPaintInfo Paint1 { get; init; }
+	public AiPaintInfo Paint2 { get; init; }
 	public readonly record struct FaceTypeData
 	{
 		public string Contour { get; init; }
@@ -127,6 +128,19 @@ public readonly record struct AiFaceData
 		public float MolePositionX { get; init; }
 		public float MolePositionY { get; init; }
 	}
+	public readonly record struct EyeInfo
+	{
+		public Color ScleraColor { get; init; }
+		public int _Iris { get; init; } // Illusion got "pupil" and "iris" mixed up in their variable names - pupilX refers to the iris and blackX refers to the pupil
+		public Color IrisColor { get; init; }
+		public float IrisWidth { get; init; }
+		public float IrisHeight { get; init; }
+		public float IrisGlow { get; init; }
+		public int _Pupil { get; init; }
+		public Color PupilColor { get; init; }
+		public float PupilWidth { get; init; }
+		public float PupilHeight { get; init; }
+	}
 	public readonly record struct IrisData
 	{
 		public float AdjustHeight { get; init; }
@@ -184,8 +198,8 @@ public readonly record struct AiBodyData
 	public NipplesData Nipples { get; init; }
 	public PubicHairData PubicHair { get; init; }
 	public NailColorData NailColor { get; init; }
-	public PaintInfo Paint1 { get; init; }
-	public PaintInfo Paint2 { get; init; }
+	public AiPaintInfo Paint1 { get; init; }
+	public AiPaintInfo Paint2 { get; init; }
 	public bool IsFuta { get; init; }
 
 	public readonly record struct OverallData
@@ -298,12 +312,11 @@ public readonly record struct AiClothingData
 
 	}
 }
-public readonly record struct AiAccessorySettingsData
+public readonly record struct AiAccessoriesData
 {
 }
 public readonly record struct AiCharaStatusData // Status
 {
-
 	public Version Version { get; init; }
 	//public byte[] clothesState { get; init; } = null!;
 	public ClothingState Top { get; init; }
@@ -357,6 +370,29 @@ public readonly record struct AiCharaStatusData // Status
 	public int[,] shapeHandPtn { get; init; }
 	public ImmutableArray<float> shapeHandBlendValue { get; init; }
 	public float siriAkaRate { get; init; }
+	public enum ClothingState
+	{
+		None = 0b00,
+		Half = 0b01,
+		Full = 0b10
+	}
+	public enum EyeLookType
+	{
+		NO_LOOK,
+		TARGET,
+		AWAY,
+		FORWARD,
+		CONTROL
+	}
+	public enum NeckLookType
+	{
+		NO_LOOK,
+		TARGET,
+		AWAY,
+		FORWARD,
+		FIX,
+		CONTROL
+	}
 }
 public readonly record struct AiCharaInfoData // Parameter - this is common to both AIS and HS2
 {
@@ -368,11 +404,157 @@ public readonly record struct AiCharaInfoData // Parameter - this is common to b
 	public float VoiceRate { get; init; }
 	public float VoicePitch => Mathf.Lerp(0.94f, 1.06f, VoiceRate);
 	public bool IsFuta { get; init; }
+
+	public enum PersonalityType
+	{
+		Composed,
+		Normal,
+		Hardworking,
+		Girlfriend,
+		Fashionable,
+		Timid,
+		Motherly,
+		Sadistic,
+		OpenMinded,
+		Airhead,
+		Careful,
+		IdealJapanese,
+		Tomboy,
+		Obsessed
+	}
 }
 public readonly record struct AISGameData // GameInfo
 {
-	public ImmutableHashSet<int> Wishes => new HashSet<int>().ToImmutableHashSet(); // { get; init; } // This comes from Parameter and seems to be AIS-specific
-
+	public ImmutableHashSet<int> Wishes { get; init; } // This comes from Parameter and seems to be AIS-specific
+	public bool gameRegistration { get; init; }
+	public float LowerTempBound { get; init; }
+	public float UpperTempBound { get; init; }
+	public float LowerMoodBound { get; init; }
+	public float UpperMoodBound { get; init; }
+	public Dictionary<FlavorType, int> FlavorState { get; init; } = null!;
+	public int totalFlavor { get; init; }
+	public Dictionary<DesireFlags, DesireData> Desire { get; init; } = null!;
+	public int Hearts { get; init; } // phase
+	public Dictionary<int, int> normalSkill { get; init; } = null!;
+	public Dictionary<int, int> hSkill { get; init; } = null!;
+	public int favoritePlace { get; init; }
+	public LifestyleType Lifestyle { get; init; }
+	public int morality { get; init; }
+	public int motivation { get; init; }
+	public int immoral { get; init; }
+	public bool isHAddTaii0 { get; init; }
+	public bool isHAddTaii1 { get; init; }
+	public enum FlavorType
+	{
+		Pheromone,
+		Reliability,
+		Reason,
+		Instinct,
+		Dirty,
+		Wariness,
+		Darkness,
+		Sociability
+	}
+	[Flags]
+	public enum DesireFlags
+	{
+		None = 0,
+		Toilet = 1,
+		Bath = 2,
+		Sleep = 4,
+		Eat = 8,
+		Break = 16,
+		Gift = 32,
+		Want = 64,
+		Lonely = 128,
+		H = 256,
+		Dummy = 512,
+		Hunt = 1024,
+		Game = 2048,
+		Cook = 4096,
+		Animal = 8192,
+		Location = 16384,
+		Drink = 32768
+	}
+	public enum StatusType
+	{
+		Temperature,
+		Mood,
+		Hunger,
+		Physical,
+		Life,
+		Motivation,
+		Immoral,
+		Morality
+	}
+	public enum LifestyleType
+	{
+		Getter,
+		Baby,
+		Driver,
+		Controller,
+		ExcitementSeeker,
+		Armchair
+	}
+	public enum SkillType
+	{
+		None = -1,
+		CookingLover,
+		CleanLover,
+		AnimalLover,
+		SleepingPrincess,
+		PriestessBloodline,
+		Achiever,
+		Simple,
+		ReactionLover,
+		Dear,
+		DevotedPartner,
+		FishingLover,
+		Klutz,
+		CropKnowledge,
+		Avarice,
+		Tireless,
+		Glutton,
+		RainLover,
+		Wild,
+		GoodsSupplier,
+		Beastmaster,
+		Moody,
+		LovesToPlay,
+		SexualDesire,
+		Curiosity,
+		CursedBody,
+		Sensitive,
+		Distrustful,
+		HeartWall,
+		BodyManagement,
+		Endurance,
+		Lonely,
+		GoodTalker,
+		Chatty,
+		Doer,
+		SuperSense,
+		Slacker,
+		Fastidious,
+		Misfortune,
+		WeakConstitution,
+		DeepDarkness,
+		Unkempt,
+		Lucky,
+		DiggingManiac,
+		BugCollector,
+		Hunter,
+		Courage,
+		Collector,
+		TerrainGrasp,
+		Guts,
+		GoodLuck
+	}
+	public readonly record struct DesireData
+	{
+		public float BaseDesire { get; init; }
+		public float DesireBuff { get; init; }
+	}
 }
 public readonly record struct HS2GameData // GameInfo2 and Parameter2
 {
@@ -404,355 +586,73 @@ public readonly record struct HS2GameData // GameInfo2 and Parameter2
 	public SexItemType ActiveItem { get; init; } // usedItem
 												 //public bool IsChangeParameter { get; init; }
 	public bool IsConcierge { get; init; }
+	public enum SexTraitType // hAttribute
+	{
+		None,
+		Horny,
+		Sadist,
+		Masochist,
+		SensitiveBreasts,
+		SensitiveAss,
+		SensitivePussy,
+		LoveKisses,
+		CleanFreak,
+		SexHater,
+		Lonely
+	}
+	public enum MentalityType // mind
+	{
+		None,
+		Curious,
+		Affectionate,
+		Lovestruck,
+		Awkward,
+		Reluctant,
+		Loathing,
+		Cooperative,
+		Obedient,
+		Submissive,
+		Interested,
+		Charmed,
+		Aroused,
+	}
+	public enum TraitType // trait
+	{
+		None,
+		CleanLover,
+		Lazy,
+		Fragile,
+		Tough,
+		WeakBladder,
+		Patient,
+		GlassHeart,
+		Brave,
+		Perverted,
+		SelfControl,
+		AtWill,
+		Sensitive
+	}
+	public enum SexItemType { }
+
+	public enum HS2CharaStatus
+	{
+		Blank,
+		Favor,
+		Enjoyment,
+		Aversion,
+		Slavery,
+		Broken,
+		Dependence
+	}
 }
 
-public enum PersonalityType
+public readonly record struct AiPaintInfo
 {
-	Composed,
-	Normal,
-	Hardworking,
-	Girlfriend,
-	Fashionable,
-	Timid,
-	Motherly,
-	Sadistic,
-	OpenMinded,
-	Airhead,
-	Careful,
-	IdealJapanese,
-	Tomboy,
-	Obsessed
-}
-public enum SexTraitType // hAttribute
-{
-	None,
-	Horny,
-	Sadist,
-	Masochist,
-	SensitiveBreasts,
-	SensitiveAss,
-	SensitivePussy,
-	LoveKisses,
-	CleanFreak,
-	SexHater,
-	Lonely
-}
-public enum MentalityType // mind
-{
-	None,
-	Curious,
-	Affectionate,
-	Lovestruck,
-	Awkward,
-	Reluctant,
-	Loathing,
-	Cooperative,
-	Obedient,
-	Submissive,
-	Interested,
-	Charmed,
-	Aroused,
-}
-public enum TraitType // trait
-{
-	None,
-	CleanLover,
-	Lazy,
-	Fragile,
-	Tough,
-	WeakBladder,
-	Patient,
-	GlassHeart,
-	Brave,
-	Perverted,
-	SelfControl,
-	AtWill,
-	Sensitive
-}
-public enum SexItemType { }
-public enum ClothingState
-{
-	None = 0b00,
-	Half = 0b01,
-	Full = 0b10
-}
-public enum EyeLookType
-{
-	NO_LOOK,
-	TARGET,
-	AWAY,
-	FORWARD,
-	CONTROL
-}
-public enum NeckLookType
-{
-	NO_LOOK,
-	TARGET,
-	AWAY,
-	FORWARD,
-	FIX,
-	CONTROL
-}
-
-public static class AiFriendlyCharaData
-{
-	public static (AiFaceData, AiBodyData, AiHairData) GetAllFriendlyBodyData(AiCustom custom)
-	{
-		AiFaceData faceData = new()
-		{
-			FaceType = new()
-			{
-				Contour = GetFriendlyFaceContourName(custom.face.headId),
-				Skin = GetFriendlyFaceSkinName(custom.face.skinId),
-				Wrinkles = GetFriendlyFaceSkinName(custom.face.detailId),
-			},
-			Overall = new()
-			{
-				HeadWidth = custom.face.shapeValueFace[0],
-				UpperDepth = custom.face.shapeValueFace[1],
-				UpperHeight = custom.face.shapeValueFace[2],
-				LowerDepth = custom.face.shapeValueFace[3],
-				LowerWidth = custom.face.shapeValueFace[4],
-			},
-			Jaw = new()
-			{
-				JawWidth = custom.face.shapeValueFace[5],
-				JawHeight = custom.face.shapeValueFace[6],
-				JawDepth = custom.face.shapeValueFace[7],
-				JawAngle = custom.face.shapeValueFace[8],
-				NeckDroop = custom.face.shapeValueFace[9],
-				ChinSize = custom.face.shapeValueFace[10],
-				ChinHeight = custom.face.shapeValueFace[11],
-				ChinDepth = custom.face.shapeValueFace[12]
-			},
-			Cheeks = new()
-			{
-				LowerHeight = custom.face.shapeValueFace[13],
-				LowerDepth = custom.face.shapeValueFace[14],
-				LowerWidth = custom.face.shapeValueFace[15],
-				UpperHeight = custom.face.shapeValueFace[16],
-				UpperDepth = custom.face.shapeValueFace[17],
-				UpperWidth = custom.face.shapeValueFace[18]
-			},
-			Eyebrows = new()
-			{
-				Width = custom.face.eyebrowLayout.Z,
-				Height = custom.face.eyebrowLayout.W,
-				PositionX = custom.face.eyebrowLayout.X,
-				PositionY = custom.face.eyebrowLayout.Y,
-				AngleTilt = custom.face.eyebrowTilt
-			},
-			Eye = new()
-			{
-				EyeHeight = custom.face.shapeValueFace[23],
-				EyeSpacing = custom.face.shapeValueFace[20],
-				EyeDepth = custom.face.shapeValueFace[21],
-				EyeWidth = custom.face.shapeValueFace[22],
-				EyeVertical = custom.face.shapeValueFace[19],
-				EyeAngleZ = custom.face.shapeValueFace[24],
-				EyeAngleY = custom.face.shapeValueFace[25],
-				OuterHeight = custom.face.shapeValueFace[29],
-				OuterDist = custom.face.shapeValueFace[27],
-				InnerHeight = custom.face.shapeValueFace[28],
-				InnerDist = custom.face.shapeValueFace[26],
-				EyelidShape1 = custom.face.shapeValueFace[30],
-				EyelidShape2 = custom.face.shapeValueFace[31]
-			},
-			Nose = new()
-			{
-				NoseHeight = custom.face.shapeValueFace[32],
-				NoseDepth = custom.face.shapeValueFace[33],
-				NoseAngle = custom.face.shapeValueFace[34],
-				NoseSize = custom.face.shapeValueFace[35],
-				BridgeHeight = custom.face.shapeValueFace[36],
-				BridgeWidth = custom.face.shapeValueFace[37],
-				BridgeShape = custom.face.shapeValueFace[38],
-				NostrilWidth = custom.face.shapeValueFace[39],
-				NostrilHeight = custom.face.shapeValueFace[40],
-				NostrilLength = custom.face.shapeValueFace[41],
-				NostrilInnerWidth = custom.face.shapeValueFace[42],
-				NostrilOuterWidth = custom.face.shapeValueFace[43],
-				NoseTipLength = custom.face.shapeValueFace[44],
-				NoseTipHeight = custom.face.shapeValueFace[45],
-				NoseTipSize = custom.face.shapeValueFace[46]
-			},
-			Mouth = new()
-			{
-				MouthHeight = custom.face.shapeValueFace[47],
-				MouthWidth = custom.face.shapeValueFace[48],
-				LipThickness = custom.face.shapeValueFace[49],
-				Depth = custom.face.shapeValueFace[50],
-				UpperLipThickness = custom.face.shapeValueFace[51],
-				LowerLipThickness = custom.face.shapeValueFace[52],
-				CornerShape = custom.face.shapeValueFace[53]
-			},
-			Ears = new()
-			{
-				EarSize = custom.face.shapeValueFace[54],
-				EarAngle = custom.face.shapeValueFace[55],
-				EarRotation = custom.face.shapeValueFace[56],
-				UpEarShape = custom.face.shapeValueFace[57],
-				LowEarShape = custom.face.shapeValueFace[58]
-			},
-			Moles = new()
-			{
-				MoleType = GetFriendlyMoleName(custom.face.moleId),
-				MoleWidth = custom.face.moleLayout.Z,
-				MoleHeight = custom.face.moleLayout.W,
-				MolePositionX = custom.face.moleLayout.X,
-				MolePositionY = custom.face.moleLayout.Y
-			},
-			SetBothLeftAndRightEyes = custom.face.pupilSameSetting,
-			LeftEyeInfo = custom.face.pupil[0],
-			RightEyeInfo = custom.face.pupil[1],
-			IrisSettings = new()
-			{
-				AdjustHeight = custom.face.pupilY,
-				ShadowRange = custom.face.whiteShadowScale
-			},
-			EyeHighlights = new()
-			{
-				Type = custom.face.hlId,
-				Color = custom.face.hlColor,
-				Width = custom.face.hlLayout.Z,
-				Height = custom.face.hlLayout.W,
-				PositionX = custom.face.hlLayout.X,
-				PositionY = custom.face.hlLayout.Y,
-				Tilt = custom.face.hlTilt
-			},
-			EyebrowType = new()
-			{
-				Type = custom.face.eyebrowId,
-				Color = custom.face.eyebrowColor
-			},
-			EyelashType = new()
-			{
-				Type = custom.face.eyelashesId,
-				Color = custom.face.eyelashesColor
-			},
-			Eyeshadow = new()
-			{
-				Type = custom.face.makeup.eyeshadowId,
-				Color = custom.face.makeup.eyeshadowColor,
-				Shine = custom.face.makeup.eyeshadowGloss,
-			},
-			Blush = new()
-			{
-				Type = custom.face.makeup.cheekId,
-				Color = custom.face.makeup.cheekColor,
-				Shine = custom.face.makeup.cheekGloss
-			},
-			Lipstick = new()
-			{
-				Type = custom.face.makeup.lipId,
-				Color = custom.face.makeup.lipColor,
-				Shine = custom.face.makeup.lipGloss
-			},
-			Paint1 = custom.face.makeup.paintInfo[0],
-			Paint2 = custom.face.makeup.paintInfo[1]
-		};
-		AiBodyData bodyData = new()
-		{
-			Overall = new()
-			{
-				Height = custom.body.shapeValueBody[0],
-				HeadSize = custom.body.shapeValueBody[9]
-			},
-			Breast = new()
-			{
-				Size = custom.body.shapeValueBody[1],
-				Height = custom.body.shapeValueBody[2],
-				Direction = custom.body.shapeValueBody[3],
-				Spacing = custom.body.shapeValueBody[4],
-				Angle = custom.body.shapeValueBody[5],
-				Length = custom.body.shapeValueBody[6],
-				Softness = custom.body.bustSoftness,
-				Weight = custom.body.bustWeight,
-				AreolaDepth = custom.body.shapeValueBody[7],
-				AreolaSize = custom.body.areolaSize,
-				NippleWidth = custom.body.shapeValueBody[8],
-				NippleDepth = custom.body.shapeValueBody[32]
-			},
-			UpperBody = new()
-			{
-				NeckWidth = custom.body.shapeValueBody[10],
-				NeckThickness = custom.body.shapeValueBody[11],
-				ShoulderWidth = custom.body.shapeValueBody[12],
-				ShoulderThickness = custom.body.shapeValueBody[13],
-				ChestWidth = custom.body.shapeValueBody[14],
-				ChestThickness = custom.body.shapeValueBody[15],
-				WaistWidth = custom.body.shapeValueBody[16],
-				WaistThickness = custom.body.shapeValueBody[17],
-			},
-			LowerBody = new()
-			{
-				WaistHeight = custom.body.shapeValueBody[18],
-				PelvisWidth = custom.body.shapeValueBody[19],
-				PelvisThickness = custom.body.shapeValueBody[20],
-				HipsWidth = custom.body.shapeValueBody[21],
-				HipsThickness = custom.body.shapeValueBody[22],
-				Butt = custom.body.shapeValueBody[23],
-				ButtAngle = custom.body.shapeValueBody[24],
-			},
-			Arms = new()
-			{
-				Shoulder = custom.body.shapeValueBody[29],
-				UpperArms = custom.body.shapeValueBody[30],
-				Forearm = custom.body.shapeValueBody[31]
-			},
-			Legs = new()
-			{
-				UpperThighs = custom.body.shapeValueBody[25],
-				LowerThighs = custom.body.shapeValueBody[26],
-				Calves = custom.body.shapeValueBody[27],
-				Ankles = custom.body.shapeValueBody[28],
-			}
-		};
-		AiHairData hairData = new() { };
-		return (faceData, bodyData, hairData);
-	}
-	[SuppressMessage("Style", "IDE0008:Use explicit type", Justification = "Analyzer doesn't recognize immutable builder methods as apparent")]
-	public static (AiClothingData, ImmutableArray<AiAccessorySettingsData>) GetAllFriendlyCoordinateData(AiCoordinate coordinate)
-	{
-		AiClothingData clothingData = new() { };
-		AiAccessorySettingsData _accessorySettingsData = new() { };
-		var accessorySettingsDatas = ImmutableArray.CreateBuilder<AiAccessorySettingsData>();
-		accessorySettingsDatas.Add(_accessorySettingsData);
-		return (clothingData, accessorySettingsDatas.ToImmutable());
-	}
-	public static AiCharaInfoData GetFriendlyCharaInfoData(AiParameter parameter) => new()
-	{
-		Sex = (CharaSex)parameter.sex,
-		Name = parameter.fullname,
-		Personality = (PersonalityType)parameter.personality,
-		BirthMonth = parameter.birthMonth,
-		BirthDay = parameter.birthDay,
-		VoiceRate = parameter.voiceRate,
-		IsFuta = parameter.futanari
-	};
-	public static AISGameData GetFriendlyAISGameData(AiGameInfo gameInfo)
-	{
-		return new();
-	}
-	public static HS2GameData? GetFriendlyHS2GameInfoData(AiGameInfo2 gameInfo2, AiParameter2 parameter2)
-	{
-		return new();
-	}
-
-	public static AiCustom GetCustomData(AiFaceData faceData, AiBodyData bodyData, AiHairData hairData)
-	{
-		return Tsubomi.Custom;
-	}
-	public static AiCoordinate GetCoordinateData(AiClothingData clothingData, ImmutableArray<AiAccessorySettingsData> accessorySettingsDatas)
-	{
-		return Tsubomi.Coordinate;
-	}
-	public static AiParameter GetParameterData(AiCharaInfoData charaInfoData)
-	{
-		return Tsubomi.Parameter;
-	}
-	public static (AiParameter2, AiGameInfo2) GetRawHS2Data(HS2GameData gameData)
-	{
-		return (Tsubomi.Parameter2, Tsubomi.GameInfo2);
-	}
+	public int id { get; init; }
+	public Color Color { get; init; }
+	public float Shine { get; init; }
+	public float Texture { get; init; }
+	public int layoutId { get; init; }
+	public Vector4 Position { get; init; }
+	public float Rotation { get; init; }
 }

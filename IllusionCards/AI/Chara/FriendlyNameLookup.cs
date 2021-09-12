@@ -2,6 +2,31 @@
 
 public static class FriendlyNameLookup
 {
+	public static string GetFriendlyNameByID(int categoryID, int itemID) => categoryID switch
+	{
+		0 => throw new NotImplementedException(), //cha_sample_m
+		1 => throw new NotImplementedException(), //cha_sample_f
+		3 => throw new NotImplementedException(), //init_mind_param
+		5 => throw new NotImplementedException(), //cha_sample_voice
+		6 => throw new NotImplementedException(), //mole_layout
+		7 => throw new NotImplementedException(), //facepaint_layout
+		8 => throw new NotImplementedException(), //bodypaint_layout
+		110 => throw new NotImplementedException(), //mo_head
+		111 => throw new NotImplementedException(), //mt_skin_f
+		112 => throw new NotImplementedException(), //mt_detail_f
+		121 => throw new NotImplementedException(), //mt_beard
+		131 => throw new NotImplementedException(), //mt_skin_b
+		132 => throw new NotImplementedException(), //mt_detail_b
+		133 => throw new NotImplementedException(), //mt_sunburn
+		140 => throw new NotImplementedException(), //mo_top
+		141 => throw new NotImplementedException(), //mo_bot
+		144 => throw new NotImplementedException(), //mo_gloves
+		147 => throw new NotImplementedException(), //mo_shoes
+		210 => GetFriendlyFemaleFaceContourName(itemID),
+		211 => GetFriendlyFemaleFaceSkinName(itemID),
+		212 => GetFriendlyFemaleFaceWrinklesName(itemID),
+		_ => throw new ArgumentException("Unknown category ID")
+	};
 	//cha_sample_m = 0
 	//cha_sample_f = 1,
 	//init_mind_param = 3
@@ -21,7 +46,7 @@ public static class FriendlyNameLookup
 	//mo_gloves = 144
 	//mo_shoes = 147
 
-	internal static string GetFriendlyFaceContourName(int headID) => headID switch //fo_head = 210
+	public static string GetFriendlyFemaleFaceContourName(int headID) => headID switch //fo_head = 210
 	{
 		0 => "Type 1",
 		1 => "Type 2",
@@ -29,7 +54,7 @@ public static class FriendlyNameLookup
 		3 => "Type 4",
 		_ => "Unknown",
 	};
-	internal static string GetFriendlyFaceSkinName(int skinID) => skinID switch //ft_skin_f = 211
+	public static string GetFriendlyFemaleFaceSkinName(int skinID) => skinID switch //ft_skin_f = 211
 	{
 		0 or 9 or 20 or 30 => "Type 1",
 		1 or 10 or 21 or 31 => "Type 2",
@@ -52,7 +77,7 @@ public static class FriendlyNameLookup
 		48 => "Type 19",
 		_ => "Unknown"
 	};
-	internal static string GetFriendlyFaceWrinklesName(int detailID) => detailID switch //ft_detail_f = 212
+	public static string GetFriendlyFemaleFaceWrinklesName(int detailID) => detailID switch //ft_detail_f = 212
 	{
 		0 => "None",
 		1 => "Laugh Lines",
@@ -129,12 +154,12 @@ public static class FriendlyNameLookup
 	//custom_eye_f = 505
 	//custom_mouth_m = 506
 	//custom_mouth_f = 507
-	internal static string GetFriendlyEyebrowName(int eyebrowID) => eyebrowID switch
+	public static string GetFriendlyEyebrowName(int eyebrowID) => eyebrowID switch
 	{
 		>= 0 and <= 29 => $"Type {eyebrowID + 1}",
 		_ => "Unknown"
 	};
-	internal static string GetFriendlyMoleName(int moleID) => moleID switch
+	public static string GetFriendlyMoleName(int moleID) => moleID switch
 	{
 		0 => "None",
 		1 => "Mole",
@@ -143,7 +168,7 @@ public static class FriendlyNameLookup
 		4 => "Freckles 2",
 		_ => "Unknown"
 	};
-	internal static string GetFriendlyPaintName(int paintInfoID) => paintInfoID switch // IDs are in the order they are shown in the (HS2) character maker
+	public static string GetFriendlyPaintName(int paintInfoID) => paintInfoID switch // IDs are in the order they are shown in the (HS2) character maker
 	{
 		0 => "None",
 		14 => "Heart",
@@ -196,5 +221,4 @@ public static class FriendlyNameLookup
 		46 => "Heart 2",
 		_ => "Unknown"
 	};
-	// 350 ao_none has a single item with index 0 and is the "none" thumbnail
 }

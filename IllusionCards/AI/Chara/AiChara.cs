@@ -5,8 +5,8 @@ public readonly record struct AiChara : IIllusionChara
 	public static AiChara Tsubomi { get; }
 	public static AiChara Hero { get; }
 	public static AiChara HatanoMiwa { get; }
-	public static AiParameter2 HS2NewChara { get; }
-	public static AiGameInfo2 HS2NewGameData { get; }
+	public static AiRawParameter2Data HS2NewChara { get; }
+	public static AiRawGameInfo2Data HS2NewGameData { get; }
 
 	internal AiChara DefaultChara => Sex is CharaSex.Male ? Hero : Tsubomi;
 
@@ -17,19 +17,19 @@ public readonly record struct AiChara : IIllusionChara
 	public int Language { get; init; }
 	public string UserID { get; init; }
 	public string DataID { get; init; }
-	internal AiCustom Custom { get; init; }
-	internal AiCoordinate Coordinate { get; init; }
-	internal AiParameter Parameter { get; init; }
-	internal AiParameter2 Parameter2 { get; init; } = HS2NewChara;
-	internal AiGameInfo GameInfo { get; init; }
-	internal AiGameInfo2 GameInfo2 { get; init; } = HS2NewGameData;
-	internal AiStatus Status { get; init; }
+	internal AiRawCustomData Custom { get; init; }
+	internal AiRawCoordinateData Coordinate { get; init; }
+	internal AiRawParameterData Parameter { get; init; }
+	internal AiRawParameter2Data Parameter2 { get; init; } = HS2NewChara;
+	internal AiRawGameInfoData GameInfo { get; init; }
+	internal AiRawGameInfo2Data GameInfo2 { get; init; } = HS2NewGameData;
+	internal AiRawStatusData Status { get; init; }
 
 	public AiFaceData Face { get; init; }
 	public AiBodyData Body { get; init; }
 	public AiHairData Hair { get; init; }
 	public AiClothingData Clothing { get; init; }
-	public ImmutableArray<AiAccessorySettingsData> Accessories { get; init; }
+	public ImmutableArray<AiAccessoriesData> Accessories { get; init; }
 	public AiCharaInfoData CharaInfo { get; init; }
 	public AISGameData AISGameInfo { get; init; }
 	public HS2GameData? HS2GameInfo { get; init; }
@@ -83,13 +83,13 @@ public readonly record struct AiChara : IIllusionChara
 		UserID = _userID;
 		DataID = _dataID;
 
-		AiCustom? _custom = null;
-		AiCoordinate? _coordinate = null;
-		AiParameter? _parameter = null;
-		AiParameter2? _parameter2 = null;
-		AiGameInfo? _gameInfo = null;
-		AiGameInfo2? _gameInfo2 = null;
-		AiStatus? _status = null;
+		AiRawCustomData? _custom = null;
+		AiRawCoordinateData? _coordinate = null;
+		AiRawParameterData? _parameter = null;
+		AiRawParameter2Data? _parameter2 = null;
+		AiRawGameInfoData? _gameInfo = null;
+		AiRawGameInfo2Data? _gameInfo2 = null;
+		AiRawStatusData? _status = null;
 
 		long _postNumPosition = binaryReader.BaseStream.Position;
 		List<InvalidDataException> _exList = new();
@@ -107,7 +107,7 @@ public readonly record struct AiChara : IIllusionChara
 				{
 					case Constants.AiCustomBlockName:
 						CheckInfoVersion(info, AiCustomVersion);
-						_custom = new AiCustom(_infoData);
+						_custom = new AiRawCustomData(_infoData);
 						_blockHits[0] = true;
 						break;
 					case Constants.AiCoordinateBlockName:
@@ -117,25 +117,25 @@ public readonly record struct AiChara : IIllusionChara
 						break;
 					case Constants.AiParameterBlockName:
 						CheckInfoVersion(info, AiParameterVersion);
-						_parameter = MessagePackSerializer.Deserialize<AiParameter>(_infoData);
+						_parameter = MessagePackSerializer.Deserialize<AiRawParameterData>(_infoData);
 						_blockHits[2] = true;
 						break;
 					case Constants.AiParameter2BlockName:
 						CheckInfoVersion(info, AiParameter2Version);
-						_parameter2 = MessagePackSerializer.Deserialize<AiParameter2>(_infoData);
+						_parameter2 = MessagePackSerializer.Deserialize<AiRawParameter2Data>(_infoData);
 						break;
 					case Constants.AiGameInfoBlockName:
 						CheckInfoVersion(info, AiGameInfoVersion);
-						_gameInfo = MessagePackSerializer.Deserialize<AiGameInfo>(_infoData);
+						_gameInfo = MessagePackSerializer.Deserialize<AiRawGameInfoData>(_infoData);
 						_blockHits[3] = true;
 						break;
 					case Constants.AiGameInfo2BlockName:
 						CheckInfoVersion(info, AiGameInfo2Version);
-						_gameInfo2 = MessagePackSerializer.Deserialize<AiGameInfo2>(_infoData);
+						_gameInfo2 = MessagePackSerializer.Deserialize<AiRawGameInfo2Data>(_infoData);
 						break;
 					case Constants.AiStatusBlockName:
 						CheckInfoVersion(info, AiStatusVersion);
-						_status = MessagePackSerializer.Deserialize<AiStatus>(_infoData);
+						_status = MessagePackSerializer.Deserialize<AiRawStatusData>(_infoData);
 						_blockHits[4] = true;
 						break;
 					case Constants.AiPluginDataBlockName:
@@ -167,13 +167,13 @@ public readonly record struct AiChara : IIllusionChara
 
 		if (_exList.Count != 0) throw new AggregateException("Some critical data was missing from this character.", _exList);
 
-		Custom = _custom?.IsInitialized ?? false ? (AiCustom)_custom : throw new InvalidDataException("This character has no Custom data");
-		Coordinate = _coordinate?.IsInitialized ?? false ? (AiCoordinate)_coordinate : throw new InvalidDataException("This character has no Coordinate data");
-		Parameter = _parameter?.version is not null ? (AiParameter)_parameter : throw new InvalidDataException("This character has no Parameter data");
-		GameInfo = _gameInfo?.version is not null ? (AiGameInfo)_gameInfo : throw new InvalidDataException("This character has no GameInfo data");
-		Status = _status?.version is not null ? (AiStatus)_status : throw new InvalidDataException("This character has no Status data");
-		if (_parameter2?.version is not null) Parameter2 = (AiParameter2)_parameter2;
-		if (_gameInfo2 is not null) GameInfo2 = (AiGameInfo2)_gameInfo2;
+		Custom = _custom?.IsInitialized ?? false ? (AiRawCustomData)_custom : throw new InvalidDataException("This character has no Custom data");
+		Coordinate = _coordinate?.IsInitialized ?? false ? (AiRawCoordinateData)_coordinate : throw new InvalidDataException("This character has no Coordinate data");
+		Parameter = _parameter?.version is not null ? (AiRawParameterData)_parameter : throw new InvalidDataException("This character has no Parameter data");
+		GameInfo = _gameInfo?.version is not null ? (AiRawGameInfoData)_gameInfo : throw new InvalidDataException("This character has no GameInfo data");
+		Status = _status?.version is not null ? (AiRawStatusData)_status : throw new InvalidDataException("This character has no Status data");
+		if (_parameter2?.version is not null) Parameter2 = (AiRawParameter2Data)_parameter2;
+		if (_gameInfo2 is not null) GameInfo2 = (AiRawGameInfo2Data)_gameInfo2;
 
 		for (int i = 0; i < _blockHits.Length; i++)
 			if (!_blockHits[i]) throw new InternalCardException($"Failed to detect missing blocks normally. This is a bug. (Missed block at index {i})");

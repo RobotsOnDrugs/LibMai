@@ -304,15 +304,4 @@ public record AiCharaCardDefinitions
 		SiruBackTop,
 		SiruBackBot
 	}
-
-	public enum HS2CharaStatus
-	{
-		Blank,
-		Favor,
-		Enjoyment,
-		Aversion,
-		Slavery,
-		Broken,
-		Dependence
-	}
 }
