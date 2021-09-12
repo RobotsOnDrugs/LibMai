@@ -15,7 +15,7 @@ public record AdditionalAccessoryControlsData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Additional Accessory Controls";
-	public override Type DataType { get; } = typeof(AdditionalAccessoryControlsOptions);
+	public override Type DataType => Data.GetType();
 	public AdditionalAccessoryControlsOptions Data { get; init; }
 
 	public readonly record struct AdditionalAccessoryControlsOptions

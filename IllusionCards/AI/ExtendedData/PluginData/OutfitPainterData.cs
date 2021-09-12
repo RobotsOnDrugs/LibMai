@@ -15,7 +15,7 @@ public record OutfitPainterData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Outfit Painter";
-	public override Type DataType { get; } = typeof(OutfitPainterOptions);
+	public override Type DataType => Data.GetType();
 	public OutfitPainterOptions Data { get; }
 
 	[MessagePackObject]

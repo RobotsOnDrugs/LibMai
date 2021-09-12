@@ -17,7 +17,7 @@ public record CollidersData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Colliders";
-	public override Type DataType { get; } = typeof(CollidersOptions);
+	public override Type DataType => Data.GetType();
 	public CollidersOptions Data { get; init; }
 
 	public readonly record struct CollidersOptions

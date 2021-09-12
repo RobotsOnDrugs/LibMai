@@ -15,7 +15,7 @@ public record BetterPenetrationData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Better Penetration";
-	public override Type DataType { get; } = typeof(BetterPenetrationOptions);
+	public override Type DataType => Data.GetType();
 	public BetterPenetrationOptions Data { get; init; }
 
 	public const float DefaultLengthSquish = 0.6f;

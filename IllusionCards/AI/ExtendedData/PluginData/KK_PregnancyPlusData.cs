@@ -16,7 +16,7 @@ public record KK_PregnancyPlusData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Pregnancy+";
-	public override Type DataType { get; } = typeof(KK_PregnancyPlusOptions);
+	public override Type DataType => Data.GetType();
 	public KK_PregnancyPlusOptions Data { get; }
 
 	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Mirrors original variable names")]

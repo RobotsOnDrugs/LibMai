@@ -14,17 +14,17 @@ public record EyeControlData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Eye Control";
-	public override Type DataType { get; } = typeof(MaterialEditorOptions);
-	public MaterialEditorOptions Data { get; }
+	public override Type DataType => Data.GetType();
+	public EyeControlOptions Data { get; }
 
-	public readonly record struct MaterialEditorOptions
+	public readonly record struct EyeControlOptions
 	{
 		public float EyeOpenMax { get; init; }
 		public bool DisableBlinking { get; init; }
 	}
 	public EyeControlData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
-		Data = new MaterialEditorOptions()
+		Data = new EyeControlOptions()
 		{
 			EyeOpenMax = (float)dataDict["EyeOpenMax"],
 			DisableBlinking = (bool)dataDict["DisableBlinking"]

@@ -15,7 +15,7 @@ public record ReverseTrapData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Reverse Trap";
-	public override Type DataType { get; } = typeof(ReverseTrapOptions);
+	public override Type DataType => Data.GetType();
 	public ReverseTrapOptions Data { get; init; }
 
 	public readonly record struct ReverseTrapOptions

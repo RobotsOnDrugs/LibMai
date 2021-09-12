@@ -16,7 +16,7 @@ public record BepinExSideloaderData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Sideloader";
-	public override Type DataType { get; } = typeof(ImmutableArray<ModInfo>);
+	public override Type DataType => Data.GetType();
 	public ImmutableArray<ModInfo> Data { get; init; }
 
 	public BepinExSideloaderData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)

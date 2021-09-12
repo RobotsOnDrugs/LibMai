@@ -15,7 +15,7 @@ public record DynamicBoneEditorData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Dynamic Bone Editor";
-	public override Type DataType { get; } = typeof(ImmutableArray<DynamicBoneData>);
+	public override Type DataType => Data.GetType();
 	public ImmutableArray<DynamicBoneData> Data { get; init; }
 
 	public DynamicBoneEditorData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)

@@ -15,7 +15,7 @@ public record AdditionalAccessoriesData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "MoreAccessories";
-	public override Type DataType { get; } = typeof(XmlDocument);
+	public override Type DataType => Data.GetType();
 	public XmlDocument Data { get; init; }
 
 	public AdditionalAccessoriesData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)

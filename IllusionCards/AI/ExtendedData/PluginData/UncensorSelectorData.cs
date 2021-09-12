@@ -15,7 +15,7 @@ public record UncensorSelectorData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Uncensor Selector";
-	public override Type DataType { get; } = typeof(UncensorOptions);
+	public override Type DataType => Data.GetType();
 	public UncensorOptions Data { get; init; }
 
 	public readonly record struct UncensorOptions
@@ -25,11 +25,11 @@ public record UncensorSelectorData : AiPluginData
 		public string? BallsGUID { get; init; }
 		public bool DisplayPenis { get; init; }
 		public bool DisplayBalls { get; init; }
-		public ImmutableArray<object>? Unrecognized { get; init; }
+		public ImmutableDictionary<string, object>? Unrecognized { get; init; }
 	}
 	public UncensorSelectorData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
-		ImmutableArray<object>.Builder? _unrecognized = null;
+		ImmutableDictionary<string, object>.Builder? _unrecognized = null;
 		string? _BodyGUID = null;
 		string? _PenisGUID = null;
 		string? _BallsGUID = null;
@@ -45,7 +45,7 @@ public record UncensorSelectorData : AiPluginData
 				case "PenisGUID":
 					_PenisGUID = (string?)uncensorOption.Value;
 					break;
-				case "_BallsGUID":
+				case "BallsGUID":
 					_BallsGUID = (string?)uncensorOption.Value;
 					break;
 				case "DisplayPenis":
@@ -55,8 +55,8 @@ public record UncensorSelectorData : AiPluginData
 					_DisplayBalls = (bool)uncensorOption.Value;
 					break;
 				default:
-					_unrecognized ??= ImmutableArray.CreateBuilder<object>();
-					_unrecognized.Add(uncensorOption.Value);
+					_unrecognized ??= ImmutableDictionary.CreateBuilder<string, object>();
+					_unrecognized.Add((string)uncensorOption.Key, uncensorOption.Value);
 					break;
 			}
 		}

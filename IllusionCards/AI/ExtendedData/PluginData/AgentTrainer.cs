@@ -15,7 +15,7 @@ public record AgentTrainerData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Agent Trainer";
-	public override Type DataType { get; } = typeof(AgentTrainerOptions);
+	public override Type DataType => Data.GetType();
 	public AgentTrainerOptions Data { get; }
 
 	// The integer indices of these have meaning for "AgentActors" in the game, but it seems to be very specific to AI

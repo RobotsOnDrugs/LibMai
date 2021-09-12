@@ -17,7 +17,7 @@ public record AIHS2PEData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "AIPE/HS2PE";
-	public override Type DataType { get; } = typeof(XmlDocument);
+	public override Type DataType => Data.GetType();
 	public XmlDocument Data { get; init; }
 
 	public AIHS2PEData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)

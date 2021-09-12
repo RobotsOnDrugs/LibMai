@@ -15,7 +15,7 @@ public record MaterialEditorData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Material Editor";
-	public override Type DataType { get; } = typeof(MaterialEditorOptions);
+	public override Type DataType => Data.GetType();
 	public MaterialEditorOptions Data { get; init; }
 
 	public readonly record struct MaterialEditorOptions

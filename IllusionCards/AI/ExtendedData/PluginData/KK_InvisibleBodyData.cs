@@ -14,7 +14,7 @@ public record KK_InvisibleBodyData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Invisible Body";
-	public override Type DataType { get; } = typeof(KK_InvisibleBodyOptions);
+	public override Type DataType => Data.GetType();
 	public KK_InvisibleBodyOptions Data { get; init; }
 
 	public readonly record struct KK_InvisibleBodyOptions { public bool Visible { get; init; } }

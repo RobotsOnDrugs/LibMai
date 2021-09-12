@@ -20,7 +20,7 @@ public record BoobSettingsData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Boob Settings";
-	public override Type DataType { get; } = typeof(BoobController);
+	public override Type DataType => Data.GetType();
 	public BoobController Data { get; }
 
 	internal const string BUTT = "butt_";

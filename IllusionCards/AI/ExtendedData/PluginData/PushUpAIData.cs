@@ -15,7 +15,7 @@ public record PushUpAIData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "PushUp AI";
-	public override Type DataType { get; } = typeof(PushUpAIOptions);
+	public override Type DataType => Data.GetType();
 	public PushUpAIOptions Data { get; init; }
 
 	public readonly record struct PushUpAIOptions

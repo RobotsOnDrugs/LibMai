@@ -15,7 +15,7 @@ public record AdvIKPluginData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "AdvIKPlugin";
-	public override Type DataType { get; } = typeof(AdvIKPluginOptions);
+	public override Type DataType => Data.GetType();
 	public AdvIKPluginOptions Data { get; init; }
 
 	public readonly record struct AdvIKPluginOptions

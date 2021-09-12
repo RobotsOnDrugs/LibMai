@@ -44,7 +44,7 @@ public abstract record AiPluginData
 	public object? RawData { get; init; }
 	public abstract string GUID { get; }
 	public int Version { get; init; }
-	public virtual Type DataType { get; } = typeof(object);
+	public virtual Type DataType => typeof(object);
 	public sealed override string ToString() => Name;
 
 	internal AiPluginData(int version, Dictionary<object, object> _) { RawData = null; Version = version; }

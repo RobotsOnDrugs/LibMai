@@ -15,7 +15,7 @@ public record AdvancedBoneModData : AiPluginData
 	}
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Advanced Bone Modifier eXtended";
-	public override Type DataType { get; } = typeof(List<BoneModifier>);
+	public override Type DataType => Data.GetType();
 	public ImmutableArray<BoneModifier> Data { get; }
 
 	[MessagePackObject]
