@@ -1,4 +1,6 @@
-﻿namespace IllusionCards.AI.Studio;
+﻿using static IllusionCards.AI.Chara.Friendly.AiCharaStatusData;
+
+namespace IllusionCards.AI.Studio;
 
 public record AiStudioCharacter : AiStudioObject
 {

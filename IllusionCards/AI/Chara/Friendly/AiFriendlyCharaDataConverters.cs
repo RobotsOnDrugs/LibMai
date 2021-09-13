@@ -1,4 +1,4 @@
-﻿namespace IllusionCards.AI.Chara;
+﻿namespace IllusionCards.AI.Chara.Friendly;
 
 public static class AiFriendlyCharaDataConverters
 {
@@ -266,7 +266,7 @@ public static class AiFriendlyCharaDataConverters
 		return (new(), new());
 	}
 
-	private static AiFaceData.EyeInfo ConvertEyeInfo(AiRawCustomData.AiRawFaceData.EyesInfo rawEyeInfo) => new()
+	private static Face.EyeInfo ConvertEyeInfo(Raw.Custom.AiRawFaceData.EyesInfo rawEyeInfo) => new()
 	{
 		ScleraColor = rawEyeInfo.whiteColor,
 		_Iris = rawEyeInfo.pupilId,
@@ -279,7 +279,7 @@ public static class AiFriendlyCharaDataConverters
 		PupilWidth = rawEyeInfo.blackW,
 		PupilHeight = rawEyeInfo.blackH,
 	};
-	private static AiPaintInfo ConvertPaintInfo(AiRawCustomData.AiRawPaintInfo rawPaintInfo) => new()
+	private static AiPaintInfo ConvertPaintInfo(Raw.Custom.AiRawPaintInfo rawPaintInfo) => new()
 	{
 		id = rawPaintInfo.id,
 		Color = rawPaintInfo.color,

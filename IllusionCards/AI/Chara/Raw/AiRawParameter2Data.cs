@@ -1,4 +1,4 @@
-﻿namespace IllusionCards.AI.Chara;
+﻿namespace IllusionCards.AI.Chara.Raw;
 
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 public readonly record struct AiRawParameter2Data
