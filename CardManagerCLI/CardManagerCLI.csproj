@@ -8,6 +8,8 @@
 	<Version>0.0.1</Version>
 	<StartupObject>IllusionCards.CardManagerCLI</StartupObject>
 	<PackageLicenseExpression>BSD-4-Clause</PackageLicenseExpression>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <ItemGroup>

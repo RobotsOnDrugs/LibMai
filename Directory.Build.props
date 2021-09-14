@@ -5,7 +5,7 @@
 	<Nullable>enable</Nullable>
 	<Platforms>x64;x86</Platforms>
 	<SubsystemVersion>6.02</SubsystemVersion>
-	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<PackageLicenseExpression>BSD-4-Clause</PackageLicenseExpression>
  </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

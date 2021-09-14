@@ -16,7 +16,7 @@ public record BeaverAIData : AiPluginData
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "BeaverAI";
 	public override Type DataType => Data.GetType();
-	public BeaverInfo Data { get; }
+	public BeaverInfo Data { get; init; }
 
 	public readonly record struct BeaverInfo
 	{

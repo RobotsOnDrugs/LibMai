@@ -3,7 +3,7 @@
 public record AiCharaCard : IllusionCard
 {
 	public AiChara Chara { get; init; }
-	public override CardType CardType { get; } = CardType.AIChara;
+	public override CardType CardType => CardType.AIChara;
 
 	public AiCharaCard(in CardStructure cs, BinaryReader binaryReader) : base(cs, binaryReader)
 	{

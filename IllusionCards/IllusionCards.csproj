@@ -7,6 +7,8 @@
 	<Version>0.0.2</Version>
 	<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 	<PackageLicenseExpression>BSD-4-Clause</PackageLicenseExpression>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <ItemGroup>

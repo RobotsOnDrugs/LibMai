@@ -16,7 +16,7 @@ public record OutfitPainterData : AiPluginData
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Outfit Painter";
 	public override Type DataType => Data.GetType();
-	public OutfitPainterOptions Data { get; }
+	public OutfitPainterOptions Data { get; init; }
 
 	[MessagePackObject]
 	public readonly record struct OutfitPainterOptions

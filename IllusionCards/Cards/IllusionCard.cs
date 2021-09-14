@@ -8,7 +8,7 @@ public abstract record IllusionCard
 	public long DataStartOffset { get; init; }
 	public ImmutableArray<byte> PngData { get; init; }
 	public FileInfo? CardFile { get; init; }
-	public virtual CardType CardType { get; } = CardType.Unknown;
+	public virtual CardType CardType { get; init; } = CardType.Unknown;
 	internal CardStructure CardStructure { get; init; }
 
 	internal IllusionCard(in CardStructure cs, BinaryReader binaryReader)

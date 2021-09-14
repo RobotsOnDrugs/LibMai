@@ -16,7 +16,7 @@ public record KoiSkinOverlayXData : AiPluginData
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Koi Skin Overlay X";
 	public override Type DataType => Data.GetType();
-	public ImmutableDictionary<TexType, ClothesTexData> Data { get; }
+	public ImmutableDictionary<TexType, ClothesTexData> Data { get; init; }
 
 	[MessagePackObject]
 	public readonly record struct ClothesTexData

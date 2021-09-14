@@ -15,7 +15,7 @@ public record EyeControlData : AiPluginData
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Eye Control";
 	public override Type DataType => Data.GetType();
-	public EyeControlOptions Data { get; }
+	public EyeControlOptions Data { get; init; }
 
 	public readonly record struct EyeControlOptions
 	{
