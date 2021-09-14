@@ -35,10 +35,10 @@ public abstract record AiPluginData
 		};
 	}
 
-	internal static int? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, int _) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (int)_tryval : null;
-	internal static float? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, float _) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (float)_tryval : null;
-	internal static bool? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, bool _) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (bool)_tryval : null;
-	internal static string? NullCheckDictionaryEntries(ref Dictionary<object, object> dataDict, string key, string _) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (string)_tryval : null;
+	internal static int? NullCheckDictionaryEntries(in Dictionary<object, object> dataDict, string key, int _) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (int)_tryval : null;
+	internal static float? NullCheckDictionaryEntries(in Dictionary<object, object> dataDict, string key, float _) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (float)_tryval : null;
+	internal static bool? NullCheckDictionaryEntries(in Dictionary<object, object> dataDict, string key, bool _) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (bool)_tryval : null;
+	internal static string? NullCheckDictionaryEntries(in Dictionary<object, object> dataDict, string key, string _) => dataDict.TryGetValue(key, out object? _tryval) && (_tryval is not null) ? (string)_tryval : null;
 
 	public abstract string Name { get; }
 	public object? RawData { get; init; }
@@ -47,7 +47,7 @@ public abstract record AiPluginData
 	public virtual Type DataType => typeof(object);
 	public sealed override string ToString() => Name;
 
-	internal AiPluginData(int version, Dictionary<object, object> _) { RawData = null; Version = version; }
+	internal AiPluginData(int version, in Dictionary<object, object> _) { RawData = null; Version = version; }
 	internal AiPluginData() => RawData = null;
 }
 

@@ -2,7 +2,7 @@
 
 public static class FriendlyNameLookup
 {
-	public static string GetFriendlyNameByID(int categoryID, int itemID) => categoryID switch
+	public static string GetFriendlyNameByID(in int categoryID, in int itemID) => categoryID switch
 	{
 		0 => throw new NotImplementedException(), //cha_sample_m
 		1 => throw new NotImplementedException(), //cha_sample_f
@@ -46,7 +46,7 @@ public static class FriendlyNameLookup
 	//mo_gloves = 144
 	//mo_shoes = 147
 
-	public static string GetFriendlyFemaleFaceContourName(int headID) => headID switch //fo_head = 210
+	public static string GetFriendlyFemaleFaceContourName(in int headID) => headID switch //fo_head = 210
 	{
 		0 => "Type 1",
 		1 => "Type 2",
@@ -54,7 +54,7 @@ public static class FriendlyNameLookup
 		3 => "Type 4",
 		_ => "Unknown",
 	};
-	public static string GetFriendlyFemaleFaceSkinName(int skinID) => skinID switch //ft_skin_f = 211
+	public static string GetFriendlyFemaleFaceSkinName(in int skinID) => skinID switch //ft_skin_f = 211
 	{
 		0 or 9 or 20 or 30 => "Type 1",
 		1 or 10 or 21 or 31 => "Type 2",
@@ -77,7 +77,7 @@ public static class FriendlyNameLookup
 		48 => "Type 19",
 		_ => "Unknown"
 	};
-	public static string GetFriendlyFemaleFaceWrinklesName(int detailID) => detailID switch //ft_detail_f = 212
+	public static string GetFriendlyFemaleFaceWrinklesName(in int detailID) => detailID switch //ft_detail_f = 212
 	{
 		0 => "None",
 		1 => "Laugh Lines",
@@ -154,12 +154,12 @@ public static class FriendlyNameLookup
 	//custom_eye_f = 505
 	//custom_mouth_m = 506
 	//custom_mouth_f = 507
-	public static string GetFriendlyEyebrowName(int eyebrowID) => eyebrowID switch
+	public static string GetFriendlyEyebrowName(in int eyebrowID) => eyebrowID switch
 	{
 		>= 0 and <= 29 => $"Type {eyebrowID + 1}",
 		_ => "Unknown"
 	};
-	public static string GetFriendlyMoleName(int moleID) => moleID switch
+	public static string GetFriendlyMoleName(in int moleID) => moleID switch
 	{
 		0 => "None",
 		1 => "Mole",
@@ -168,7 +168,7 @@ public static class FriendlyNameLookup
 		4 => "Freckles 2",
 		_ => "Unknown"
 	};
-	public static string GetFriendlyPaintName(int paintInfoID) => paintInfoID switch // IDs are in the order they are shown in the (HS2) character maker
+	public static string GetFriendlyPaintName(in int paintInfoID) => paintInfoID switch // IDs are in the order they are shown in the (HS2) character maker
 	{
 		0 => "None",
 		14 => "Heart",

@@ -3,7 +3,7 @@
 public static class AiCharaType
 {
 	public const int LoadProductNumber = 100;
-	internal static void ParseAiCharaTypeData(BinaryReader binaryReader, string identifier, out Version version, out int language)
+	internal static void ParseAiCharaTypeData(BinaryReader binaryReader, in string identifier, out Version version, out int language)
 	{
 		try
 		{

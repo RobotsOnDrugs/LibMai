@@ -25,7 +25,7 @@ public record BeaverAIData : AiPluginData
 		public bool BottomHiding { get; init; }
 		public ImmutableDictionary<int, float>? BeaverShapes { get; init; }
 	}
-	public BeaverAIData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public BeaverAIData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		Dictionary<object, object>? _shapesRaw = new();
 		_shapesRaw = dataDict.TryGetValue("K_SHAPES", out object? _tryval) ? (Dictionary<object, object>)_tryval : null;

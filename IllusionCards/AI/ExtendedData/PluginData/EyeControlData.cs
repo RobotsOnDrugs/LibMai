@@ -22,7 +22,7 @@ public record EyeControlData : AiPluginData
 		public float EyeOpenMax { get; init; }
 		public bool DisableBlinking { get; init; }
 	}
-	public EyeControlData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public EyeControlData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		Data = new EyeControlOptions()
 		{

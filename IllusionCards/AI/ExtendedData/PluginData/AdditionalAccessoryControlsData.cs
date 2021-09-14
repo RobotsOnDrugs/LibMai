@@ -135,7 +135,7 @@ public record AdditionalAccessoryControlsData : AiPluginData
 		FOOT = 34,
 		EYELASH = 35
 	}
-	public AdditionalAccessoryControlsData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public AdditionalAccessoryControlsData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		Data = new()
 		{

@@ -20,7 +20,7 @@ public record AIHS2PEData : AiPluginData
 	public override Type DataType => Data.GetType();
 	public XmlDocument Data { get; init; }
 
-	public AIHS2PEData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public AIHS2PEData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		string _rawData = (string)dataDict["characterInfo"];
 		XmlDocument _xmlDoc = new();

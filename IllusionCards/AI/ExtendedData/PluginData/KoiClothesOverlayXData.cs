@@ -46,7 +46,7 @@ public record KoiClothesOverlayXData : AiPluginData
 		EyeOverR = 10
 	}
 	// Forget CoordinateType because it's always Unknown/0 for AI/HS2 cards
-	public KoiClothesOverlayXData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public KoiClothesOverlayXData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		Dictionary<string, ClothesTexData> _overlayData = dataDict.TryGetValue("Overlays", out object? _tryval) && (_tryval is not null) ?
 			MessagePackSerializer.Deserialize<Dictionary<CoordinateType, Dictionary<string, ClothesTexData>>>((byte[])_tryval).TryGetValue(CoordinateType.Unknown, out Dictionary<string, ClothesTexData>? _tryval2) && (_tryval2 is not null) ?

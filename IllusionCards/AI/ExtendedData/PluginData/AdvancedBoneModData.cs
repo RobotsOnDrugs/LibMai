@@ -46,7 +46,7 @@ public record AdvancedBoneModData : AiPluginData
 		// Needs a public set to make serializing work
 		public BoneModifierData[] CoordinateModifiers { get; init; } = null!;
 	}
-	public AdvancedBoneModData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public AdvancedBoneModData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		MessagePackSerializerOptions _lz4Option = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4Block).WithResolver(MathResolver);
 		Data = dataDict.TryGetValue((object)"boneData", out object? _rawData)

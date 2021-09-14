@@ -18,9 +18,9 @@ public record AdditionalAccessoriesData : AiPluginData
 	public override Type DataType => Data.GetType();
 	public XmlDocument Data { get; init; }
 
-	public AdditionalAccessoriesData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public AdditionalAccessoriesData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
-		string _rawData = NullCheckDictionaryEntries(ref dataDict, "additionalAccessories", "") ?? "";
+		string _rawData = NullCheckDictionaryEntries(dataDict, "additionalAccessories", "") ?? "";
 		XmlDocument _xmlDoc = new();
 		_xmlDoc.LoadXml(_rawData);
 		Data = _xmlDoc;

@@ -11,7 +11,7 @@ public abstract record IllusionCard
 	public virtual CardType CardType { get; } = CardType.Unknown;
 	internal CardStructure CardStructure { get; init; }
 
-	internal IllusionCard(CardStructure cs, BinaryReader binaryReader)
+	internal IllusionCard(in CardStructure cs, BinaryReader binaryReader)
 	{
 		CardStructure = cs;
 		CardFile = CardStructure.CardFile;

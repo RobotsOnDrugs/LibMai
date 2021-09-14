@@ -77,7 +77,7 @@ public record KK_PregnancyPlusData : AiPluginData
 		}
 	}
 
-	public KK_PregnancyPlusData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public KK_PregnancyPlusData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		FieldInfo[] _fields = typeof(KK_PregnancyPlusOptions).GetFields();
 		object? _tryval;

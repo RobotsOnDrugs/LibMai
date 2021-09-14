@@ -12,7 +12,7 @@ public readonly record struct AiRawCoordinateData
 
 	[IgnoreMember]
 	internal bool IsInitialized { get; init; } = false;
-	public AiRawCoordinateData(byte[] coordinateData, Version loadVersion, int language)
+	public AiRawCoordinateData(in byte[] coordinateData, Version loadVersion, int language)
 	{
 		MessagePackSerializer.DefaultOptions = WithMathTypes;
 		byte[][] _dataChunks = Helpers.GetDataChunks(coordinateData, 2);

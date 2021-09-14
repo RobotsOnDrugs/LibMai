@@ -25,7 +25,7 @@ public record AgentTrainerData : AiPluginData
 		public ImmutableDictionary<int, float> LockedDesires { get; init; }
 		public ImmutableDictionary<int, int> LockedFlavors { get; init; }
 	}
-	public AgentTrainerData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public AgentTrainerData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		MessagePackSerializerOptions _lz4Option = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4Block);
 		Data = new AgentTrainerOptions()

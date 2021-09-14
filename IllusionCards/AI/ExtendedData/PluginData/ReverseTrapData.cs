@@ -22,6 +22,6 @@ public record ReverseTrapData : AiPluginData
 	{
 		public bool ForceMaleAnimations { get; init; }
 	}
-	public ReverseTrapData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
-		=> Data = new() { ForceMaleAnimations = NullCheckDictionaryEntries(ref dataDict, "ForceMaleAnimations", false) ?? false };
+	public ReverseTrapData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
+		=> Data = new() { ForceMaleAnimations = NullCheckDictionaryEntries(dataDict, "ForceMaleAnimations", false) ?? false };
 }

@@ -26,7 +26,7 @@ public record CollidersData : AiPluginData
 		public bool SkirtCollidersEnabled { get; init; }
 		public bool FloorColliderEnabled { get; init; }
 	}
-	public CollidersData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public CollidersData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		Data = new()
 		{

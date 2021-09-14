@@ -27,7 +27,7 @@ public record UncensorSelectorData : AiPluginData
 		public bool DisplayBalls { get; init; }
 		public ImmutableDictionary<string, object>? Unrecognized { get; init; }
 	}
-	public UncensorSelectorData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public UncensorSelectorData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		ImmutableDictionary<string, object>.Builder? _unrecognized = null;
 		string? _BodyGUID = null;

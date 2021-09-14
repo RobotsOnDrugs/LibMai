@@ -18,7 +18,7 @@ public record DynamicBoneEditorData : AiPluginData
 	public override Type DataType => Data.GetType();
 	public ImmutableArray<DynamicBoneData> Data { get; init; }
 
-	public DynamicBoneEditorData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public DynamicBoneEditorData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 		=> Data = MessagePackSerializer.Deserialize<List<DynamicBoneData>>((byte[])dataDict["AccessoryDynamicBoneData"]).ToImmutableArray();
 }
 [MessagePackObject]

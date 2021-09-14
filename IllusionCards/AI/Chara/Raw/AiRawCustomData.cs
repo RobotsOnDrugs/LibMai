@@ -15,7 +15,7 @@ public readonly record struct AiRawCustomData
 	// In case it's important:
 	// BustSizeKind is determined by body.shapeValueBody[1] - 0 if =< 0.33f, 2 if >= 0.66f, 1 if in between
 	// HeightKind is determined by body.shapeValueBody[0] - 0 if =< 0.33f, 2 if >= 0.66f, 1 if in between
-	public AiRawCustomData(byte[] customData)
+	public AiRawCustomData(in byte[] customData)
 	{
 		MessagePackSerializer.DefaultOptions = WithMathTypes;
 		byte[][] _dataChunks = Helpers.GetDataChunks(customData, 3);

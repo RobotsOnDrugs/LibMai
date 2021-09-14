@@ -39,7 +39,7 @@ public readonly record struct CardStructure
 		}
 		return null;
 	}
-	private static CardType? TryPHParse(string identifier)
+	private static CardType? TryPHParse(in string identifier)
 	{
 		// PH non-scene cards start with the identifier.
 		switch (identifier)
@@ -56,7 +56,7 @@ public readonly record struct CardStructure
 		return null;
 	}
 
-	private static CardType? GetCardType(string identifier)
+	private static CardType? GetCardType(in string identifier)
 	{
 		return identifier switch
 		{
@@ -69,7 +69,7 @@ public readonly record struct CardStructure
 			_ => null,
 		};
 	}
-	internal CardStructure(BinaryReader binaryReader, FileInfo? cardFile)
+	internal CardStructure(BinaryReader binaryReader, in FileInfo? cardFile)
 	{
 		BinaryReader = binaryReader;
 		Stream _stream = BinaryReader.BaseStream;

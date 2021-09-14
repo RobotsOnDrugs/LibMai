@@ -1,4 +1,4 @@
-﻿namespace IllusionCards.AI.Chara;
+namespace IllusionCards.AI.Chara;
 
 public readonly record struct AiChara : IIllusionChara
 {
@@ -36,7 +36,7 @@ public readonly record struct AiChara : IIllusionChara
 	public ImmutableHashSet<AiPluginData>? ExtendedData { get; init; } = null;
 	public ImmutableHashSet<NullPluginData>? NullData { get; init; } = null;
 
-	private static void CheckInfoVersion(BlockHeader.Info info, Version expectedVersion)
+	private static void CheckInfoVersion(in BlockHeader.Info info, Version expectedVersion)
 	{
 		if (new Version(info.version) > expectedVersion)
 			throw new InternalCardException($"{info.name} version {info.version} was greater than the expected version {expectedVersion}");

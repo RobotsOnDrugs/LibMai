@@ -19,7 +19,7 @@ public record BepinExSideloaderData : AiPluginData
 	public override Type DataType => Data.GetType();
 	public ImmutableArray<ModInfo> Data { get; init; }
 
-	public BepinExSideloaderData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public BepinExSideloaderData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		ImmutableArray<ModInfo>.Builder _modInfos = ImmutableArray.CreateBuilder<ModInfo>();
 		object[] _rawData = (object[])dataDict["info"];

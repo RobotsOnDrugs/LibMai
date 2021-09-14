@@ -405,7 +405,7 @@ public record MaterialEditorData : AiPluginData
 		//    return rt;
 		//}
 	}
-	public MaterialEditorData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public MaterialEditorData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		MessagePackSerializer.DefaultOptions = WithMathTypes;
 		Dictionary<int, TextureContainer> _texDict = new();

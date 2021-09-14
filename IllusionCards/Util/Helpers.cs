@@ -2,7 +2,7 @@
 
 static class Helpers
 {
-	public static long? FindSequence(Stream stream, ImmutableArray<byte> sequence)
+	public static long? FindSequence(Stream stream, in ImmutableArray<byte> sequence)
 	{
 		long _originalPos = stream.Position;
 		long _bufferPos = stream.Position;
@@ -51,13 +51,13 @@ static class Helpers
 		return null;
 	}
 
-	public static float[] GetRepeatArray(int length, float val)
+	public static float[] GetRepeatArray(in int length, in float val)
 	{
 		float[] _a = new float[length];
 		for (int i = 0; i < length; i++) _a[i] = val;
 		return _a;
 	}
-	public static byte[][] GetDataChunks(byte[] bytes, int numChunks)
+	public static byte[][] GetDataChunks(in byte[] bytes, in int numChunks)
 	{
 		byte[][] chunks = new byte[numChunks][];
 		using MemoryStream _mstream = new(bytes);
@@ -87,7 +87,7 @@ static class Helpers
 		}
 		return _outerArrayBuilder.ToImmutableArray();
 	}
-	public static ImmutableArray<float> UnpackFloats(ref MessagePackReader reader, int expectedLength)
+	public static ImmutableArray<float> UnpackFloats(ref MessagePackReader reader, in int expectedLength)
 	{
 		if (reader.TryReadNil())
 		{

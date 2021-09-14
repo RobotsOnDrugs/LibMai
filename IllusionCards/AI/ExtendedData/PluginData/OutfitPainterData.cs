@@ -81,7 +81,7 @@ public record OutfitPainterData : AiPluginData
 
 	}
 
-	public OutfitPainterData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public OutfitPainterData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		Data = dataDict.TryGetValue((object)"OutfitPainterData", out object? _tryval) && (_tryval is not null)
 			? MessagePackSerializer.Deserialize<OutfitPainterOptions>((byte[])_tryval)

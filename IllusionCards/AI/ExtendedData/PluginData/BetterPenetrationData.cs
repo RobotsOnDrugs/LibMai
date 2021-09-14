@@ -64,7 +64,7 @@ public record BetterPenetrationData : AiPluginData
 			}
 		}
 	}
-	public BetterPenetrationData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public BetterPenetrationData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		Data = new()
 		{

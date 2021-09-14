@@ -2,7 +2,7 @@
 
 public static class AiFriendlyCharaDataConverters
 {
-	public static (AiFaceData, AiBodyData, AiHairData) GetAllFriendlyBodyData(AiRawCustomData custom)
+	public static (AiFaceData, AiBodyData, AiHairData) GetAllFriendlyBodyData(in AiRawCustomData custom)
 	{
 		AiFaceData faceData = new()
 		{
@@ -218,7 +218,7 @@ public static class AiFriendlyCharaDataConverters
 		return (faceData, bodyData, hairData);
 	}
 	[SuppressMessage("Style", "IDE0008:Use explicit type", Justification = "Analyzer doesn't recognize immutable builder methods as apparent")]
-	public static (AiClothingData, ImmutableArray<AiAccessoriesData>) GetAllFriendlyCoordinateData(AiRawCoordinateData coordinate)
+	public static (AiClothingData, ImmutableArray<AiAccessoriesData>) GetAllFriendlyCoordinateData(in AiRawCoordinateData coordinate)
 	{
 		AiClothingData _clothingData = new() { };
 		AiAccessoriesData _accessorySettingsData = new() { };
@@ -226,11 +226,11 @@ public static class AiFriendlyCharaDataConverters
 		_accessorySettingsDatas.Add(_accessorySettingsData);
 		return (_clothingData, _accessorySettingsDatas.ToImmutable());
 	}
-	public static AiCharaStatusData GetFriendlyAiCharaStatusData(AiRawStatusData status)
+	public static AiCharaStatusData GetFriendlyAiCharaStatusData(in AiRawStatusData status)
 	{
 		return new();
 	}
-	public static AiCharaInfoData GetFriendlyCharaInfoData(AiRawParameterData parameter) => new()
+	public static AiCharaInfoData GetFriendlyCharaInfoData(in AiRawParameterData parameter) => new()
 	{
 		Sex = (CharaSex)parameter.sex,
 		Name = parameter.fullname,
@@ -240,33 +240,33 @@ public static class AiFriendlyCharaDataConverters
 		VoiceRate = parameter.voiceRate,
 		IsFuta = parameter.futanari
 	};
-	public static AISGameData GetFriendlyAISGameData(AiRawGameInfoData gameInfo)
+	public static AISGameData GetFriendlyAISGameData(in AiRawGameInfoData gameInfo)
 	{
 		return new();
 	}
-	public static HS2GameData? GetFriendlyHS2GameInfoData(AiRawGameInfo2Data gameInfo2, AiRawParameter2Data parameter2)
+	public static HS2GameData? GetFriendlyHS2GameInfoData(in AiRawGameInfo2Data gameInfo2, in AiRawParameter2Data parameter2)
 	{
 		return new();
 	}
 
-	public static AiRawCustomData GetCustomData(AiFaceData faceData, AiBodyData bodyData, AiHairData hairData)
+	public static AiRawCustomData GetCustomData(in AiFaceData faceData, in AiBodyData bodyData, in AiHairData hairData)
 	{
 		return new();
 	}
-	public static AiRawCoordinateData GetCoordinateData(AiClothingData clothingData, ImmutableArray<AiAccessoriesData> accessorySettingsDatas)
+	public static AiRawCoordinateData GetCoordinateData(in AiClothingData clothingData, in ImmutableArray<AiAccessoriesData> accessorySettingsDatas)
 	{
 		return new();
 	}
-	public static AiRawParameterData GetParameterData(AiCharaInfoData charaInfoData)
+	public static AiRawParameterData GetParameterData(in AiCharaInfoData charaInfoData)
 	{
 		return new();
 	}
-	public static (AiRawParameter2Data, AiRawGameInfo2Data) GetRawHS2Data(HS2GameData gameData)
+	public static (AiRawParameter2Data, AiRawGameInfo2Data) GetRawHS2Data(in HS2GameData gameData)
 	{
 		return (new(), new());
 	}
 
-	private static Face.EyeInfo ConvertEyeInfo(Raw.Custom.AiRawFaceData.EyesInfo rawEyeInfo) => new()
+	private static Face.EyeInfo ConvertEyeInfo(in Raw.Custom.AiRawFaceData.EyesInfo rawEyeInfo) => new()
 	{
 		ScleraColor = rawEyeInfo.whiteColor,
 		_Iris = rawEyeInfo.pupilId,
@@ -279,7 +279,7 @@ public static class AiFriendlyCharaDataConverters
 		PupilWidth = rawEyeInfo.blackW,
 		PupilHeight = rawEyeInfo.blackH,
 	};
-	private static AiPaintInfo ConvertPaintInfo(Raw.Custom.AiRawPaintInfo rawPaintInfo) => new()
+	private static AiPaintInfo ConvertPaintInfo(in Raw.Custom.AiRawPaintInfo rawPaintInfo) => new()
 	{
 		id = rawPaintInfo.id,
 		Color = rawPaintInfo.color,

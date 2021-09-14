@@ -3,16 +3,16 @@
 public class UnsupportedCardException : Exception
 {
 	public string? CardPath;
-	public UnsupportedCardException(string message, string? cardPath = null) : base(message) => CardPath = cardPath;
-	public UnsupportedCardException(string message, Exception ex, string? cardPath = null) : base(message, ex) => CardPath = cardPath;
+	public UnsupportedCardException(in string message, in string? cardPath = null) : base(message) => CardPath = cardPath;
+	public UnsupportedCardException(in string message, in Exception ex, in string? cardPath = null) : base(message, ex) => CardPath = cardPath;
 }
 public class InvalidCardException : UnsupportedCardException
 {
-	public InvalidCardException(string message) : base(message) { }
-	public InvalidCardException(string message, Exception ex) : base(message, ex) { }
+	public InvalidCardException(in string message) : base(message) { }
+	public InvalidCardException(in string message, in Exception ex) : base(message, ex) { }
 }
 internal class InternalCardException : InvalidCardException
 {
-	public InternalCardException(string message) : base(message) { }
-	public InternalCardException(string message, Exception ex) : base(message, ex) { }
+	public InternalCardException(in string message) : base(message) { }
+	public InternalCardException(in string message, in Exception ex) : base(message, ex) { }
 }

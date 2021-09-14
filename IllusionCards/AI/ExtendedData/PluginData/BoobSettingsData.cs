@@ -106,7 +106,7 @@ public record BoobSettingsData : AiPluginData
 	}
 
 	[SuppressMessage("Style", "IDE0008:Use explicit type", Justification = "Analyzer doesn't recognize immutable builder methods as apparent")]
-	public BoobSettingsData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public BoobSettingsData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		ImmutableDictionary<string, bool>.Builder _boolDataBuilder = boolDefaults.ToBuilder();
 		ImmutableDictionary<string, float>.Builder _floatDataBuilder = floatDefaults.ToBuilder();

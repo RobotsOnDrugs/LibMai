@@ -134,7 +134,7 @@ class CardManagerCLI
 		}
 		return _success;
 	}
-	private static bool QueueCardsFromGameDir(string dirPath, ref List<FileInfo> cards, bool chara, bool coordinate, bool scene)
+	private static bool QueueCardsFromGameDir(in string dirPath, ref List<FileInfo> cards, bool chara, bool coordinate, bool scene)
 	{
 		if (!Directory.Exists(dirPath)) { return false; }
 		string _cardsPath;
@@ -164,7 +164,7 @@ class CardManagerCLI
 		return true;
 	}
 
-	private static void TestFileAccess(string filePath, out FileInfo? fileInfo)
+	private static void TestFileAccess(in string filePath, out FileInfo? fileInfo)
 	{
 		FileInfo? _fileInfo = default;
 		try

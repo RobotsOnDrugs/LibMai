@@ -54,7 +54,7 @@ public record KoiSkinOverlayXData : AiPluginData
 	private const string V2KeyPrefix = "_TextureID_";
 	private const string V2ControlKey = "Lookup";
 	// Forget CoordinateType because it's always Unknown/0 for AI/HS2 cards
-	public KoiSkinOverlayXData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public KoiSkinOverlayXData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
 		Data = version switch
 		{

@@ -86,9 +86,9 @@ public record AdvIKPluginData : AiPluginData
 	}
 
 	[SuppressMessage("Style", "IDE0008:Use explicit type", Justification = "MessagePack deserialization makes it obvious")]
-	public AdvIKPluginData(int version, Dictionary<object, object> dataDict) : base(version, dataDict)
+	public AdvIKPluginData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)
 	{
-		bool _magnitudeData = NullCheckDictionaryEntries(ref dataDict, "MagnitudeData", false) ?? false;
+		bool _magnitudeData = NullCheckDictionaryEntries(dataDict, "MagnitudeData", false) ?? false;
 		Vector3? _breathingMagnitude;
 		Vector3? _breathingUpperChestScaling;
 		Vector3? _breathingLowerChestScaling;
@@ -113,30 +113,30 @@ public record AdvIKPluginData : AiPluginData
 			MessagePack.MessagePackSerializer.Deserialize<ImmutableDictionary<IKChain, IKResizeChainAdjustment>>((byte[])_tryval) : null;
 		Data = new AdvIKPluginOptions()
 		{
-			ShoulderRotationEnabled = NullCheckDictionaryEntries(ref dataDict, "ShoulderRotatorEnabled", false),
-			IndependentShoulders = NullCheckDictionaryEntries(ref dataDict, "IndependentShoulders", false),
-			ShoulderWeight = NullCheckDictionaryEntries(ref dataDict, "ShoulderWeight", 0f),
-			ShoulderRightWeight = NullCheckDictionaryEntries(ref dataDict, "ShoulderRightWeight", 0f),
-			ShoulderOffset = NullCheckDictionaryEntries(ref dataDict, "ShoulderOffset", 0f),
-			ShoulderRightOffset = NullCheckDictionaryEntries(ref dataDict, "ShoulderRightOffset", 0f),
-			SpineStiffness = NullCheckDictionaryEntries(ref dataDict, "SpineStiffness", 0f),
-			EnableSpineFKHints = NullCheckDictionaryEntries(ref dataDict, "EnableSpineFKHints", false),
-			EnableShoulderFKHints = NullCheckDictionaryEntries(ref dataDict, "EnableShoulderFKHints", false),
-			ReverseShoulderL = NullCheckDictionaryEntries(ref dataDict, "ReverseShoulderL", false),
-			ReverseShoulderR = NullCheckDictionaryEntries(ref dataDict, "ReverseShoulderR", false),
-			EnableToeFKHints = NullCheckDictionaryEntries(ref dataDict, "EnableToeFKHints", false),
-			Enabled = NullCheckDictionaryEntries(ref dataDict, "BreathingEnabled", false),
-			IntakePause = NullCheckDictionaryEntries(ref dataDict, "BreathingIntakePause", 0f),
-			HoldPause = NullCheckDictionaryEntries(ref dataDict, "BreathingHoldPause", 0f),
-			InhalePercentage = NullCheckDictionaryEntries(ref dataDict, "BreathingInhalePercentage", 0f),
-			BreathsPerMinute = NullCheckDictionaryEntries(ref dataDict, "BreathingBPM", 0),
+			ShoulderRotationEnabled = NullCheckDictionaryEntries(dataDict, "ShoulderRotatorEnabled", false),
+			IndependentShoulders = NullCheckDictionaryEntries(dataDict, "IndependentShoulders", false),
+			ShoulderWeight = NullCheckDictionaryEntries(dataDict, "ShoulderWeight", 0f),
+			ShoulderRightWeight = NullCheckDictionaryEntries(dataDict, "ShoulderRightWeight", 0f),
+			ShoulderOffset = NullCheckDictionaryEntries(dataDict, "ShoulderOffset", 0f),
+			ShoulderRightOffset = NullCheckDictionaryEntries(dataDict, "ShoulderRightOffset", 0f),
+			SpineStiffness = NullCheckDictionaryEntries(dataDict, "SpineStiffness", 0f),
+			EnableSpineFKHints = NullCheckDictionaryEntries(dataDict, "EnableSpineFKHints", false),
+			EnableShoulderFKHints = NullCheckDictionaryEntries(dataDict, "EnableShoulderFKHints", false),
+			ReverseShoulderL = NullCheckDictionaryEntries(dataDict, "ReverseShoulderL", false),
+			ReverseShoulderR = NullCheckDictionaryEntries(dataDict, "ReverseShoulderR", false),
+			EnableToeFKHints = NullCheckDictionaryEntries(dataDict, "EnableToeFKHints", false),
+			Enabled = NullCheckDictionaryEntries(dataDict, "BreathingEnabled", false),
+			IntakePause = NullCheckDictionaryEntries(dataDict, "BreathingIntakePause", 0f),
+			HoldPause = NullCheckDictionaryEntries(dataDict, "BreathingHoldPause", 0f),
+			InhalePercentage = NullCheckDictionaryEntries(dataDict, "BreathingInhalePercentage", 0f),
+			BreathsPerMinute = NullCheckDictionaryEntries(dataDict, "BreathingBPM", 0),
 			MagnitudeData = _magnitudeData,
 			BreathMagnitude = _breathingMagnitude,
 			UpperChestRelativeScaling = _breathingUpperChestScaling,
 			LowerChestRelativeScaling = _breathingLowerChestScaling,
 			AbdomenRelativeScaling = _breathingAbdomenScaling,
-			ShoulderDampeningFactor = NullCheckDictionaryEntries(ref dataDict, "BreathingShoulderDampeningFactor", 0f),
-			MagnitudeFactor = NullCheckDictionaryEntries(ref dataDict, "MagnitudeFactor", 0f),
+			ShoulderDampeningFactor = NullCheckDictionaryEntries(dataDict, "BreathingShoulderDampeningFactor", 0f),
+			MagnitudeFactor = NullCheckDictionaryEntries(dataDict, "MagnitudeFactor", 0f),
 			ResizeCentroid = dataDict.TryGetValue("ResizeCentroid", out _tryval) && (_tryval is not null) ? (IKResizeCentroid)_tryval : null,
 			ChainAdjustments = _chainAdjustments
 		};

@@ -4,7 +4,7 @@ public record AiSceneCard : IllusionCard
 {
 	public Version CardVersion { get; init; }
 	public ImmutableArray<AiStudioObject> StudioObjects { get; init; }
-	public AiSceneCard(CardStructure cs, BinaryReader binaryReader) : base(cs, binaryReader)
+	public AiSceneCard(in CardStructure cs, BinaryReader binaryReader) : base(cs, binaryReader)
 	{
 		//throw new UnsupportedCardException("Scene cards are not supported yet");
 		CardVersion = new(ReadString(binaryReader));
