@@ -147,7 +147,7 @@ class CardManagerCLI
 
 		}
 		if (chara)
-			_paths.Add(Path.Join(dirPath, "UserData", "chara"));
+			_paths.Add(Path.Join(dirPath, "UserData", "chara", "female", ".testing"));
 		if (coordinate)
 			_paths.Add(Path.Join(dirPath, "UserData", "coordinate"));
 		if (scene)

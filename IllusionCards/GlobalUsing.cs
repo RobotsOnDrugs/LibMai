@@ -27,7 +27,7 @@ global using static IllusionCards.AI.Cards.AiCharaCardDefinitions;
 global using static IllusionCards.AI.Cards.AiSceneCard;
 global using static IllusionCards.AI.Chara.AiCharaType;
 global using static IllusionCards.AI.Chara.Friendly.AiFriendlyCharaDataConverters;
-global using static IllusionCards.AI.Chara.FriendlyNameLookup;
+global using static IllusionCards.AI.Chara.Friendly.AiFriendlyNameLookup;
 global using static IllusionCards.AI.Studio.StudioCardHelpers;
 global using static IllusionCards.Cards.IllusionCard;
 global using static IllusionCards.Chara.IIllusionChara;

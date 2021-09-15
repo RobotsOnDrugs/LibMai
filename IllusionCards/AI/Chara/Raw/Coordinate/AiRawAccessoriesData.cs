@@ -1,7 +1,7 @@
 ﻿namespace IllusionCards.AI.Chara.Raw.Coordinate;
 
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
-public readonly record struct AiRawAccessoryData
+public readonly record struct AiRawAccessoriesData
 {
 	public Version version { get; init; } = null!;
 	public AccessoryPartsInfo[] parts { get; init; } = null!;
