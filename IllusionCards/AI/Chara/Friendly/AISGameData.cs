@@ -2,7 +2,7 @@
 
 public readonly record struct AISGameData // GameInfo
 {
-	public ImmutableHashSet<int> Wishes { get; init; } // This comes from Parameter and seems to be AIS-specific
+	public ImmutableHashSet<int> Wishes { get; init; } = ImmutableHashSet.CreateBuilder<int>().ToImmutable(); // This comes from Parameter and seems to be AIS-specific
 	public bool gameRegistration { get; init; }
 	public float LowerTempBound { get; init; }
 	public float UpperTempBound { get; init; }

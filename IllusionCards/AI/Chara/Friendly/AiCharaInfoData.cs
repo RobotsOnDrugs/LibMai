@@ -1,4 +1,4 @@
-﻿namespace IllusionCards.AI.Chara.Friendly;
+namespace IllusionCards.AI.Chara.Friendly;
 
 public readonly record struct AiCharaInfoData // Parameter - this is common to both AIS and HS2
 {

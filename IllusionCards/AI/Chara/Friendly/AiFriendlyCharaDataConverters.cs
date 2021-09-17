@@ -218,13 +218,50 @@ public static class AiFriendlyCharaDataConverters
 		return (faceData, bodyData, hairData);
 	}
 	[SuppressMessage("Style", "IDE0008:Use explicit type", Justification = "Analyzer doesn't recognize immutable builder methods as apparent")]
-	public static (AiClothingData, ImmutableArray<AiAccessoriesData>) GetAllFriendlyCoordinateData(in AiRawCoordinateData coordinate)
+	public static (AiClothingData, AiAccessoriesData) GetAllFriendlyCoordinateData(in AiRawCoordinateData coordinate)
 	{
 		AiClothingData _clothingData = new() { };
-		AiAccessoriesData _accessorySettingsData = new() { };
-		var _accessorySettingsDatas = ImmutableArray.CreateBuilder<AiAccessoriesData>();
-		_accessorySettingsDatas.Add(_accessorySettingsData);
-		return (_clothingData, _accessorySettingsDatas.ToImmutable());
+		var _accessoryDatasBuilder = ImmutableArray.CreateBuilder<AiAccessoryData>();
+		foreach (Raw.Coordinate.AccessoryPartsInfo part in coordinate.accessory.parts)
+		{
+			var _accessoryAdjustmentDatasBuilder = ImmutableArray.CreateBuilder<AiAccessoryAdjustmentData>();
+			for (int i = 0; i < part.addMove.Rank; i++)
+				_accessoryAdjustmentDatasBuilder.Add(new()
+				{
+					Position = part.addMove[i, 0],
+					Rotation = part.addMove[i, 1],
+					Scale = part.addMove[i, 2]
+				});
+			var _accessoryColorinfosBuilder = ImmutableArray.CreateBuilder<AiAccessoryColorInfo>();
+			for (int j = 0; j < part.colorInfo.Length; j++)
+				_accessoryColorinfosBuilder.Add(new()
+				{
+					Color = part.colorInfo[j].color,
+					Shine = part.colorInfo[j].glossPower,
+					Smoothness = part.colorInfo[j].smoothnessPower,
+					Texture = part.colorInfo[j].metallicPower
+				});
+
+			AiAccessoryData _accessoryData = new()
+			{
+				AccessoryType = (AiAccessoryType)part.type,
+				ID = part.id,
+				Name = GetFriendlyNameByCategoryID(part.type, part.id),
+				Parent = GetFriendlyAccessoryParent(part.parentKey),
+				Adjustments = _accessoryAdjustmentDatasBuilder.ToImmutable(),
+				ColorInfos = _accessoryColorinfosBuilder.ToImmutable(),
+				hideCategory = part.hideCategory,
+				hideTiming = part.hideTiming,
+				IsRigid = part.noShake
+			};
+			_accessoryDatasBuilder.Add(_accessoryData);
+		}
+		AiAccessoriesData _accessorySettingsData = new()
+		{
+			Version = coordinate.accessory.version,
+			Accessories = _accessoryDatasBuilder.ToImmutable()
+		};
+		return (_clothingData, _accessorySettingsData);
 	}
 	public static AiCharaStatusData GetFriendlyAiCharaStatusData(in AiRawStatusData status)
 	{

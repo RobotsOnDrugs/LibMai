@@ -2,13 +2,13 @@ namespace IllusionCards.AI.Chara;
 
 public readonly record struct AiChara : IIllusionChara
 {
-	public static AiChara Tsubomi { get; }
-	public static AiChara Hero { get; }
-	public static AiChara HatanoMiwa { get; }
-	public static AiRawParameter2Data HS2NewChara { get; }
-	public static AiRawGameInfo2Data HS2NewGameData { get; }
+	//public static AiChara Tsubomi { get; }
+	//public static AiChara Hero { get; }
+	//public static AiChara HatanoMiwa { get; }
+	//public static AiRawParameter2Data HS2NewChara { get; }
+	//public static AiRawGameInfo2Data HS2NewGameData { get; }
 
-	internal AiChara DefaultChara => Sex is CharaSex.Male ? Hero : Tsubomi;
+	//internal AiChara DefaultChara => Sex is CharaSex.Male ? Hero : Tsubomi;
 
 	public CharaSex Sex => CharaInfo.Sex;
 	public string Name => CharaInfo.Name;
@@ -20,16 +20,16 @@ public readonly record struct AiChara : IIllusionChara
 	internal AiRawCustomData Custom { get; init; }
 	internal AiRawCoordinateData Coordinate { get; init; }
 	internal AiRawParameterData Parameter { get; init; }
-	internal AiRawParameter2Data Parameter2 { get; init; } = HS2NewChara;
+	internal AiRawParameter2Data? Parameter2 { get; init; } = null;// = HS2NewChara;
 	internal AiRawGameInfoData GameInfo { get; init; }
-	internal AiRawGameInfo2Data GameInfo2 { get; init; } = HS2NewGameData;
+	internal AiRawGameInfo2Data? GameInfo2 { get; init; } = null;// = HS2NewGameData;
 	internal AiRawStatusData Status { get; init; }
 
 	public AiFaceData Face { get; init; }
 	public AiBodyData Body { get; init; }
 	public AiHairData Hair { get; init; }
 	public AiClothingData Clothing { get; init; }
-	public ImmutableArray<AiAccessoriesData> Accessories { get; init; }
+	public AiAccessoriesData Accessories { get; init; }
 	public AiCharaInfoData CharaInfo { get; init; }
 	public AISGameData AISGameInfo { get; init; }
 	public HS2GameData? HS2GameInfo { get; init; }
@@ -182,6 +182,6 @@ public readonly record struct AiChara : IIllusionChara
 		(Clothing, Accessories) = GetAllFriendlyCoordinateData(Coordinate);
 		CharaInfo = GetFriendlyCharaInfoData(Parameter);
 		AISGameInfo = GetFriendlyAISGameData(GameInfo);
-		HS2GameInfo = GameInfo2 != HS2NewGameData && Parameter2 != HS2NewChara ? GetFriendlyHS2GameInfoData(GameInfo2, Parameter2) : null;
+		HS2GameInfo = GameInfo2 != null && Parameter2 != null ? GetFriendlyHS2GameInfoData((AiRawGameInfo2Data)GameInfo2, (AiRawParameter2Data)Parameter2!) : null;
 	}
 }

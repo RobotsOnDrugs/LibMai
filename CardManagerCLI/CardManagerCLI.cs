@@ -102,6 +102,16 @@ class CardManagerCLI
 			Logger.Warn(unknownPlugin);
 		}
 		//Console.WriteLine(Cards.Count);
+		//foreach (IllusionCard card in Cards)
+		//{
+		//	AiCharaCard _card = (card as AiCharaCard)!;
+		//	Console.WriteLine(_card.CardFile!.Name);
+		//	foreach (PropertyInfo propertyInfo in _card.Chara.GetType().GetProperties())
+		//	{
+		//		Console.WriteLine(propertyInfo.Name);
+		//		Console.WriteLine(propertyInfo.GetValue(_card.Chara));
+		//	}
+		//}
 		NLog.LogManager.Shutdown();
 	}
 
