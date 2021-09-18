@@ -1,5 +1,5 @@
 ﻿namespace IllusionCards.AI.Studio;
-static class StudioCardHelpers
+internal static class StudioCardHelpers
 {
 	public static Color JsonBytesToColor(byte[] jsonBytes)
 	{
@@ -35,7 +35,7 @@ static class StudioCardHelpers
 					break;
 				default:
 					throw new InvalidCardException("Could not read color JSON.");
-			};
+			}
 		}
 		return _r is not null && _g is not null && _b is not null && _a is not null
 			? (new() { r = (float)_r, g = (float)_g, b = (float)_b, a = (float)_a })

@@ -8,3 +8,9 @@ dotnet_diagnostic.IDE0058.severity = none
 
 # IDE0003: Remove qualification
 dotnet_diagnostic.IDE0003.severity = suggestion
+
+# RCS1001: Add braces (when expression spans over multiple lines).
+dotnet_diagnostic.RCS1001.severity = none
+
+# RCS1194: Implement exception constructors.
+dotnet_diagnostic.RCS1194.severity = none

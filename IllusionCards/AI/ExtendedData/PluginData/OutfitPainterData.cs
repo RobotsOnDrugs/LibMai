@@ -78,7 +78,6 @@ public record OutfitPainterData : AiPluginData
 		SOCK = 6,
 		SHOE = 7,
 		ACCESSORY = 8
-
 	}
 
 	public OutfitPainterData(int version, in Dictionary<object, object> dataDict) : base(version, dataDict)

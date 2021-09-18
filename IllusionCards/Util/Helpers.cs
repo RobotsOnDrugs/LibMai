@@ -1,19 +1,18 @@
 ﻿namespace IllusionCards.Util;
 
-static class Helpers
+public static class Helpers
 {
 	public static long? FindSequence(Stream stream, in ImmutableArray<byte> sequence)
 	{
 		long _originalPos = stream.Position;
 		long _bufferPos = stream.Position;
 		long _currentPos;
-		int bufSize = 4096;
+		const int bufSize = 4096;
 		byte[] buffer = new byte[bufSize];
 		byte[] potentialMatch = new byte[sequence.Length];
 		long _potentialMatchPos;
-		int readBytes;
 
-		readBytes = stream.Read(buffer, 0, bufSize);
+		int readBytes = stream.Read(buffer, 0, bufSize);
 		while (readBytes > 0)
 		{
 			_currentPos = stream.Position;

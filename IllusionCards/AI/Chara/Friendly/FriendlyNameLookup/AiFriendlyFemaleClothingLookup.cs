@@ -2,6 +2,18 @@
 
 public static partial class AiFriendlyNameLookup
 {
+	public static string GetFriendlyFemaleClothingByIndexAndID(in int position, in int itemID) => position switch
+	{
+		0 => GetFriendlyNameByCategoryID(240, itemID),
+		1 => GetFriendlyNameByCategoryID(241, itemID),
+		2 => GetFriendlyNameByCategoryID(242, itemID),
+		3 => GetFriendlyNameByCategoryID(243, itemID),
+		4 => GetFriendlyNameByCategoryID(244, itemID),
+		5 => GetFriendlyNameByCategoryID(245, itemID),
+		6 => GetFriendlyNameByCategoryID(246, itemID),
+		7 => GetFriendlyNameByCategoryID(247, itemID),
+		_ => throw new ArgumentOutOfRangeException(nameof(position), "There are only 8 possible indices in a female clothing info array.")
+	};
 	//fo_top = 240 0-35, 38-51, 200-207, 209-226, 228-229, 208, 227, 230-234, 236-237, 235, 238-246, 249, 248, 247
 	//fo_bot = 241 0-16, 19-21, 200-216, 218, 217, 220, 219, 221-224, 227, 225-226
 	//fo_inner_t = 242 0-20, 22-28, 200-201, 204-214, 202-203, 215-222, 224, 223, 225

@@ -8,9 +8,9 @@ public readonly record struct AISGameData // GameInfo
 	public float UpperTempBound { get; init; }
 	public float LowerMoodBound { get; init; }
 	public float UpperMoodBound { get; init; }
-	public Dictionary<FlavorType, int> FlavorState { get; init; } = null!;
+	public ImmutableDictionary<FlavorType, int> FlavorState { get; init; }
 	public int totalFlavor { get; init; }
-	public Dictionary<DesireFlags, DesireData> Desire { get; init; } = null!;
+	public ImmutableDictionary<Desires, DesireData> Desire { get; init; } = null!;
 	public int Hearts { get; init; } // phase
 	public Dictionary<int, int> normalSkill { get; init; } = null!;
 	public Dictionary<int, int> hSkill { get; init; } = null!;
@@ -21,6 +21,7 @@ public readonly record struct AISGameData // GameInfo
 	public int immoral { get; init; }
 	public bool isHAddTaii0 { get; init; }
 	public bool isHAddTaii1 { get; init; }
+
 	public enum FlavorType
 	{
 		Pheromone,
@@ -52,6 +53,25 @@ public readonly record struct AISGameData // GameInfo
 		Animal = 8192,
 		Location = 16384,
 		Drink = 32768
+	}
+	public enum Desires
+	{
+		Toilet,
+		Bath,
+		Sleep,
+		Eat,
+		Break,
+		Gift,
+		Want,
+		Lonely,
+		H,
+		Dummy,
+		Hunt,
+		Game,
+		Cook,
+		Animal,
+		Location,
+		Drink
 	}
 	public enum StatusType
 	{

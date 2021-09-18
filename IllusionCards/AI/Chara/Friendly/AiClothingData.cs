@@ -4,12 +4,12 @@ namespace IllusionCards.AI.Chara.Friendly;
 
 public readonly record struct AiClothingData
 {
-	public ClothingSettingsData Top { get; init; }
-	public ClothingSettingsData Bottom { get; init; }
-	public ClothingSettingsData InnerTop { get; init; }
-	public ClothingSettingsData InnerBottom { get; init; }
-	public ClothingSettingsData Gloves { get; init; }
-	public ClothingSettingsData Pantyhose { get; init; }
-	public ClothingSettingsData Socks { get; init; }
-	public ClothingSettingsData Shoes { get; init; }
+	public AiClothingSettingsData Top { get; init; }
+	public AiClothingSettingsData Bottom { get; init; }
+	public AiClothingSettingsData InnerTop { get; init; }
+	public AiClothingSettingsData InnerBottom { get; init; }
+	public AiClothingSettingsData Gloves { get; init; }
+	public AiClothingSettingsData Pantyhose { get; init; }
+	public AiClothingSettingsData Socks { get; init; }
+	public AiClothingSettingsData Shoes { get; init; }
 }

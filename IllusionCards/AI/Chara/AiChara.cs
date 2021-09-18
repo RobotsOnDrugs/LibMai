@@ -182,6 +182,8 @@ public readonly record struct AiChara : IIllusionChara
 		(Clothing, Accessories) = GetAllFriendlyCoordinateData(Coordinate);
 		CharaInfo = GetFriendlyCharaInfoData(Parameter);
 		AISGameInfo = GetFriendlyAISGameData(GameInfo);
-		HS2GameInfo = GameInfo2 != null && Parameter2 != null ? GetFriendlyHS2GameInfoData((AiRawGameInfo2Data)GameInfo2, (AiRawParameter2Data)Parameter2!) : null;
+		HS2GameInfo = GameInfo2 != null && Parameter2 != null
+			? GetFriendlyHS2GameInfoData((AiRawGameInfo2Data)GameInfo2, (AiRawParameter2Data)Parameter2)
+			: null;
 	}
 }

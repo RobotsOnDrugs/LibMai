@@ -86,7 +86,7 @@ public readonly record struct CardStructure
 		if (_cardType is not null)
 		{
 			if (_cardType is CardType.Unknown)
-				throw new UnsupportedCardException($"Unknown scene card.");
+				throw new UnsupportedCardException("Unknown scene card.");
 			CardType = (CardType)_cardType;
 			return;
 		}
@@ -98,6 +98,6 @@ public readonly record struct CardStructure
 			CardType = GetCardType(_gameId) ?? throw new InvalidCardException($"Looks like an AI or KK card, but could not determine card type from this identifier: {_gameId}");
 			return;
 		}
-		else { throw new InvalidCardException($"Could not determine card type."); }
+		else { throw new InvalidCardException("Could not determine card type."); }
 	}
 }

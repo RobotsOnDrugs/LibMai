@@ -60,4 +60,9 @@ public static partial class AiFriendlyNameLookup
 	//custom_eye_f = 505
 	//custom_mouth_m = 506
 	//custom_mouth_f = 507
+	public static string GetFriendlyClothingPatternByID(in int itemID) => itemID switch
+	{
+		0 => "None",
+		_ => "Unknown clothing pattern"
+	};
 }

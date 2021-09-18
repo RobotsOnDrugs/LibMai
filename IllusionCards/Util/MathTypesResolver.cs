@@ -1,7 +1,7 @@
 ﻿namespace IllusionCards.Util;
 
 // Mostly copy-pasted from MessagePack-CSharp's readme. MP is pretty much voodoo, but it's awesome when it works.
-public class MathTypesResolver : IFormatterResolver
+public sealed class MathTypesResolver : IFormatterResolver
 {
 	public static readonly IFormatterResolver Instance = new MathTypesResolver();
 
@@ -19,7 +19,7 @@ public class MathTypesResolver : IFormatterResolver
 
 internal static class MathTypesResolverGetFormatterHelper
 {
-	static readonly ImmutableDictionary<Type, object> formatterMap = new Dictionary<Type, object>()
+	internal static readonly ImmutableDictionary<Type, object> formatterMap = new Dictionary<Type, object>()
 		{
 			{ typeof(Vector4), new Vector4Formatter() },
 			{ typeof(Vector3), new Vector3Formatter() },

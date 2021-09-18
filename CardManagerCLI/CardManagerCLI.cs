@@ -14,11 +14,11 @@ using NLog.Targets;
 
 namespace IllusionCards;
 
-class CardManagerCLI
+public static class CardManagerCLI
 {
 	private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-	static void Main(string[] args)
+	public static void Main(string[] args)
 	{
 
 		LoggingConfiguration _logconfig = LogManager.Configuration;
@@ -38,9 +38,9 @@ class CardManagerCLI
 		Option<string> cardsOption = new("--cards", "Cards to process") { Arity = ArgumentArity.OneOrMore };
 		Option<string> cardListOption = new("--card-list", "Cards to process") { Arity = ArgumentArity.ExactlyOne };
 		Option<string> gameDirectoryOption = new("--game-dir", "Game directory") { Arity = ArgumentArity.ExactlyOne };
-		Option<bool> scanCharaOption = new("--chara", description: "Scan character cards", getDefaultValue: () => false) { Arity = ArgumentArity.ExactlyOne, IsRequired = false };
-		Option<bool> scanCoordinateOption = new("--coordinate", description: "Scan coordinate cards", getDefaultValue: () => false) { Arity = ArgumentArity.ExactlyOne, IsRequired = false };
-		Option<bool> scanSceneOption = new("--scene", description: "Scan scene cards", getDefaultValue: () => false) { Arity = ArgumentArity.ExactlyOne, IsRequired = false };
+		Option<bool> scanCharaOption = new("--chara", getDefaultValue: () => false, description: "Scan character cards") { Arity = ArgumentArity.ExactlyOne, IsRequired = false };
+		Option<bool> scanCoordinateOption = new("--coordinate", getDefaultValue: () => false, description: "Scan coordinate cards") { Arity = ArgumentArity.ExactlyOne, IsRequired = false };
+		Option<bool> scanSceneOption = new("--scene", getDefaultValue: () => false, description: "Scan scene cards") { Arity = ArgumentArity.ExactlyOne, IsRequired = false };
 		RootCommand RootCommand = new() { cardsOption, cardListOption, gameDirectoryOption, scanCharaOption, scanCoordinateOption, scanSceneOption };
 		RootCommand.Description = "Illusion Card CLI Utility";
 		RootCommand.Handler = CommandHandler.Create<string[], string, string, bool, bool, bool>((cards, cardList, gameDir, chara, coordinate, scene) =>
@@ -130,7 +130,6 @@ class CardManagerCLI
 
 	private static bool QueueCardsFromFile(string cardList, ref List<FileInfo> cards)
 	{
-		bool _success = true;
 		TestFileAccess(cardList, out FileInfo? _cardListFile);
 		if (_cardListFile is null) { return false; }
 		using StreamReader _sr = new(cardList);
@@ -142,7 +141,7 @@ class CardManagerCLI
 			Logger.Debug("Added {cardPath} to list of cards.", _line);
 			cards.Add(_cardFile);
 		}
-		return _success;
+		return true;
 	}
 	private static bool QueueCardsFromGameDir(in string dirPath, ref List<FileInfo> cards, bool chara, bool coordinate, bool scene)
 	{
@@ -154,7 +153,6 @@ class CardManagerCLI
 		{
 			_cardsPath = Path.Join(dirPath, "UserData");
 			_potentialCardFiles.AddRange(Directory.EnumerateFiles(_cardsPath, "*.png", enumerationOptions: new() { AttributesToSkip = FileAttributes.Device | FileAttributes.System, RecurseSubdirectories = true, IgnoreInaccessible = true }));
-
 		}
 		if (chara)
 			_paths.Add(Path.Join(dirPath, "UserData", "chara", "female", ".testing"));

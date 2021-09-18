@@ -220,7 +220,45 @@ public static class AiFriendlyCharaDataConverters
 	[SuppressMessage("Style", "IDE0008:Use explicit type", Justification = "Analyzer doesn't recognize immutable builder methods as apparent")]
 	public static (AiClothingData, AiAccessoriesData) GetAllFriendlyCoordinateData(in AiRawCoordinateData coordinate)
 	{
-		AiClothingData _clothingData = new() { };
+		Raw.Coordinate.ClothesPartsInfo[] _cparts = coordinate.clothes.parts;
+		List<Clothing.AiClothingSettingsData> _clothingDatas = new(8);
+		if (_cparts.Length != 8) throw new InvalidCardException($"Card has {coordinate.clothes.parts.Length} instead of 8 clothing parts");
+		for (int i = 0; i < _cparts.Length; i++)
+		{
+			var _clothingColorInfosBuilder = ImmutableArray.CreateBuilder<Clothing.AiClothingColorInfo>();
+			for (int j = 0; j < _cparts[i].colorInfo.Length; j++)
+			{
+				_clothingColorInfosBuilder.Add(new()
+				{
+					Color = _cparts[i].colorInfo[j].baseColor,
+					PatternID = _cparts[i].colorInfo[j].pattern,
+					PatternName = GetFriendlyClothingPatternByID(_cparts[i].colorInfo[j].pattern),
+					PatternColor = _cparts[i].colorInfo[j].patternColor,
+					Layout = _cparts[i].colorInfo[j].layout,
+					Rotation = _cparts[i].colorInfo[j].rotation,
+					Shine = _cparts[i].colorInfo[j].glossPower,
+					Texture = _cparts[i].colorInfo[j].metallicPower
+				});
+			}
+			_clothingDatas.Add(new()
+			{
+				ID = _cparts[i].id,
+				Name = GetFriendlyFemaleClothingByIndexAndID(i, _cparts[i].id),
+				ColorInfos = _clothingColorInfosBuilder.ToImmutable()
+			});
+		}
+		AiClothingData _clothingData = new()
+		{
+			Top = _clothingDatas[0],
+			Bottom = _clothingDatas[1],
+			InnerTop = _clothingDatas[2],
+			InnerBottom = _clothingDatas[3],
+			Gloves = _clothingDatas[4],
+			Pantyhose = _clothingDatas[5],
+			Socks = _clothingDatas[6],
+			Shoes = _clothingDatas[7]
+		};
+
 		var _accessoryDatasBuilder = ImmutableArray.CreateBuilder<AiAccessoryData>();
 		foreach (Raw.Coordinate.AccessoryPartsInfo part in coordinate.accessory.parts)
 		{
@@ -241,7 +279,6 @@ public static class AiFriendlyCharaDataConverters
 					Smoothness = part.colorInfo[j].smoothnessPower,
 					Texture = part.colorInfo[j].metallicPower
 				});
-
 			AiAccessoryData _accessoryData = new()
 			{
 				AccessoryType = (AiAccessoryType)part.type,
@@ -279,7 +316,25 @@ public static class AiFriendlyCharaDataConverters
 	};
 	public static AISGameData GetFriendlyAISGameData(in AiRawGameInfoData gameInfo)
 	{
-		return new();
+		Dictionary<AISGameData.FlavorType, int> _flavor = new();
+		for (int i = 0; i < 8; i++)
+			_flavor.Add((AISGameData.FlavorType)i, gameInfo.flavorState[i]);
+
+		Dictionary<AISGameData.Desires, AISGameData.DesireData> _desire = new();
+		for (int j = 0; j < 16; j++)
+			_desire.Add((AISGameData.Desires)j, new() { BaseDesire = gameInfo.desireDefVal[j], DesireBuff = gameInfo.desireBuffVal[j] });
+
+		return new()
+		{
+			LowerTempBound = gameInfo.tempBound.lower,
+			UpperTempBound = gameInfo.tempBound.upper,
+			LowerMoodBound = gameInfo.moodBound.lower,
+			UpperMoodBound = gameInfo.moodBound.upper,
+			FlavorState = _flavor.ToImmutableDictionary(),
+			Desire = _desire.ToImmutableDictionary(),
+			Lifestyle = (AISGameData.LifestyleType)gameInfo.lifestyle,
+			Hearts = gameInfo.phase
+		};
 	}
 	public static HS2GameData? GetFriendlyHS2GameInfoData(in AiRawGameInfo2Data gameInfo2, in AiRawParameter2Data parameter2)
 	{

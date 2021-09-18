@@ -1,4 +1,4 @@
-﻿namespace IllusionCards.AI.ExtendedData.PluginData;
+namespace IllusionCards.AI.ExtendedData.PluginData;
 
 public record KK_PregnancyPlusData : AiPluginData
 {
@@ -67,9 +67,9 @@ public record KK_PregnancyPlusData : AiPluginData
 				get => _frameWeight <= 0 ? 100 : _frameWeight;
 			}
 			public float weight { set; get; } = 100;
-			public Vector3[] verticies { get; init; } = null!;
-			public Vector3[] normals { get; init; } = null!;
-			public Vector3[] tangents { get; init; } = null!;
+			public ImmutableArray<Vector3> vertices { get; init; }
+			public ImmutableArray<Vector3> normals { get; init; }
+			public ImmutableArray<Vector3> tangents { get; init; }
 		}
 		public class SkinnedMeshRenderer
 		{
@@ -102,7 +102,7 @@ public record KK_PregnancyPlusData : AiPluginData
 					_field.SetValue(this, dataDict.TryGetValue(_field.Name, out _tryval) ? new Version((string)_tryval) : null);
 					break;
 				case var x when x == typeof(ImmutableArray<MeshBlendShape>):
-					// Not implementing the logic to deserialize meshBlendShapes yet
+					// TODO: Not implementing the logic to deserialize meshBlendShapes yet
 					_field.SetValue(this, null);
 					break;
 				default:
