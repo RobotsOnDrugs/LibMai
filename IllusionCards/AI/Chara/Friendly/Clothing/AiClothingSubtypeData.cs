@@ -14,8 +14,11 @@ public readonly record struct AiClothingColorInfo
 	public int PatternID { get; init; }
 	public string PatternName { get; init; }
 	public Color PatternColor { get; init; }
-	public Vector4 Layout { get; init; }
-	public float Rotation { get; init; }
+	public float PatternWidth { get; init; }
+	public float PatternHeight { get; init; }
+	public float PatternPositionX { get; init; }
+	public float PatternPositionY { get; init; }
+	public float PatternRotation { get; init; }
 	public float Shine { get; init; }
 	public float Texture { get; init; }
 }

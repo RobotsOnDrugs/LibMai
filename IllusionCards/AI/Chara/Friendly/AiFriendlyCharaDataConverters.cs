@@ -234,8 +234,11 @@ public static class AiFriendlyCharaDataConverters
 					PatternID = _cparts[i].colorInfo[j].pattern,
 					PatternName = GetFriendlyClothingPatternByID(_cparts[i].colorInfo[j].pattern),
 					PatternColor = _cparts[i].colorInfo[j].patternColor,
-					Layout = _cparts[i].colorInfo[j].layout,
-					Rotation = _cparts[i].colorInfo[j].rotation,
+					PatternWidth = _cparts[i].colorInfo[j].layout.W,
+					PatternHeight = _cparts[i].colorInfo[j].layout.Z,
+					PatternPositionX = _cparts[i].colorInfo[j].layout.X,
+					PatternPositionY = _cparts[i].colorInfo[j].layout.Y,
+					PatternRotation = _cparts[i].colorInfo[j].rotation,
 					Shine = _cparts[i].colorInfo[j].glossPower,
 					Texture = _cparts[i].colorInfo[j].metallicPower
 				});
@@ -314,8 +317,12 @@ public static class AiFriendlyCharaDataConverters
 		VoiceRate = parameter.voiceRate,
 		IsFuta = parameter.futanari
 	};
-	public static AISGameData GetFriendlyAISGameData(in AiRawGameInfoData gameInfo)
+	public static AISGameData GetFriendlyAISGameData(in AiRawGameInfoData gameInfo, in HashSet<int> wishes)
 	{
+		int[] _wishes = new int[3] { -1, -1, -1 };
+		int[] _hsWish = wishes.ToArray();
+		for (int i = 0; i < wishes.Count; i++)
+			_wishes[i] = _hsWish[i];
 		Dictionary<AISGameData.FlavorType, int> _flavor = new();
 		for (int i = 0; i < 8; i++)
 			_flavor.Add((AISGameData.FlavorType)i, gameInfo.flavorState[i]);
@@ -326,6 +333,8 @@ public static class AiFriendlyCharaDataConverters
 
 		return new()
 		{
+			Wishes = _wishes.ToImmutableArray(),
+			IsRegistered = gameInfo.gameRegistration,
 			LowerTempBound = gameInfo.tempBound.lower,
 			UpperTempBound = gameInfo.tempBound.upper,
 			LowerMoodBound = gameInfo.moodBound.lower,
