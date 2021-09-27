@@ -33,7 +33,7 @@ public static partial class AiFriendlyNameLookup
 		48 => "Type 19",
 		_ => "Unknown"
 	};
-	public static string GetFriendlyFemaleFaceWrinklesName(in int detailID) => detailID switch //ft_detail_f = 212
+	public static string GetFriendlyFemaleFaceWrinklesName(in int itemID) => itemID switch // 212 ft_detail_f
 	{
 		0 => "None",
 		1 => "Laugh Lines",
@@ -41,19 +41,19 @@ public static partial class AiFriendlyNameLookup
 		3 => "Mouth Lines",
 		4 => "Face 1",
 		5 => "Face 2",
-		6 => "Gaunt Cheeks",
-		7 => "Full Cheeks",
-		8 => "Eye Effect 1",
-		9 => "Eye Effect 2",
-		10 => "Eye Effect 3",
-		11 => "Eye Effect 4",
-		12 => "Eye Effect 5",
-		13 => "Eye Effect 6",
-		14 => "Eye Effect 7",
-		15 => "Lip Emphasis",
-		16 => "Bone Structure 1",
-		17 => "Bone Structure 2",
-		18 => "Bone Structure 3",
+		12 => "Gaunt Cheeks",
+		13 => "Full Cheeks",
+		6 => "Eye Effect 1",
+		7 => "Eye Effect 2",
+		14 => "Eye Effect 3",
+		15 => "Eye Effect 4",
+		16 => "Eye Effect 5",
+		17 => "Eye Effect 6",
+		18 => "Eye Effect 7",
+		8 => "Lip Emphasis",
+		9 => "Bone Structure 1",
+		10 => "Bone Structure 2",
+		11 => "Bone Structure 3",
 		_ => "Unknown"
 	};
 }

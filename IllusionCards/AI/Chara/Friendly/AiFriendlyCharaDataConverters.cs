@@ -50,17 +50,17 @@ public static class AiFriendlyCharaDataConverters
 			},
 			Eye = new()
 			{
-				EyeHeight = custom.face.shapeValueFace[23],
-				EyeSpacing = custom.face.shapeValueFace[20],
-				EyeDepth = custom.face.shapeValueFace[21],
-				EyeWidth = custom.face.shapeValueFace[22],
-				EyeVertical = custom.face.shapeValueFace[19],
-				EyeAngleZ = custom.face.shapeValueFace[24],
-				EyeAngleY = custom.face.shapeValueFace[25],
+				Height = custom.face.shapeValueFace[23],
+				Spacing = custom.face.shapeValueFace[20],
+				Depth = custom.face.shapeValueFace[21],
+				Width = custom.face.shapeValueFace[22],
+				VerticalPosition = custom.face.shapeValueFace[19],
+				AngleZ = custom.face.shapeValueFace[24],
+				AngleY = custom.face.shapeValueFace[25],
 				OuterHeight = custom.face.shapeValueFace[29],
-				OuterDist = custom.face.shapeValueFace[27],
+				OuterWidth = custom.face.shapeValueFace[27],
 				InnerHeight = custom.face.shapeValueFace[28],
-				InnerDist = custom.face.shapeValueFace[26],
+				InnerWidth = custom.face.shapeValueFace[26],
 				EyelidShape1 = custom.face.shapeValueFace[30],
 				EyelidShape2 = custom.face.shapeValueFace[31]
 			},
@@ -84,8 +84,8 @@ public static class AiFriendlyCharaDataConverters
 			},
 			Mouth = new()
 			{
-				MouthHeight = custom.face.shapeValueFace[47],
-				MouthWidth = custom.face.shapeValueFace[48],
+				Height = custom.face.shapeValueFace[47],
+				Width = custom.face.shapeValueFace[48],
 				LipThickness = custom.face.shapeValueFace[49],
 				Depth = custom.face.shapeValueFace[50],
 				UpperLipThickness = custom.face.shapeValueFace[51],
@@ -94,19 +94,19 @@ public static class AiFriendlyCharaDataConverters
 			},
 			Ears = new()
 			{
-				EarSize = custom.face.shapeValueFace[54],
-				EarAngle = custom.face.shapeValueFace[55],
-				EarRotation = custom.face.shapeValueFace[56],
-				UpEarShape = custom.face.shapeValueFace[57],
-				LowEarShape = custom.face.shapeValueFace[58]
+				Size = custom.face.shapeValueFace[54],
+				Angle = custom.face.shapeValueFace[55],
+				Rotation = custom.face.shapeValueFace[56],
+				UpperEarShape = custom.face.shapeValueFace[57],
+				LowerEarShape = custom.face.shapeValueFace[58]
 			},
 			Moles = new()
 			{
-				MoleType = GetFriendlyMoleName(custom.face.moleId),
-				MoleWidth = custom.face.moleLayout.Z,
-				MoleHeight = custom.face.moleLayout.W,
-				MolePositionX = custom.face.moleLayout.X,
-				MolePositionY = custom.face.moleLayout.Y
+				ID = custom.face.moleId,
+				Width = custom.face.moleLayout.Z,
+				Height = custom.face.moleLayout.W,
+				PositionX = custom.face.moleLayout.X,
+				PositionY = custom.face.moleLayout.Y
 			},
 			SetBothLeftAndRightEyes = custom.face.pupilSameSetting,
 			LeftEye = ConvertEyeInfo(custom.face.pupil[0]),
@@ -303,10 +303,59 @@ public static class AiFriendlyCharaDataConverters
 		};
 		return (_clothingData, _accessorySettingsData);
 	}
-	public static AiCharaStatusData GetFriendlyAiCharaStatusData(in AiRawStatusData status)
+	public static AiCharaStatusData GetFriendlyAiCharaStatusData(in AiRawStatusData status) => new()
 	{
-		return new();
-	}
+		Version = status.version,
+		Top = (AiCharaStatusData.ClothingState)status.clothesState[0],
+		Bottom = (AiCharaStatusData.ClothingState)status.clothesState[0],
+		InnerBottom = (AiCharaStatusData.ClothingState)status.clothesState[0],
+		InnerTop = (AiCharaStatusData.ClothingState)status.clothesState[0],
+		Pantyhose = (AiCharaStatusData.ClothingState)status.clothesState[0],
+		Gloves = (AiCharaStatusData.ClothingState)status.clothesState[0],
+		Socks = (AiCharaStatusData.ClothingState)status.clothesState[0],
+		Shoes = (AiCharaStatusData.ClothingState)status.clothesState[0],
+		AccessoryIsVisible = status.showAccessory.ToImmutableArray(),
+		EyebrowsExpression = status.eyebrowPtn,
+		EyebrowsMaximumOpenAmount = status.eyebrowOpenMax,
+		EyesExpression = status.eyesPtn,
+		EyesMaximumOpenAmount = status.eyesOpenMax,
+		BlinkingEnabled = status.eyesBlink,
+		Ahegao = status.eyesYure,
+		MouthExpression = status.mouthPtn,
+		MouthMinimumOpenAmount = status.mouthOpenMin,
+		MouthMaximumOpenAmount = status.mouthOpenMax,
+		MouthIsFixed = status.mouthFixed,
+		//mouthAdjustWidth = status.mouthAdjustWidth,
+		//tongueState = status.tongueState,
+		EyesLookPosition = (AiCharaStatusData.EyeLookType)status.eyesLookPtn,
+		//eyesTargetType = status.eyesTargetType,
+		EyesTargetAngle = status.eyesTargetAngle,
+		EyesTargetRange = status.eyesTargetRange,
+		EyesTargetRate = status.eyesTargetRate,
+		NeckLookPosition = (AiCharaStatusData.NeckLookType)status.neckLookPtn,
+		//neckTargetType = status.neckTargetType,
+		//neckTargetAngle = status.neckTargetAngle,
+		//neckTargetRange = status.neckTargetRange,
+		//disableMouthShapeMask = status.disableMouthShapeMask,
+		//disableBustShapeMask = status.disableBustShapeMask,
+		NippleStiffness = status.nipStandRate,
+		SkinGloss = status.skinTuyaRate,
+		BlushingAmount = status.hohoAkaRate,
+		TearsAmount = status.tearsRate,
+		//hideEyesHighlight = status.hideEyesHighlight,
+		CumSplatter = new(status.siruLv),
+		Wetness = status.wetRate,
+		PenisIsVisible = status.visibleSon,
+		PenisIsAlwaysVisible = status.visibleSonAlways,
+		HeadIsAlwaysVisible = status.visibleHeadAlways,
+		BodyIsAlwaysVisible = status.visibleBodyAlways,
+		CondomIsVisible = status.visibleGomu,
+		MonochromeColor = status.simpleColor,
+		//enableShapeHand = status.enableShapeHand.ToImmutableArray(),
+		//shapeHandPtn = status.shapeHandPtn,
+		shapeHandBlendValue = status.shapeHandBlendValue.ToImmutableArray(),
+		AssRednessAmount = status.siriAkaRate
+	};
 	public static AiCharaInfoData GetFriendlyCharaInfoData(in AiRawParameterData parameter) => new()
 	{
 		Sex = (CharaSex)parameter.sex,
@@ -345,10 +394,36 @@ public static class AiFriendlyCharaDataConverters
 			Hearts = gameInfo.phase
 		};
 	}
-	public static HS2GameData? GetFriendlyHS2GameInfoData(in AiRawGameInfo2Data gameInfo2, in AiRawParameter2Data parameter2)
+	public static HS2GameData GetFriendlyHS2GameInfoData(in AiRawGameInfo2Data gameInfo2, in AiRawParameter2Data parameter2) => new()
 	{
-		return new();
-	}
+		SexTrait = (HS2GameData.SexTraitType)parameter2.hAttribute,
+		Mentality = (HS2GameData.MentalityType)parameter2.mind,
+		Trait = (HS2GameData.TraitType)parameter2.trait,
+		FavorLevel = gameInfo2.Favor,
+		EnjoymentLevel = gameInfo2.Enjoyment,
+		AversionLevel = gameInfo2.Aversion,
+		SlaveryLevel = gameInfo2.Slavery,
+		BrokenLevel = gameInfo2.Broken,
+		DependenceLevel = gameInfo2.Dependence,
+		StateLocked = gameInfo2.lockNowState,
+		BrokenLevelLocked = gameInfo2.lockBroken,
+		DependenceLevelLocked = gameInfo2.lockDependence,
+		State = (HS2GameData.HS2CharaStatus)gameInfo2.nowState,
+		DisplayedState = (HS2GameData.HS2CharaStatus)gameInfo2.calcState,
+		DirtyLevel = gameInfo2.Dirty,
+		TirednessLevel = gameInfo2.Tiredness,
+		ToiletLevel = gameInfo2.Toilet,
+		LibidoLevel = gameInfo2.Libido,
+		//arriveRoom50 = gameInfo2.arriveRoom50,
+		//arriveRoom80 = gameInfo2.arriveRoom80,
+		//arriveRoomHAfter = gameInfo2.arriveRoomHAfter,
+		SexExperience = gameInfo2.resistH,
+		BDSMExperience = gameInfo2.resistPain,
+		AnalExperience = gameInfo2.resistAnal,
+		ActiveItem = (HS2GameData.SexItemType)gameInfo2.usedItem,
+		//isChangeParameter = gameInfo2.isChangeParameter,
+		IsConcierge = gameInfo2.isConcierge,
+	};
 
 	public static AiRawCustomData GetCustomData(in AiFaceData faceData, in AiBodyData bodyData, in AiHairData hairData)
 	{

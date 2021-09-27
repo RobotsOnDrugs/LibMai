@@ -17,20 +17,6 @@ public record AiStudioCharacter : AiStudioObject
 	public ImmutableDictionary<int, TreeNode.TreeState> AccessoryGroup { get; init; }
 	public ImmutableDictionary<int, TreeNode.TreeState> AccessoryNumber { get; init; }
 	private ImmutableArray<byte> CumSplatterStatusBytes { get; init; }
-	public enum CumSplatterState
-	{
-		None = 0b00,
-		Half = 0b01,
-		Full = 0b10
-	}
-	public readonly record struct CumSplatterStatus
-	{
-		public CumSplatterState Face { get; init; }
-		public CumSplatterState Chest { get; init; }
-		public CumSplatterState Stomach { get; init; }
-		public CumSplatterState Back { get; init; }
-		public CumSplatterState Ass { get; init; }
-	}
 	public CumSplatterStatus CumSplatter { get; init; }
 	public float NippleStiffness { get; init; }
 	public float Wetness => 0f;// Chara.Status.wetRate;
@@ -162,11 +148,11 @@ public record AiStudioCharacter : AiStudioObject
 		CumSplatterStatusBytes = binaryReader.ReadBytes(5).ToImmutableArray();
 		CumSplatter = new()
 		{
-			Face = (CumSplatterState)CumSplatterStatusBytes[0],
-			Chest = (CumSplatterState)CumSplatterStatusBytes[1],
-			Stomach = (CumSplatterState)CumSplatterStatusBytes[2],
-			Back = (CumSplatterState)CumSplatterStatusBytes[3],
-			Ass = (CumSplatterState)CumSplatterStatusBytes[4]
+			Face = (CumSplatterStatus.CumSplatterState)CumSplatterStatusBytes[0],
+			Chest = (CumSplatterStatus.CumSplatterState)CumSplatterStatusBytes[1],
+			Stomach = (CumSplatterStatus.CumSplatterState)CumSplatterStatusBytes[2],
+			Back = (CumSplatterStatus.CumSplatterState)CumSplatterStatusBytes[3],
+			Ass = (CumSplatterStatus.CumSplatterState)CumSplatterStatusBytes[4]
 		};
 
 		MouthOpen = binaryReader.ReadSingle();

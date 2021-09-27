@@ -2,17 +2,17 @@
 
 public static partial class AiFriendlyNameLookup
 {
-	public static string GetFriendlyMaleFaceContourName(in int headID) => headID switch //mo_head = 110
+	public static string GetFriendlyMaleFaceContourName(in int headID) => headID switch // 110 mo_head
 	{
 		0 => "Type 1",
 		_ => "Unknown",
 	};
-	public static string GetFriendlyMaleFaceSkinName(in int skinID) => skinID switch //mt_skin_f = 111
+	public static string GetFriendlyMaleFaceSkinName(in int skinID) => skinID switch // 111 mt_skin_f
 	{
 		>= 0 and < 8 => $"Type {skinID + 1}",
 		_ => "Unknown"
 	};
-	public static string GetFriendlyMaleFaceWrinklesName(in int buildID) => buildID switch //mt_detail_f = 112
+	public static string GetFriendlyMaleFaceWrinklesName(in int buildID) => buildID switch // 112 mt_detail_f
 	{
 		0 => "None",
 		1 => "Laugh Lines",
@@ -28,7 +28,7 @@ public static partial class AiFriendlyNameLookup
 		11 => "Bone Structure 3",
 		_ => "Unknown"
 	};
-	public static string GetFriendlyMaleBeardName(in int beardID) => beardID switch //mt_beard = 121
+	public static string GetFriendlyMaleBeardName(in int beardID) => beardID switch // 121 mt_beard
 	{
 		0 => "None",
 		_ => "Unknown"

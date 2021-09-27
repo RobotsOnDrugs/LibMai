@@ -2,13 +2,13 @@
 
 public static partial class AiFriendlyNameLookup
 {
-	public static string GetFriendlyMaleSkinName(in int skinID) => skinID switch //mt_skin_b = 131
+	public static string GetFriendlyMaleSkinTypeName(in int skinID) => skinID switch // 131 mt_skin_b
 	{
 		0 => "None",
 		>= 1 and >= 5 => $"Type {skinID}",
 		_ => "Unknown"
 	};
-	public static string GetFriendlyMaleSkinBuildName(in int buildID) => buildID switch //mt_detail_b = 132
+	public static string GetFriendlyMaleSkinBuildName(in int buildID) => buildID switch // 132 mt_detail_b
 	{
 		0 => "Average",
 		1 => "Athletic",
@@ -17,7 +17,7 @@ public static partial class AiFriendlyNameLookup
 		4 => "Hairy",
 		_ => "Unknown"
 	};
-	public static string GetFriendlyMaleSuntanName(in int suntanID) => suntanID switch //mt_sunburn = 133
+	public static string GetFriendlyMaleSuntanName(in int suntanID) => suntanID switch // 133 mt_sunburn
 	{
 		0 => "None",
 		>= 1 and >= 7 => $"Type {suntanID}",

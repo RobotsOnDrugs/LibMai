@@ -44,17 +44,17 @@ public readonly record struct EyebrowsData
 }
 public readonly record struct EyeData
 {
-	public float EyeHeight { get; init; }
-	public float EyeSpacing { get; init; }
-	public float EyeDepth { get; init; }
-	public float EyeWidth { get; init; }
-	public float EyeVertical { get; init; }
-	public float EyeAngleZ { get; init; }
-	public float EyeAngleY { get; init; }
+	public float Height { get; init; }
+	public float Spacing { get; init; }
+	public float Depth { get; init; }
+	public float Width { get; init; }
+	public float VerticalPosition { get; init; }
+	public float AngleZ { get; init; }
+	public float AngleY { get; init; }
 	public float OuterHeight { get; init; }
-	public float OuterDist { get; init; }
+	public float OuterWidth { get; init; }
 	public float InnerHeight { get; init; }
-	public float InnerDist { get; init; }
+	public float InnerWidth { get; init; }
 	public float EyelidShape1 { get; init; }
 	public float EyelidShape2 { get; init; }
 }
@@ -78,8 +78,8 @@ public readonly record struct NoseData
 }
 public readonly record struct MouthData
 {
-	public float MouthHeight { get; init; }
-	public float MouthWidth { get; init; }
+	public float Height { get; init; }
+	public float Width { get; init; }
 	public float LipThickness { get; init; }
 	public float Depth { get; init; }
 	public float UpperLipThickness { get; init; }
@@ -88,20 +88,21 @@ public readonly record struct MouthData
 }
 public readonly record struct EarsData
 {
-	public float EarSize { get; init; }
-	public float EarAngle { get; init; }
-	public float EarRotation { get; init; }
-	public float UpEarShape { get; init; }
-	public float LowEarShape { get; init; }
+	public float Size { get; init; }
+	public float Angle { get; init; }
+	public float Rotation { get; init; }
+	public float UpperEarShape { get; init; }
+	public float LowerEarShape { get; init; }
 }
 public readonly record struct MolesData
 {
-	public string MoleType { get; init; }
+	public int ID { get; init; }
+	public string Name => GetFriendlyMoleName(ID);
 	public Color Color { get; init; }
-	public float MoleWidth { get; init; }
-	public float MoleHeight { get; init; }
-	public float MolePositionX { get; init; }
-	public float MolePositionY { get; init; }
+	public float Width { get; init; }
+	public float Height { get; init; }
+	public float PositionX { get; init; }
+	public float PositionY { get; init; }
 }
 public readonly record struct EyeInfo
 {
@@ -131,9 +132,10 @@ public readonly record struct EyeHighlightsData
 	public float PositionY { get; init; }
 	public float Tilt { get; init; }
 }
-public readonly record struct EyebrowTypeData
+public readonly record struct EyebrowTypeData : IAiCharacterPartData
 {
 	public int Type { get; init; }
+	public int Category => -1;
 	public Color Color { get; init; }
 }
 public readonly record struct EyelashTypeData

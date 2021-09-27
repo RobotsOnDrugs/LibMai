@@ -21,15 +21,16 @@ public readonly record struct HS2GameData // GameInfo2 and Parameter2
 	public int ToiletLevel { get; init; }
 	public int LibidoLevel { get; init; }
 	public int AlertnessLevel { get; init; } // This doesn't seem to actually be used for anything, and all of my characters have this set to 0
-											 // public bool arriveRoom50 { get; init; } // Something to do with bath events
-											 // public bool arriveRoom80 { get; init; } // ?
-											 //public bool arriveRoomHAfter { get; init; }
+	public bool arriveRoom50 { get; init; } // Something to do with bath events
+	public bool arriveRoom80 { get; init; } // ?
+	public bool arriveRoomHAfter { get; init; } // ?
 	public int SexExperience { get; init; } // resistH
 	public int BDSMExperience { get; init; } // resistPain
 	public int AnalExperience { get; init; } // resistAnal
 	public SexItemType ActiveItem { get; init; } // usedItem
-												 //public bool IsChangeParameter { get; init; }
+	public bool isChangeParameter { get; init; }
 	public bool IsConcierge { get; init; }
+
 	public enum SexTraitType // hAttribute
 	{
 		None,

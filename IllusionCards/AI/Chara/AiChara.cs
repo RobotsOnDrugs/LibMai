@@ -1,3 +1,6 @@
+//using System.Runtime.CompilerServices;
+
+//[assembly: InternalsVisibleTo("MessagePack"), InternalsVisibleTo("CardManagerCLI")]
 namespace IllusionCards.AI.Chara;
 
 public readonly record struct AiChara : IIllusionChara
