@@ -104,6 +104,8 @@ public readonly record struct MolesData
 	public float PositionX { get; init; }
 	public float PositionY { get; init; }
 }
+
+[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Make it easier to see the switched variable names")]
 public readonly record struct EyeInfo
 {
 	public Color ScleraColor { get; init; }

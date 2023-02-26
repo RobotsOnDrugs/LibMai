@@ -102,7 +102,7 @@ public readonly record struct AiChara : IIllusionChara
 		foreach (BlockHeader.Info info in _blockHeader.lstInfo)
 		{
 			long _infoPos = _postNumPosition + info.pos;
-			binaryReader.BaseStream.Seek(_infoPos, SeekOrigin.Begin);
+			_ = binaryReader.BaseStream.Seek(_infoPos, SeekOrigin.Begin);
 			byte[] _infoData = binaryReader.ReadBytes((int)info.size);
 			ImmutableHashSet<AiPluginData>.Builder _pluginData = ImmutableHashSet.CreateBuilder<AiPluginData>();
 			ImmutableHashSet<NullPluginData>.Builder _nullData = ImmutableHashSet.CreateBuilder<NullPluginData>();
@@ -149,14 +149,14 @@ public readonly record struct AiChara : IIllusionChara
 						{
 							if (kvp.Value?.data is null)
 							{
-								_nullData.Add(new NullPluginData() { DataKey = kvp.Key });
+								_ = _nullData.Add(new NullPluginData() { DataKey = kvp.Key });
 								continue;
 							}
 							AiRawPluginData _rawPluginData = (AiRawPluginData)kvp.Value;
 							if (kvp.Value is not null)
 							{
 								AiPluginData _aiPluginData = AiPluginData.GetExtendedPluginData(kvp.Key, _rawPluginData);
-								_pluginData.Add(_aiPluginData);
+								_ = _pluginData.Add(_aiPluginData);
 							}
 						}
 						ExtendedData = _pluginData.ToImmutable();
@@ -168,7 +168,7 @@ public readonly record struct AiChara : IIllusionChara
 			}
 			catch (InvalidDataException ex) { _exList.Add(ex); }
 		}
-		binaryReader.BaseStream.Seek(_postNumPosition + _num, SeekOrigin.Begin);
+		_ = binaryReader.BaseStream.Seek(_postNumPosition + _num, SeekOrigin.Begin);
 
 		if (_exList.Count != 0) throw new AggregateException("Some critical data was missing from this character.", _exList);
 

@@ -54,7 +54,7 @@ public readonly record struct AiCharaStatusData // Status
 	public bool CondomIsVisible { get; init; } // visibleGomu - seems to be for a condom feature that was never implemented, but not 100% sure
 	public Color MonochromeColor { get; init; } // simpleColor
 	public ImmutableArray<bool> enableShapeHand { get; init; }
-	public int[,] shapeHandPtn { get; init; }
+	public int[,] shapeHandPtn { get; init; } = null!;
 	public ImmutableArray<float> shapeHandBlendValue { get; init; }
 	public float AssRednessAmount { get; init; }
 

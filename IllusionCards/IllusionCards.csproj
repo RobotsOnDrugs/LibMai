@@ -1,15 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<OutputType>Library</OutputType>
-	<StartupObject></StartupObject>
-	<ApplicationIcon />
 	<Version>0.0.2</Version>
-	<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<ImplicitUsings>enable</ImplicitUsings>
-	<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+	<Nullable>enable</Nullable>
 	<TargetFramework>net7.0-windows10.0.19041.0</TargetFramework>
+	<LangVersion>11.0</LangVersion>
+	<Platforms>x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,14 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-	<None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-	<PackageReference Include="MessagePack" Version="2.3.85" />
-	<PackageReference Include="morelinq" Version="3.3.2" />
-	<PackageReference Include="NLog" Version="5.0.0-preview.2" />
-	<PackageReference Include="ObjectDumper.NET" Version="3.3.13" />
+	<PackageReference Include="MessagePack" Version="2.4.59" />
+	<PackageReference Include="NLog" Version="5.1.2" />
   </ItemGroup>
 
 </Project>

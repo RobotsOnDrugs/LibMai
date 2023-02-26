@@ -1,5 +1,6 @@
 ﻿namespace IllusionCards.AI.Chara.Friendly;
 
+[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Use MessagePack convention")]
 public readonly record struct AiPaintInfo
 {
 	public int id { get; init; }

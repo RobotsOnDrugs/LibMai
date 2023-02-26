@@ -19,8 +19,8 @@ public record AiStudioCharacter : AiStudioObject
 	private ImmutableArray<byte> CumSplatterStatusBytes { get; init; }
 	public CumSplatterStatus CumSplatter { get; init; }
 	public float NippleStiffness { get; init; }
-	public float Wetness => 0f;// Chara.Status.wetRate;
-	public float SkinGloss => 0f;// Chara.Status.skinTuyaRate;
+	public static float Wetness => 0f; // Chara.Status.wetRate;
+	public static float SkinGloss => 0f; // Chara.Status.skinTuyaRate;
 	public bool CharaIsMonochrome { get; init; }
 	public Color MonochromeColor { get; init; }
 	public bool PenisIsVisible { get; init; } // Illusion calls it "son"
@@ -54,7 +54,7 @@ public record AiStudioCharacter : AiStudioObject
 	}
 	public ActiveIKStruct ActiveIK { get; init; }
 	public AiStudioLookAtTarget LookAtTarget { get; init; }
-	public EyeLookType EyePosition => EyeLookType.NO_LOOK;// (EyeLookType)Chara.Status.eyesLookPtn;
+	public static EyeLookType EyePosition => EyeLookType.NO_LOOK; // (EyeLookType)Chara.Status.eyesLookPtn;
 	public ImmutableArray<Quaternion> EyeAngles { get; init; }
 	public enum NeckLookTypeStudio // NECK_LOOK_TYPE_VER2
 	{

@@ -2,8 +2,8 @@
 
 public readonly record struct IllusionConstants
 {
-	public static readonly ImmutableArray<byte> MarkerOpener = new byte[3] { 0xE3, 0x80, 0x90 }.ToImmutableArray(); // 【
-	public static readonly ImmutableArray<byte> MarkerCloser = new byte[3] { 0xE3, 0x80, 0x91 }.ToImmutableArray(); // 】
+	public static readonly ImmutableArray<byte> MarkerOpener = "【"u8.ToImmutableArray();
+	public static readonly ImmutableArray<byte> MarkerCloser = "】"u8.ToImmutableArray();
 
 	public const string AiCustomBlockName = "Custom";
 	public const string AiCoordinateBlockName = "Coordinate";
@@ -45,5 +45,4 @@ public readonly record struct IllusionConstants
 		[CardType.PHScene] = "PlayHome Studio scene",
 		[CardType.ECChara] = "Emotion Creators character"
 	}.ToImmutableDictionary();
-
 }

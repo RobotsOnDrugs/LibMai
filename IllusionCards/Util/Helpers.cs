@@ -21,14 +21,15 @@ public static class Helpers
 				if (buffer[i] != sequence[0]) continue;
 				_potentialMatchPos = _bufferPos + i;
 				// if ((i + sequence.Length) > (bufSize - 1)) // in case the sequence goes beyond the buffer
-				stream.Seek(_potentialMatchPos, SeekOrigin.Begin);
+				_ = stream.Seek(_potentialMatchPos, SeekOrigin.Begin);
 				_ = stream.Read(potentialMatch, 0, sequence.Length);
 				if (potentialMatch.SequenceEqual(sequence))
 				{
-					stream.Seek(_originalPos, SeekOrigin.Begin);
+					_ = stream.Seek(_originalPos, SeekOrigin.Begin);
 					return _potentialMatchPos;
 				}
-				else { stream.Seek(_currentPos, SeekOrigin.Begin); continue; }
+				_ = stream.Seek(_currentPos, SeekOrigin.Begin);
+				continue;
 
 				// Some bad code that tries to iterate over the buffer bytes instead of pulling from the stream again.
 				// The other way is fast enough, so I won't bother to fix this unless speed becomes an issue.
@@ -46,7 +47,7 @@ public static class Helpers
 			_bufferPos += bufSize;
 		}
 
-		stream.Seek(_originalPos, SeekOrigin.Begin);
+		_ = stream.Seek(_originalPos, SeekOrigin.Begin);
 		return null;
 	}
 
@@ -89,16 +90,12 @@ public static class Helpers
 	public static ImmutableArray<float> UnpackFloats(ref MessagePackReader reader, in int expectedLength)
 	{
 		if (reader.TryReadNil())
-		{
 			throw new InvalidOperationException("typecode is null, struct not supported");
-		}
 		int count = reader.ReadArrayHeader();
 		if (count != expectedLength) throw new InvalidOperationException($"Got a float array with an unexpected length. Expected {expectedLength}, got {count}");
 		float[] _a = new float[expectedLength];
 		for (int i = 0; i < count; i++)
-		{
 			_a[i] = reader.ReadSingle();
-		}
 		return _a.ToImmutableArray();
 	}
 }

@@ -59,6 +59,7 @@ public readonly record struct AiRawFaceData
 		public float lipGloss { get; init; }
 		[Key("paintInfo")]
 		[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Required for MessagePack initialization")]
+		[SuppressMessage("Roslynator", "RCS1213:Remove unused member declaration.", Justification = "Required for MessagePack initialization")]
 		private AiRawPaintInfo[] _paintInfo { init => paintInfo = value.ToImmutableArray(); }
 		public ImmutableArray<AiRawPaintInfo> paintInfo { get; init; }
 	}

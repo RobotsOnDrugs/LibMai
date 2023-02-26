@@ -16,11 +16,11 @@ public readonly record struct CardStructure
 		{
 			Stream _stream = binaryReader.BaseStream;
 			long? _pos = Helpers.FindSequence(_stream, IllusionConstants.MarkerOpener) ?? throw new InvalidCardException("This card contains no card identifiers.");
-			_stream.Seek((long)_pos, SeekOrigin.Begin);
+			_ = _stream.Seek((long)_pos, SeekOrigin.Begin);
 			long? _pos2 = Helpers.FindSequence(_stream, IllusionConstants.MarkerCloser) ?? throw new InvalidCardException("This card contains no card identifiers.");
 			while (_pos is not null && _pos2 is not null)
 			{
-				_stream.Seek((long)_pos, SeekOrigin.Begin);
+				_ = _stream.Seek((long)_pos, SeekOrigin.Begin);
 				byte[] _potentialMarkerBytes = binaryReader.ReadBytes((int)_pos2 - (int)_pos + IllusionConstants.MarkerCloser.Length);
 				string _potentialMarker = Encoding.UTF8.GetString(_potentialMarkerBytes);
 				if (_potentialMarker == IllusionConstants.StudioNEOV2Identifier)
@@ -32,7 +32,7 @@ public readonly record struct CardStructure
 				_pos = Helpers.FindSequence(_stream, IllusionConstants.MarkerOpener);
 				if (_pos is null)
 					break;
-				_stream.Seek((long)_pos, SeekOrigin.Begin);
+				_ = _stream.Seek((long)_pos, SeekOrigin.Begin);
 				_pos2 = Helpers.FindSequence(_stream, IllusionConstants.MarkerCloser);
 			}
 			return CardType.Unknown;
@@ -79,10 +79,10 @@ public readonly record struct CardStructure
 		long _pngEndOffset = Helpers.FindSequence(_stream, Constants.PNGFooter) ?? throw new InvalidCardException("No PNG footer was found.");
 		DataStartOffset = _pngEndOffset + Constants.PNGFooter.Length;
 		if (_stream.Length <= DataStartOffset) { throw new InvalidCardException("This is a normal PNG file with no extra data."); }
-		_stream.Seek(DataStartOffset, SeekOrigin.Begin);
+		_ = _stream.Seek(DataStartOffset, SeekOrigin.Begin);
 		Logger.Debug("Data offset for {CardName:l}: {DataStartOffset}", cardFile?.FullName ?? "Unknown card", DataStartOffset);
 		CardType? _cardType = TrySceneParse(BinaryReader);
-		_stream.Seek(DataStartOffset, SeekOrigin.Begin);
+		_ = _stream.Seek(DataStartOffset, SeekOrigin.Begin);
 		if (_cardType is not null)
 		{
 			if (_cardType is CardType.Unknown)
@@ -98,6 +98,6 @@ public readonly record struct CardStructure
 			CardType = GetCardType(_gameId) ?? throw new InvalidCardException($"Looks like an AI or KK card, but could not determine card type from this identifier: {_gameId}");
 			return;
 		}
-		else { throw new InvalidCardException("Could not determine card type."); }
+		throw new InvalidCardException("Could not determine card type.");
 	}
 }

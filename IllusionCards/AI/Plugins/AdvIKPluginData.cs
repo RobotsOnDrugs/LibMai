@@ -93,24 +93,24 @@ public record AdvIKPluginData : AiPluginData
 		Vector3? _breathingUpperChestScaling;
 		Vector3? _breathingLowerChestScaling;
 		Vector3? _breathingAbdomenScaling;
-		_breathingMagnitude = (_magnitudeData) ? new Vector3(
+		_breathingMagnitude = _magnitudeData ? new Vector3(
 			(float)dataDict["BreathingMagnitude.x"],
 			(float)dataDict["BreathingMagnitude.y"],
 			(float)dataDict["BreathingMagnitude.z"]) : null;
-		_breathingUpperChestScaling = (_magnitudeData) ? new Vector3(
+		_breathingUpperChestScaling = _magnitudeData ? new Vector3(
 		(float)dataDict["BreathingUpperChestScaling.x"],
 		(float)dataDict["BreathingUpperChestScaling.y"],
 		(float)dataDict["BreathingUpperChestScaling.z"]) : null;
-		_breathingLowerChestScaling = (_magnitudeData) ? new Vector3(
+		_breathingLowerChestScaling = _magnitudeData ? new Vector3(
 			(float)dataDict["BreathingLowerChestScaling.x"],
 			(float)dataDict["BreathingLowerChestScaling.y"],
 			(float)dataDict["BreathingLowerChestScaling.z"]) : null;
-		_breathingAbdomenScaling = (_magnitudeData) ? new Vector3(
+		_breathingAbdomenScaling = _magnitudeData ? new Vector3(
 		(float)dataDict["BreathingAbdomenScaling.x"],
 		(float)dataDict["BreathingAbdomenScaling.y"],
 		(float)dataDict["BreathingAbdomenScaling.z"]) : null;
 		var _chainAdjustments = dataDict.TryGetValue("ResizeChainAdjustments", out object? _tryval) && (_tryval is not null) ?
-			MessagePack.MessagePackSerializer.Deserialize<ImmutableDictionary<IKChain, IKResizeChainAdjustment>>((byte[])_tryval) : null;
+			MessagePackSerializer.Deserialize<ImmutableDictionary<IKChain, IKResizeChainAdjustment>>((byte[])_tryval) : null;
 		Data = new AdvIKPluginOptions()
 		{
 			ShoulderRotationEnabled = NullCheckDictionaryEntries(dataDict, "ShoulderRotatorEnabled", false),

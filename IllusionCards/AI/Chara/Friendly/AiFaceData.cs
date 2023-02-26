@@ -16,7 +16,7 @@ public readonly record struct AiFaceData
 	public MolesData Moles { get; init; }
 	public bool SetBothLeftAndRightEyes { get; init; }
 	public EyeInfo LeftEye { get; init; }
-	public EyeInfo RightEye { get => SetBothLeftAndRightEyes ? LeftEye : RightEye_ ?? throw new NullReferenceException(); }
+	public EyeInfo RightEye => SetBothLeftAndRightEyes ? LeftEye : RightEye_ ?? throw new NullReferenceException();
 	internal EyeInfo? RightEye_ { get; init; }
 	public IrisData IrisSettings { get; init; }
 	public EyeHighlightsData EyeHighlights { get; init; }

@@ -6,6 +6,7 @@ public readonly record struct AiAccessoriesData
 	public ImmutableArray<AiAccessoryData> Accessories { get; init; }
 }
 
+[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Use MessagePack convention")]
 public readonly record struct AiAccessoryData
 {
 	public AiAccessoryData() { }

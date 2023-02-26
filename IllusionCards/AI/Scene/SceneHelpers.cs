@@ -13,7 +13,7 @@ internal static class SceneHelpers
 			{
 				case JsonTokenType.PropertyName:
 					_prop = _colorJsonReader.GetString();
-					_colorJsonReader.Read();
+					_ = _colorJsonReader.Read();
 					switch (_prop)
 					{
 						case "r":
@@ -38,7 +38,7 @@ internal static class SceneHelpers
 			}
 		}
 		return _r is not null && _g is not null && _b is not null && _a is not null
-			? (new() { r = (float)_r, g = (float)_g, b = (float)_b, a = (float)_a })
+			? new() { r = (float)_r, g = (float)_g, b = (float)_b, a = (float)_a }
 			: throw new InvalidCardException("Could not read color JSON.");
 	}
 }

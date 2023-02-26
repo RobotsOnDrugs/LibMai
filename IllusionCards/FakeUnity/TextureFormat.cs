@@ -1,5 +1,6 @@
 ﻿namespace IllusionCards.FakeUnity;
 
+[SuppressMessage("Roslynator", "RCS1154:Sort enum members.", Justification = "Preserving original order.")]
 public enum TextureFormat
 {
 	Alpha8 = 1,

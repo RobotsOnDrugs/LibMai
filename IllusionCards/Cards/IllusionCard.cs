@@ -17,9 +17,9 @@ public abstract record IllusionCard
 		CardFile = CardStructure.CardFile;
 		CardType = CardStructure.CardType;
 		DataStartOffset = cs.DataStartOffset;
-		binaryReader.BaseStream.Seek(0, SeekOrigin.Begin);
-		PngData = ImmutableArray.Create<byte>(binaryReader.ReadBytes((int)DataStartOffset));
-		binaryReader.BaseStream.Seek(DataStartOffset, SeekOrigin.Begin);
+		_ = binaryReader.BaseStream.Seek(0, SeekOrigin.Begin);
+		PngData = ImmutableArray.Create(binaryReader.ReadBytes((int)DataStartOffset));
+		_ = binaryReader.BaseStream.Seek(DataStartOffset, SeekOrigin.Begin);
 	}
 
 	public class WrongCardTypeException : InvalidOperationException { }
@@ -62,7 +62,7 @@ public abstract record IllusionCard
 		try
 		{
 			string _string = Encoding.UTF8.GetString(binaryReader.ReadBytes(binaryReader.Read7BitEncodedInt()));
-			if (!noReset) binaryReader.BaseStream.Seek((long)offset, SeekOrigin.Begin);
+			if (!noReset) _ = binaryReader.BaseStream.Seek((long)offset, SeekOrigin.Begin);
 			return _string;
 		}
 		catch (Exception ex) { throw new InvalidCardException("Could not parse card.", ex); }

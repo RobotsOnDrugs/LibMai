@@ -22,7 +22,8 @@ public record OutfitPainterData : AiPluginData
 	public readonly record struct OutfitPainterOptions
 	{
 		[Key(0)]
-		[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+		[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Required for MessagePack initialization")]
+		[SuppressMessage("Roslynator", "RCS1213:Remove unused member declaration.", Justification = "Required for MessagePack initialization")]
 		private List<OutfitPainterChannel> ChannelsList { init => Channels = value.ToImmutableArray(); }
 		[IgnoreMember]
 		public ImmutableArray<OutfitPainterChannel> Channels { get; init; }
@@ -48,7 +49,8 @@ public record OutfitPainterData : AiPluginData
 		public float ChannelMetallic { get; init; }
 
 		[Key(5)]
-		[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+		[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Required for MessagePack initialization")]
+		[SuppressMessage("Roslynator", "RCS1213:Remove unused member declaration.", Justification = "Required for MessagePack initialization")]
 		private List<OutfitPainterChannelAssignment> AssignmentsList { init => Assignments = value.ToImmutableArray(); }
 		[IgnoreMember]
 		public ImmutableArray<OutfitPainterChannelAssignment> Assignments { get; init; } = ImmutableArray<OutfitPainterChannelAssignment>.Empty;
@@ -68,6 +70,7 @@ public record OutfitPainterData : AiPluginData
 		[Key(3)]
 		public bool patternColor { get; init; }
 	}
+	[SuppressMessage("Roslynator", "RCS1154:Sort enum members.", Justification = "Preserving original order.")]
 	public enum OutfitPainterSlot
 	{
 		TOP = 0,

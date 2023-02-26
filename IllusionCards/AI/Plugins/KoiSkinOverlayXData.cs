@@ -32,7 +32,6 @@ public record KoiSkinOverlayXData : AiPluginData
 		[IgnoreMember]
 		public bool IsPNG { get; init; }
 		private byte[] TexBytes { get; init; } = null!;
-
 	}
 	public enum CoordinateType
 	{

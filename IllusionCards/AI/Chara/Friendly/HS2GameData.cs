@@ -1,5 +1,6 @@
 ﻿namespace IllusionCards.AI.Chara.Friendly;
 
+[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Use MessagePack convention")]
 public readonly record struct HS2GameData // GameInfo2 and Parameter2
 {
 	public SexTraitType SexTrait { get; init; }

@@ -7,6 +7,7 @@ public readonly record struct AiRawBodyData
 	public Version version { get; init; } = null!;
 	[Key("shapeValueBody")]
 	[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Required for MessagePack initialization")]
+	[SuppressMessage("Roslynator", "RCS1213:Remove unused member declaration.", Justification = "Required for MessagePack initialization")]
 	private float[] _shapeValueBody { init => shapeValueBody = value.ToImmutableArray(); }
 	public ImmutableArray<float> shapeValueBody { get; init; }
 	public float bustSoftness { get; init; }
@@ -21,6 +22,7 @@ public readonly record struct AiRawBodyData
 	public Color sunburnColor { get; init; }
 	[Key("paintInfo")]
 	[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Required for MessagePack initialization")]
+	[SuppressMessage("Roslynator", "RCS1213:Remove unused member declaration.", Justification = "Required for MessagePack initialization")]
 	private AiRawPaintInfo[] _paintInfo { init => paintInfo = value.ToImmutableArray(); }
 	public ImmutableArray<AiRawPaintInfo> paintInfo { get; init; }
 	public int nipId { get; init; }

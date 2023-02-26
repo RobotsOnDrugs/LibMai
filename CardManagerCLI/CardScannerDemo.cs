@@ -138,7 +138,7 @@ public static class CardScannerDemo
 			_potentialCardFiles.AddRange(Directory.EnumerateFiles(_cardsPath, "*.png", enumerationOptions: new() { AttributesToSkip = FileAttributes.Device | FileAttributes.System, RecurseSubdirectories = true, IgnoreInaccessible = true }));
 		}
 		if (chara)
-			_paths.Add(Path.Join(dirPath, "UserData", "chara", "female", ".testing"));
+			_paths.Add(Path.Join(dirPath, "UserData", "chara", "female", ".incoming"));
 		if (coordinate)
 			_paths.Add(Path.Join(dirPath, "UserData", "coordinate"));
 		if (scene)

@@ -27,8 +27,5 @@ public sealed class ColorFormatter : IMessagePackFormatter<Color>, IMessagePackF
 		writer.Write(value.b);
 		writer.Write(value.a);
 	}
-	public Color Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
-	{
-		return new Color(Helpers.UnpackFloats(ref reader, 4));
-	}
+	public Color Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options) => new(Helpers.UnpackFloats(ref reader, 4));
 }

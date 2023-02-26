@@ -425,22 +425,23 @@ public static class AiFriendlyCharaDataConverters
 		IsConcierge = gameInfo2.isConcierge,
 	};
 
-	public static AiRawCustomData GetCustomData(in AiFaceData faceData, in AiBodyData bodyData, in AiHairData hairData)
-	{
-		return new();
-	}
-	public static AiRawCoordinateData GetCoordinateData(in AiClothingData clothingData, in ImmutableArray<AiAccessoriesData> accessorySettingsDatas)
-	{
-		return new();
-	}
-	public static AiRawParameterData GetParameterData(in AiCharaInfoData charaInfoData)
-	{
-		return new();
-	}
-	public static (AiRawParameter2Data, AiRawGameInfo2Data) GetRawHS2Data(in HS2GameData gameData)
-	{
-		return (new(), new());
-	}
+	// Looks like some unfinished business. Set to internal and come back later.
+	//internal static AiRawCustomData GetCustomData(in AiFaceData faceData, in AiBodyData bodyData, in AiHairData hairData)
+	//{
+	//	return new();
+	//}
+	//internal static AiRawCoordinateData GetCoordinateData(in AiClothingData clothingData, in ImmutableArray<AiAccessoriesData> accessorySettingsDatas)
+	//{
+	//	return new();
+	//}
+	//internal static AiRawParameterData GetParameterData(in AiCharaInfoData charaInfoData)
+	//{
+	//	return new();
+	//}
+	//internal static (AiRawParameter2Data, AiRawGameInfo2Data) GetRawHS2Data(in HS2GameData gameData)
+	//{
+	//	return (new(), new());
+	//}
 
 	private static Face.EyeInfo ConvertEyeInfo(in Raw.Custom.AiRawFaceData.EyesInfo rawEyeInfo) => new()
 	{
