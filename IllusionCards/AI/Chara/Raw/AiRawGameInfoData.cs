@@ -3,6 +3,7 @@
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 public readonly record struct AiRawGameInfoData
 {
+	public AiRawGameInfoData() { }
 	public Version version { get; init; } = null!;
 	public bool gameRegistration { get; init; }
 	public MinMaxInfo tempBound { get; init; }

@@ -3,6 +3,7 @@
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 public readonly record struct AiRawAccessoriesData
 {
+	public AiRawAccessoriesData() { }
 	public Version version { get; init; } = null!;
 	public AccessoryPartsInfo[] parts { get; init; } = null!;
 }
@@ -10,6 +11,7 @@ public readonly record struct AiRawAccessoriesData
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 public readonly record struct AccessoryPartsInfo
 {
+	public AccessoryPartsInfo() { }
 	public int type { get; init; }
 	public int id { get; init; }
 	public string parentKey { get; init; } = null!;

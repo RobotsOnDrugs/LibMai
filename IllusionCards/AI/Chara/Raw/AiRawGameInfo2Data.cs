@@ -3,6 +3,7 @@
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 public readonly record struct AiRawGameInfo2Data
 {
+	public AiRawGameInfo2Data() { }
 	public int Favor { get; init; }
 	public int Enjoyment { get; init; }
 	public int Aversion { get; init; }

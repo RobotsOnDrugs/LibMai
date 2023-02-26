@@ -3,6 +3,7 @@
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 public readonly record struct AiRawParameterData
 {
+	public AiRawParameterData() { }
 	public Version version { get; init; } = null!;
 	public byte sex { get; init; }
 	public string fullname { get; init; } = null!;

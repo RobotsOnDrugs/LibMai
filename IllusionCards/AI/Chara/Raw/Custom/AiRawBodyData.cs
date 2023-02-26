@@ -3,6 +3,7 @@
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 public readonly record struct AiRawBodyData
 {
+	public AiRawBodyData() { }
 	public Version version { get; init; } = null!;
 	[Key("shapeValueBody")]
 	[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Required for MessagePack initialization")]

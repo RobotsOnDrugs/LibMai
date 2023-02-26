@@ -1,7 +1,9 @@
 ﻿namespace IllusionCards.AI.Chara.Friendly;
 
+[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
 public readonly record struct AiCharaStatusData // Status
 {
+	public AiCharaStatusData() { }
 	public Version Version { get; init; } = null!;
 	//public byte[] clothesState { get; init; } = null!;
 	public ClothingState Top { get; init; }

@@ -3,6 +3,7 @@
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 public readonly record struct AiRawStatusData
 {
+	public AiRawStatusData() { }
 	public Version version { get; init; } = null!;
 	public byte[] clothesState { get; init; } = null!;
 	public bool[] showAccessory { get; init; } = null!;

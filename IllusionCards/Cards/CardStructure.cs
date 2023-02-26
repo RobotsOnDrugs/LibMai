@@ -15,25 +15,25 @@ public readonly record struct CardStructure
 		if (Version.TryParse(ReadString(binaryReader), out Version? _))
 		{
 			Stream _stream = binaryReader.BaseStream;
-			long? _pos = Helpers.FindSequence(_stream, Constants.MarkerOpener) ?? throw new InvalidCardException("This card contains no card identifiers.");
+			long? _pos = Helpers.FindSequence(_stream, IllusionConstants.MarkerOpener) ?? throw new InvalidCardException("This card contains no card identifiers.");
 			_stream.Seek((long)_pos, SeekOrigin.Begin);
-			long? _pos2 = Helpers.FindSequence(_stream, Constants.MarkerCloser) ?? throw new InvalidCardException("This card contains no card identifiers.");
+			long? _pos2 = Helpers.FindSequence(_stream, IllusionConstants.MarkerCloser) ?? throw new InvalidCardException("This card contains no card identifiers.");
 			while (_pos is not null && _pos2 is not null)
 			{
 				_stream.Seek((long)_pos, SeekOrigin.Begin);
-				byte[] _potentialMarkerBytes = binaryReader.ReadBytes((int)_pos2 - (int)_pos + Constants.MarkerCloser.Length);
+				byte[] _potentialMarkerBytes = binaryReader.ReadBytes((int)_pos2 - (int)_pos + IllusionConstants.MarkerCloser.Length);
 				string _potentialMarker = Encoding.UTF8.GetString(_potentialMarkerBytes);
-				if (_potentialMarker == Constants.StudioNEOV2Identifier)
+				if (_potentialMarker == IllusionConstants.StudioNEOV2Identifier)
 					return CardType.AIScene;
-				if (_potentialMarker == Constants.PHStudioIdentifier)
+				if (_potentialMarker == IllusionConstants.PHStudioIdentifier)
 					return CardType.PHScene;
-				if (_potentialMarker == Constants.KStudioIdentifier)
+				if (_potentialMarker == IllusionConstants.KStudioIdentifier)
 					return CardType.KKScene;
-				_pos = Helpers.FindSequence(_stream, Constants.MarkerOpener);
+				_pos = Helpers.FindSequence(_stream, IllusionConstants.MarkerOpener);
 				if (_pos is null)
 					break;
 				_stream.Seek((long)_pos, SeekOrigin.Begin);
-				_pos2 = Helpers.FindSequence(_stream, Constants.MarkerCloser);
+				_pos2 = Helpers.FindSequence(_stream, IllusionConstants.MarkerCloser);
 			}
 			return CardType.Unknown;
 		}
@@ -44,11 +44,11 @@ public readonly record struct CardStructure
 		// PH non-scene cards start with the identifier.
 		switch (identifier)
 		{
-			case Constants.PHFemaleCharaIdentifier:
+			case IllusionConstants.PHFemaleCharaIdentifier:
 				return CardType.PHFemaleChara;
-			case Constants.PHFemaleClothesIdentifier:
+			case IllusionConstants.PHFemaleClothesIdentifier:
 				return CardType.PHFemaleClothes;
-			case Constants.PHMaleCharaIdentifier:
+			case IllusionConstants.PHMaleCharaIdentifier:
 				return CardType.PHMaleChara;
 			default:
 				break;
@@ -60,12 +60,12 @@ public readonly record struct CardStructure
 	{
 		return identifier switch
 		{
-			Constants.AICharaIdentifier => CardType.AIChara,
-			Constants.AIClothesIdentifier => CardType.AICoordinate,
-			Constants.KKCharaIdentifier => CardType.KKChara,
-			Constants.KKPartyCharaIdentifier => CardType.KKPartyChara,
-			Constants.KKPartySPCharaIdentifier => CardType.KKPartySPChara,
-			Constants.ECCharaIdentifier => CardType.ECChara,
+			IllusionConstants.AICharaIdentifier => CardType.AIChara,
+			IllusionConstants.AIClothesIdentifier => CardType.AICoordinate,
+			IllusionConstants.KKCharaIdentifier => CardType.KKChara,
+			IllusionConstants.KKPartyCharaIdentifier => CardType.KKPartyChara,
+			IllusionConstants.KKPartySPCharaIdentifier => CardType.KKPartySPChara,
+			IllusionConstants.ECCharaIdentifier => CardType.ECChara,
 			_ => null,
 		};
 	}
@@ -74,10 +74,10 @@ public readonly record struct CardStructure
 		BinaryReader = binaryReader;
 		Stream _stream = BinaryReader.BaseStream;
 		CardFile = cardFile;
-		byte[] _header = BinaryReader.ReadBytes(Constants.pngHeader.Length);
-		if (!_header.SequenceEqual(Constants.pngHeader)) { throw new InvalidCardException("No PNG header was found at the beginning of the file."); }
-		long _pngEndOffset = Helpers.FindSequence(_stream, Constants.pngFooter) ?? throw new InvalidCardException("No PNG footer was found.");
-		DataStartOffset = _pngEndOffset + Constants.pngFooter.Length;
+		byte[] _header = BinaryReader.ReadBytes(Constants.PNGHeader.Length);
+		if (!_header.SequenceEqual(Constants.PNGHeader)) { throw new InvalidCardException("No PNG header was found at the beginning of the file."); }
+		long _pngEndOffset = Helpers.FindSequence(_stream, Constants.PNGFooter) ?? throw new InvalidCardException("No PNG footer was found.");
+		DataStartOffset = _pngEndOffset + Constants.PNGFooter.Length;
 		if (_stream.Length <= DataStartOffset) { throw new InvalidCardException("This is a normal PNG file with no extra data."); }
 		_stream.Seek(DataStartOffset, SeekOrigin.Begin);
 		Logger.Debug("Data offset for {CardName:l}: {DataStartOffset}", cardFile?.FullName ?? "Unknown card", DataStartOffset);

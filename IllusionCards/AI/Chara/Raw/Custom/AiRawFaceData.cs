@@ -3,6 +3,7 @@
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 public readonly record struct AiRawFaceData
 {
+	public AiRawFaceData() { }
 	public Version version { get; init; } = null!;
 	public float[] shapeValueFace { get; init; } = null!;
 	public int headId { get; init; }

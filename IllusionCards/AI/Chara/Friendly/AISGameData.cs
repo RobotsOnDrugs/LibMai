@@ -2,6 +2,7 @@
 
 public readonly record struct AISGameData // GameInfo
 {
+	public AISGameData() { }
 	public ImmutableArray<int> Wishes { get; init; } = ImmutableArray.CreateBuilder<int>().ToImmutable(); // This comes from Parameter and seems to be AIS-specific
 	public bool IsRegistered { get; init; }
 	public float LowerTempBound { get; init; }

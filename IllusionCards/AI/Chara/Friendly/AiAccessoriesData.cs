@@ -8,6 +8,7 @@ public readonly record struct AiAccessoriesData
 
 public readonly record struct AiAccessoryData
 {
+	public AiAccessoryData() { }
 	public AiAccessoryType AccessoryType { get; init; }
 	public int ID { get; init; }
 	public string Name { get; init; } = null!;

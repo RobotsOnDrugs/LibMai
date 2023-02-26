@@ -1,6 +1,6 @@
 ﻿namespace IllusionCards.AI.Chara.Raw;
 
-[MessagePackObject(true)]
+[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 public class AiRawListData
 {
 	public AiRawListData()

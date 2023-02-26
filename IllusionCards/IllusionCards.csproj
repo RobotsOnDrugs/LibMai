@@ -6,9 +6,10 @@
 	<ApplicationIcon />
 	<Version>0.0.2</Version>
 	<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-	<PackageLicenseExpression>BSD-4-Clause</PackageLicenseExpression>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<ImplicitUsings>enable</ImplicitUsings>
 	<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+	<TargetFramework>net7.0-windows10.0.19041.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,13 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
-	<PackageReference Include="MessagePack" Version="2.3.75" />
+	<PackageReference Include="MessagePack" Version="2.3.85" />
 	<PackageReference Include="morelinq" Version="3.3.2" />
-	<PackageReference Include="NLog" Version="5.0.0-preview.1" />
-	<PackageReference Include="ObjectDumper.NET" Version="3.3.10-pre" />
-	<PackageReference Include="RuntimeNullables.Fody" Version="1.0.2">
-	  <PrivateAssets>all</PrivateAssets>
-	</PackageReference>
+	<PackageReference Include="NLog" Version="5.0.0-preview.2" />
+	<PackageReference Include="ObjectDumper.NET" Version="3.3.13" />
   </ItemGroup>
 
 </Project>

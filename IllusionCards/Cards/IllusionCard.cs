@@ -36,7 +36,7 @@ public abstract record IllusionCard
 		CardStructure cs;
 		try { cs = new(_breader, cardFile); }
 		catch (UnsupportedCardException ex) { throw new UnsupportedCardException(ex.Message, ex, cardFile?.FullName); }
-		string _friendlyName = Constants.CardTypeNames[cs.CardType];
+		string _friendlyName = IllusionConstants.CardTypeNames[cs.CardType];
 		return cs.CardType switch
 		{
 			CardType.AIChara => new AI.Cards.AiCharaCard(cs, _breader),

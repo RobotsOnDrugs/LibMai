@@ -53,6 +53,8 @@ public readonly record struct AiChara : IIllusionChara
 		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 		public readonly record struct Info
 		{
+			public Info() { }
+
 			public string name { get; init; } = "";
 			public string version { get; init; } = "";
 			public long pos { get; init; } = 0;
@@ -61,7 +63,7 @@ public readonly record struct AiChara : IIllusionChara
 	}
 	public AiChara(BinaryReader binaryReader)
 	{
-		ParseAiCharaTypeData(binaryReader, Constants.AICharaIdentifier, out Version _version, out int _language);
+		ParseAiCharaTypeData(binaryReader, IllusionConstants.AICharaIdentifier, out Version _version, out int _language);
 		LoadVersion = _version;
 		Language = _language;
 		string _userID;
@@ -108,40 +110,40 @@ public readonly record struct AiChara : IIllusionChara
 			{
 				switch (info.name)
 				{
-					case Constants.AiCustomBlockName:
+					case IllusionConstants.AiCustomBlockName:
 						CheckInfoVersion(info, AiCustomVersion);
 						_custom = new AiRawCustomData(_infoData);
 						_blockHits[0] = true;
 						break;
-					case Constants.AiCoordinateBlockName:
+					case IllusionConstants.AiCoordinateBlockName:
 						CheckInfoVersion(info, AiCoordinateVersion);
 						_coordinate = new(_infoData, LoadVersion, Language);
 						_blockHits[1] = true;
 						break;
-					case Constants.AiParameterBlockName:
+					case IllusionConstants.AiParameterBlockName:
 						CheckInfoVersion(info, AiParameterVersion);
 						_parameter = MessagePackSerializer.Deserialize<AiRawParameterData>(_infoData);
 						_blockHits[2] = true;
 						break;
-					case Constants.AiParameter2BlockName:
+					case IllusionConstants.AiParameter2BlockName:
 						CheckInfoVersion(info, AiParameter2Version);
 						_parameter2 = MessagePackSerializer.Deserialize<AiRawParameter2Data>(_infoData);
 						break;
-					case Constants.AiGameInfoBlockName:
+					case IllusionConstants.AiGameInfoBlockName:
 						CheckInfoVersion(info, AiGameInfoVersion);
 						_gameInfo = MessagePackSerializer.Deserialize<AiRawGameInfoData>(_infoData);
 						_blockHits[3] = true;
 						break;
-					case Constants.AiGameInfo2BlockName:
+					case IllusionConstants.AiGameInfo2BlockName:
 						CheckInfoVersion(info, AiGameInfo2Version);
 						_gameInfo2 = MessagePackSerializer.Deserialize<AiRawGameInfo2Data>(_infoData);
 						break;
-					case Constants.AiStatusBlockName:
+					case IllusionConstants.AiStatusBlockName:
 						CheckInfoVersion(info, AiStatusVersion);
 						_status = MessagePackSerializer.Deserialize<AiRawStatusData>(_infoData);
 						_blockHits[4] = true;
 						break;
-					case Constants.AiPluginDataBlockName:
+					case IllusionConstants.AiPluginDataBlockName:
 						Dictionary<string, AiRawPluginData?> _rawExtendedData = MessagePackSerializer.Deserialize<Dictionary<string, AiRawPluginData?>>(_infoData);
 						foreach (KeyValuePair<string, AiRawPluginData?> kvp in _rawExtendedData)
 						{

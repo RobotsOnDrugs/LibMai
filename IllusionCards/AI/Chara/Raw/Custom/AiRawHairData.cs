@@ -3,6 +3,7 @@
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 public readonly record struct AiRawHairData
 {
+	public AiRawHairData() { }
 	public Version version { get; init; } = null!;
 	public bool sameSetting { get; init; }
 	public bool autoSetting { get; init; }
@@ -13,6 +14,7 @@ public readonly record struct AiRawHairData
 	[MessagePackObject(true)]
 	public readonly record struct HairPartsInfo
 	{
+		public HairPartsInfo() { }
 		public int id { get; init; }
 		public Color baseColor { get; init; }
 		public Color topColor { get; init; }

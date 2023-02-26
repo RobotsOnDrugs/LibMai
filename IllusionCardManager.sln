@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IllusionCards", "IllusionCards\IllusionCards.csproj", "{353CA4AF-CA73-4EA7-AF48-1F3E337DCD4E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardManagerCLI", "CardManagerCLI\CardManagerCLI.csproj", "{B6DF555C-B531-4AF9-BF5A-54F8247C420D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardScannerDemo", "CardManagerCLI\CardScannerDemo.csproj", "{B6DF555C-B531-4AF9-BF5A-54F8247C420D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1FA73F9A-2D42-4630-968F-E29A7E690AEF}"
 	ProjectSection(SolutionItems) = preProject
