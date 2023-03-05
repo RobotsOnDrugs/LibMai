@@ -1,7 +1,9 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/IllusionCards/AI/Chara/BaseGameIds
+﻿/IllusionCards/AI/Chara/BaseGameIds
 
 CardManagerCLI/DevSandbox.cs
+
+# Ignore this project for now
+/SideloaderMods
+
+# Rider stuff
+/.idea

@@ -1,6 +1,6 @@
 ﻿namespace IllusionCards.AI.Cards;
 
-public record AiCharaCardDefinitions
+public abstract record AiCharaCardDefinitions
 {
 	public static readonly Version AiChaVersion = new("1.0.0");
 	public static readonly Version AiCustomVersion = new("0.0.0");
@@ -104,11 +104,23 @@ public record AiCharaCardDefinitions
 		"前腕",
 		"乳首立ち"
 	};
+	
+	// ReSharper disable BadListLineBreaks (initialized with single-character ints, not long strings)
 	public static readonly int[] cf_BustShapeMaskID = new int[] { 2, 3, 4, 5, 6, 7, 8, 32 };
 	public static readonly int[] cf_ShapeMaskBust = new int[] { 0, 1, 2, 3, 4 };
 	public static readonly int[] cf_ShapeMaskNip = new int[] { 5, 6 };
+	
 	public const int cf_ShapeMaskNipStand = 7;
-	public static readonly float[] cf_bodyInitValue = ((Func<float[]>)delegate { float[] _a = Helpers.GetRepeatArray(33, 0.5f); _a[32] = 0f; return _a; }).Invoke();
+	// ReSharper restore BadListLineBreaks
+	
+	public static readonly float[] cf_bodyInitValue = (
+		(Func<float[]>)delegate
+		{
+			float[] _a = Helpers.GetRepeatArray(33, 0.5f);
+			_a[32] = 0f;
+			return _a;
+		}).Invoke();
+	
 	public static readonly string[] cf_headshapename = new string[]
 	{
 		"顔全体横幅",

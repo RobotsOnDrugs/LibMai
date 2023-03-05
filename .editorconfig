@@ -1,11 +1,11 @@
 # Remove the line below if you want to inherit .editorconfig settings from higher directories
 root = true
-charset = utf-8
 
 # C# files
 [*.cs]
 
 #### Core EditorConfig Options ####
+charset = utf-8unset
 
 # Indentation and spacing
 indent_size = 4
@@ -227,33 +227,32 @@ dotnet_naming_style.begins_with_i.word_separator =
 dotnet_naming_style.begins_with_i.capitalization = pascal_case
 
 # IDE0001: Simplify Names
-dotnet_diagnostic.IDE0001.severity = suggestion
+dotnet_diagnostic.ide0001.severity = suggestion
 
 # RCS1211: Remove unnecessary 'else'.
-dotnet_diagnostic.RCS1211.severity = suggestion
+dotnet_diagnostic.rcs1211.severity = suggestion
 
 # IDE0002: Simplify Member Access
-dotnet_diagnostic.IDE0002.severity = suggestion
+dotnet_diagnostic.ide0002.severity = suggestion
 
 # CA1805: Do not initialize unnecessarily
-dotnet_diagnostic.CA1805.severity = none
+dotnet_diagnostic.ca1805.severity = none
 
 # RCS1129: Remove redundant field initialization.
-dotnet_diagnostic.RCS1129.severity = none
+dotnet_diagnostic.rcs1129.severity = none
 
 # IDE0059: Unnecessary assignment of a value
-dotnet_diagnostic.IDE0059.severity = none
+dotnet_diagnostic.ide0059.severity = none
 
 # IDE0005: Using directive is unnecessary.
-dotnet_diagnostic.IDE0005.severity = suggestion
+dotnet_diagnostic.ide0005.severity = suggestion
 
 # RCS1188: Remove redundant auto-property initialization.
-dotnet_diagnostic.RCS1188.severity = none
+dotnet_diagnostic.rcs1188.severity = none
 
 # CA1707: Identifiers should not contain underscores
-dotnet_diagnostic.CA1707.severity = none
+dotnet_diagnostic.ca1707.severity = none
 
-[*.{cs,vb}]
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
 tab_width = 4
 indent_size = 4
@@ -265,3 +264,11 @@ dotnet_style_prefer_auto_properties = true:suggestion
 dotnet_style_object_initializer = true:suggestion
 dotnet_style_collection_initializer = true:suggestion
 dotnet_style_prefer_simplified_boolean_expressions = true:suggestion
+
+# ReSharper properties
+resharper_align_multiline_array_and_object_initializer = false
+resharper_csharp_alignment_tab_fill_style = use_tabs_only
+resharper_max_array_initializer_elements_on_line = 4
+resharper_wrap_array_initializer_style = chop_if_long
+
+[*.{cs,vb}]

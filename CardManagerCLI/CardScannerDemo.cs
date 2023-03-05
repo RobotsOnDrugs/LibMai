@@ -41,9 +41,17 @@ public static class CardScannerDemo
 		Option<bool> scanCharaOption = new("--chara", getDefaultValue: () => false, description: "Scan character cards") { Arity = ArgumentArity.ExactlyOne, IsRequired = false };
 		Option<bool> scanCoordinateOption = new("--coordinate", getDefaultValue: () => false, description: "Scan coordinate cards") { Arity = ArgumentArity.ExactlyOne, IsRequired = false };
 		Option<bool> scanSceneOption = new("--scene", getDefaultValue: () => false, description: "Scan scene cards") { Arity = ArgumentArity.ExactlyOne, IsRequired = false };
-		RootCommand RootCommand = new() { cardsOption, cardListOption, gameDirectoryOption, scanCharaOption, scanCoordinateOption, scanSceneOption };
-		RootCommand.Description = "Illusion Card CLI Utility";
-		RootCommand.Handler = CommandHandler.Create<string[], string, string, bool, bool, bool>((cards, cardList, gameDir, chara, coordinate, scene) =>
+		RootCommand root_command = new()
+		{
+			cardsOption,
+			cardListOption,
+			gameDirectoryOption,
+			scanCharaOption,
+			scanCoordinateOption,
+			scanSceneOption
+		};
+		root_command.Description = "Illusion Card CLI Utility";
+		root_command.Handler = CommandHandler.Create<string[], string, string, bool, bool, bool>((cards, cardList, gameDir, chara, coordinate, scene) =>
 		{
 			if (cards.Length != 0)
 			{
@@ -64,7 +72,7 @@ public static class CardScannerDemo
 				// if (!_success) { return; }
 			}
 		});
-		RootCommand.Invoke(args);
+		root_command.Invoke(args);
 
 		ConcurrentBag<IllusionCard> Cards = new();
 		ConcurrentBag<string> UnknownPlugins = new();
