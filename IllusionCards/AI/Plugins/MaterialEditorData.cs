@@ -4,6 +4,7 @@ public record MaterialEditorData : AiPluginData
 {
 	public const string DataKey = DefinitionMetadata.DataKey;
 	public override string GUID => DefinitionMetadata.PluginGUID;
+	
 	public readonly record struct DefinitionMetadata
 	{
 		public const string PluginGUID = "com.deathweasel.bepinex.materialeditor";
@@ -13,6 +14,7 @@ public record MaterialEditorData : AiPluginData
 		public const string recordDefinitionsURL = "https://github.com/IllusionMods/KK_Plugins/blob/master/src/MaterialEditor.Core/Core.MaterialEditor.CharaController.cs";
 		public const string License = "GPL 3.0";
 	}
+	
 	public static readonly DefinitionMetadata Metadata = new();
 	public override string Name => "Material Editor";
 	public override Type DataType => Data.GetType();
@@ -20,13 +22,13 @@ public record MaterialEditorData : AiPluginData
 
 	public readonly record struct MaterialEditorOptions
 	{
-		public readonly ImmutableArray<RendererProperty> RendererPropertyList { get; init; }
-		public readonly ImmutableArray<MaterialFloatProperty> MaterialFloatPropertyList { get; init; }
-		public readonly ImmutableArray<MaterialColorProperty> MaterialColorPropertyList { get; init; }
-		public readonly ImmutableArray<MaterialTextureProperty> MaterialTexturePropertyList { get; init; }
-		public readonly ImmutableArray<MaterialShader> MaterialShaderList { get; init; }
-		public readonly ImmutableArray<MaterialCopy> MaterialCopyList { get; init; }
-		public readonly ImmutableDictionary<int, TextureContainer> TextureDictionary { get; init; }
+		public ImmutableArray<RendererProperty> RendererPropertyList { get; init; }
+		public ImmutableArray<MaterialFloatProperty> MaterialFloatPropertyList { get; init; }
+		public ImmutableArray<MaterialColorProperty> MaterialColorPropertyList { get; init; }
+		public ImmutableArray<MaterialTextureProperty> MaterialTexturePropertyList { get; init; }
+		public ImmutableArray<MaterialShader> MaterialShaderList { get; init; }
+		public ImmutableArray<MaterialCopy> MaterialCopyList { get; init; }
+		public ImmutableDictionary<int, TextureContainer> TextureDictionary { get; init; }
 	}
 
 	/// <summary>
@@ -409,10 +411,12 @@ public record MaterialEditorData : AiPluginData
 	{
 		MessagePackSerializer.DefaultOptions = WithMathTypes;
 		Dictionary<int, TextureContainer> _texDict = new();
-		Dictionary<int, byte[]> _rawTexDict = dataDict.TryGetValue("TextureDictionary", out object? _tryval) && (_tryval is not null) ?
-			MessagePackSerializer.Deserialize<Dictionary<int, byte[]>>((byte[])_tryval) : new();
-		foreach (KeyValuePair<int, byte[]> rawKvp in _rawTexDict)
-			_texDict.Add(rawKvp.Key, new(rawKvp.Value));
+		bool textures_found = dataDict.TryGetValue("TextureDictionary", out object? _tryval);
+		Dictionary<int, byte[]> _rawTexDict = textures_found ?
+			MessagePackSerializer.Deserialize<Dictionary<int, byte[]>>((byte[])_tryval!) :
+			new();
+		foreach (KeyValuePair<int, byte[]> raw_kvp in _rawTexDict)
+			_texDict.Add(raw_kvp.Key, new(raw_kvp.Value));
 
 		IEnumerable<RendererProperty> _rendererProperties = dataDict.TryGetValue("RendererPropertyList", out _tryval) && (_tryval is not null) ?
 			MessagePackSerializer.Deserialize<IEnumerable<RendererProperty>>((byte[])_tryval) : Array.Empty<RendererProperty>();

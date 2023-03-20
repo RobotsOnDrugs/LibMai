@@ -1,11 +1,11 @@
-# Remove the line below if you want to inherit .editorconfig settings from higher directories
 root = true
+# Remove the line below if you want to inherit .editorconfig settings from higher directories
 
 # C# files
 [*.cs]
 
 #### Core EditorConfig Options ####
-charset = utf-8unset
+charset = utf-8
 
 # Indentation and spacing
 indent_size = 4
@@ -268,7 +268,10 @@ dotnet_style_prefer_simplified_boolean_expressions = true:suggestion
 # ReSharper properties
 resharper_align_multiline_array_and_object_initializer = false
 resharper_csharp_alignment_tab_fill_style = use_tabs_only
+resharper_csharp_space_before_ternary_quest = true
+resharper_csharp_wrap_before_ternary_opsigns = false
 resharper_max_array_initializer_elements_on_line = 4
+resharper_space_around_ternary_operator = true
 resharper_wrap_array_initializer_style = chop_if_long
 
 [*.{cs,vb}]
