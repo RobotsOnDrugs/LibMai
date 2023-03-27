@@ -13,7 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE.txt = LICENSE.txt
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SideloaderMods", "SideloaderMods\SideloaderMods.csproj", "{AF684E74-5C96-436F-B26E-9AAE4F5D5C68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibMai.SideloaderMods", "LibMai.SideloaderMods\LibMai.SideloaderMods.csproj", "{AF684E74-5C96-436F-B26E-9AAE4F5D5C68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaiGUI", "MaiGUI\MaiGUI.csproj", "{C8CA0CFE-ABB7-4F6A-8373-E6DB63B01A73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,12 @@ Global
 		{AF684E74-5C96-436F-B26E-9AAE4F5D5C68}.Debug|x64.Build.0 = Debug|x64
 		{AF684E74-5C96-436F-B26E-9AAE4F5D5C68}.Release|x64.ActiveCfg = Release|x64
 		{AF684E74-5C96-436F-B26E-9AAE4F5D5C68}.Release|x64.Build.0 = Release|x64
+		{C8CA0CFE-ABB7-4F6A-8373-E6DB63B01A73}.Debug|x64.ActiveCfg = Debug|x64
+		{C8CA0CFE-ABB7-4F6A-8373-E6DB63B01A73}.Debug|x64.Build.0 = Debug|x64
+		{C8CA0CFE-ABB7-4F6A-8373-E6DB63B01A73}.Debug|x64.Deploy.0 = Debug|x64
+		{C8CA0CFE-ABB7-4F6A-8373-E6DB63B01A73}.Release|x64.ActiveCfg = Release|x64
+		{C8CA0CFE-ABB7-4F6A-8373-E6DB63B01A73}.Release|x64.Build.0 = Release|x64
+		{C8CA0CFE-ABB7-4F6A-8373-E6DB63B01A73}.Release|x64.Deploy.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
