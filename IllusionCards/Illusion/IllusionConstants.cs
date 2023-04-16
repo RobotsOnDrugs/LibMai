@@ -32,16 +32,22 @@ public readonly record struct IllusionConstants
 
 	public static readonly ImmutableDictionary<CardType, string> CardTypeNames = new Dictionary<CardType, string>()
 	{
-		[CardType.AIChara] = "AI Shoujo/Honey Select 2 Character",
-		[CardType.AICoordinate] = "AI Shoujo/Honey Select 2 Outfit",
-		[CardType.AIScene] = "Studio NEO v2 Scene",
+		[CardType.None] = "Invalid card",
+		[CardType.Unknown] = "Unknown card type",
+		[CardType.AICharaUnknown] = "AI Shoujo/Honey Select 2 character (unknown gender)",
+		[CardType.AICoordinateUnknown] = "AI Shoujo/Honey Select 2 outfit (unknown gender)",
+		[CardType.AICharaFemale] = "AI Shoujo/Honey Select 2 female Character",
+		[CardType.AICharaMale] = "AI Shoujo/Honey Select 2 male character",
+		[CardType.AICoordinateFemale] = "AI Shoujo/Honey Select 2 female outfit",
+		[CardType.AICoordinateMale] = "AI Shoujo/Honey Select 2 male outfit",
+		[CardType.AIScene] = "Studio NEO v2 scene",
 		[CardType.KKChara] = "Koikatsu character",
 		[CardType.KKPartyChara] = "Koikatsu Party character",
 		[CardType.KKPartySPChara] = "Koikatsu Party SP character",
 		[CardType.KKScene] = "Koikatsu Chara Studio scene",
-		[CardType.PHFemaleChara] = "PlayHome female character",
-		[CardType.PHMaleChara] = "PlayHome male character",
-		[CardType.PHFemaleClothes] = "PlayHome female clothes",
+		[CardType.PHCharaFemale] = "PlayHome female character",
+		[CardType.PHCharaMale] = "PlayHome male character",
+		[CardType.PHClothesFemale] = "PlayHome female clothes",
 		[CardType.PHScene] = "PlayHome Studio scene",
 		[CardType.ECChara] = "Emotion Creators character"
 	}.ToImmutableDictionary();

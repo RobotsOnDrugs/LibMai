@@ -2,16 +2,21 @@
 
 public enum CardType
 {
-	AIChara,
-	AICoordinate,
+	None,
+	AICharaFemale,
+	AICharaMale,
+	AICharaUnknown,
+	AICoordinateFemale,
+	AICoordinateMale,
+	AICoordinateUnknown,
 	AIScene,
 	KKChara,
 	KKPartyChara,
 	KKPartySPChara,
 	KKScene,
-	PHFemaleChara,
-	PHFemaleClothes,
-	PHMaleChara,
+	PHCharaFemale,
+	PHClothesFemale,
+	PHCharaMale,
 	PHScene,
 	ECChara,
 	Unknown

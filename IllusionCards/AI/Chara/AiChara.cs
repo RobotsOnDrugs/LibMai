@@ -3,6 +3,9 @@
 //[assembly: InternalsVisibleTo("MessagePack"), InternalsVisibleTo("CardManagerCLI")]
 namespace IllusionCards.AI.Chara;
 
+[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Names match AI/HS2 naming.")]
+[SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
 public readonly record struct AiChara : IIllusionChara
 {
 	//public static AiChara Tsubomi { get; }
@@ -16,16 +19,16 @@ public readonly record struct AiChara : IIllusionChara
 	public CharaSex Sex => CharaInfo.Sex;
 	public string Name => CharaInfo.Name;
 
-	public Version LoadVersion { get; init; }
-	public int Language { get; init; }
+	public Version LoadVersion { get; }
+	public int Language { get; }
 	public string UserID { get; init; }
 	public string DataID { get; init; }
-	internal AiRawCustomData Custom { get; init; }
-	internal AiRawCoordinateData Coordinate { get; init; }
-	internal AiRawParameterData Parameter { get; init; }
-	internal AiRawParameter2Data? Parameter2 { get; init; } = null;// = HS2NewChara;
-	internal AiRawGameInfoData GameInfo { get; init; }
-	internal AiRawGameInfo2Data? GameInfo2 { get; init; } = null;// = HS2NewGameData;
+	internal AiRawCustomData Custom { get; }
+	internal AiRawCoordinateData Coordinate { get; }
+	internal AiRawParameterData Parameter { get; }
+	internal AiRawParameter2Data? Parameter2 { get; } = null; // = HS2NewChara;
+	internal AiRawGameInfoData GameInfo { get; }
+	internal AiRawGameInfo2Data? GameInfo2 { get; } = null; // = HS2NewGameData;
 	internal AiRawStatusData Status { get; init; }
 
 	public AiFaceData Face { get; init; }
@@ -33,7 +36,7 @@ public readonly record struct AiChara : IIllusionChara
 	public AiHairData Hair { get; init; }
 	public AiClothingData Clothing { get; init; }
 	public AiAccessoriesData Accessories { get; init; }
-	public AiCharaInfoData CharaInfo { get; init; }
+	public AiCharaInfoData CharaInfo { get; }
 	public AISGameData AISGameInfo { get; init; }
 	public HS2GameData? HS2GameInfo { get; init; }
 	public ImmutableHashSet<AiPluginData>? ExtendedData { get; init; } = null;
@@ -48,7 +51,10 @@ public readonly record struct AiChara : IIllusionChara
 	[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 	public readonly record struct BlockHeader
 	{
-		public ImmutableArray<Info> lstInfo { get; init; }
+		// ReSharper disable once UnassignedGetOnlyAutoProperty
+		// ReSharper disable once CollectionNeverUpdated.Global
+		// (lstInfo is populated via MessagePack)
+		public ImmutableArray<Info> lstInfo { get; }
 
 		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 		public readonly record struct Info
@@ -61,32 +67,26 @@ public readonly record struct AiChara : IIllusionChara
 			public long size { get; init; } = 0;
 		}
 	}
-	public AiChara(BinaryReader binaryReader)
+	
+	internal AiChara(BinaryReader binaryReader, out long end_position)
 	{
-		ParseAiCharaTypeData(binaryReader, IllusionConstants.AICharaIdentifier, out Version _version, out int _language);
-		LoadVersion = _version;
-		Language = _language;
-		string _userID;
-		string _dataID;
-		int _count;
-		byte[] _bhBytes;
-		BlockHeader _blockHeader;
-		long _num;
+		LoadVersion = ParseAiCharaTypeVersion(binaryReader, IllusionConstants.AICharaIdentifier); 
+		Language = binaryReader.ReadInt32();
+		
+		BlockHeader block_header;
 		try
 		{
-			_userID = ReadString(binaryReader);
-			_dataID = ReadString(binaryReader);
-			_count = binaryReader.ReadInt32();
-			_bhBytes = binaryReader.ReadBytes(_count);
-			_blockHeader = MessagePackSerializer.Deserialize<BlockHeader>(_bhBytes);
-			_num = binaryReader.ReadInt64();
+			UserID = ReadString(binaryReader);
+			DataID = ReadString(binaryReader);
+			int _count = binaryReader.ReadInt32();
+			byte[] _bhBytes = binaryReader.ReadBytes(_count);
+			block_header = MessagePackSerializer.Deserialize<BlockHeader>(_bhBytes);
+			end_position = binaryReader.ReadInt64();
 		}
 		catch (Exception ex)
 		{
 			throw new InternalCardException("Could not parse character header information", ex);
 		}
-		UserID = _userID;
-		DataID = _dataID;
 
 		AiRawCustomData? _custom = null;
 		AiRawCoordinateData? _coordinate = null;
@@ -99,7 +99,7 @@ public readonly record struct AiChara : IIllusionChara
 		long _postNumPosition = binaryReader.BaseStream.Position;
 		List<InvalidDataException> _exList = new();
 		bool[] _blockHits = new bool[5];
-		foreach (BlockHeader.Info info in _blockHeader.lstInfo)
+		foreach (BlockHeader.Info info in block_header.lstInfo)
 		{
 			long _infoPos = _postNumPosition + info.pos;
 			_ = binaryReader.BaseStream.Seek(_infoPos, SeekOrigin.Begin);
@@ -147,17 +147,15 @@ public readonly record struct AiChara : IIllusionChara
 						Dictionary<string, AiRawPluginData?> _rawExtendedData = MessagePackSerializer.Deserialize<Dictionary<string, AiRawPluginData?>>(_infoData);
 						foreach (KeyValuePair<string, AiRawPluginData?> kvp in _rawExtendedData)
 						{
+							if (kvp.Value is null) continue;
 							if (kvp.Value?.data is null)
 							{
-								_ = _nullData.Add(new NullPluginData() { DataKey = kvp.Key });
+								_ = _nullData.Add(new() { DataKey = kvp.Key });
 								continue;
 							}
 							AiRawPluginData _rawPluginData = (AiRawPluginData)kvp.Value;
-							if (kvp.Value is not null)
-							{
-								AiPluginData _aiPluginData = AiPluginData.GetExtendedPluginData(kvp.Key, _rawPluginData);
-								_ = _pluginData.Add(_aiPluginData);
-							}
+							AiPluginData _aiPluginData = AiPluginData.GetExtendedPluginData(kvp.Key, _rawPluginData);
+							_ = _pluginData.Add(_aiPluginData);
 						}
 						ExtendedData = _pluginData.ToImmutable();
 						NullData = _nullData.ToImmutable();
@@ -168,7 +166,7 @@ public readonly record struct AiChara : IIllusionChara
 			}
 			catch (InvalidDataException ex) { _exList.Add(ex); }
 		}
-		_ = binaryReader.BaseStream.Seek(_postNumPosition + _num, SeekOrigin.Begin);
+		_ = binaryReader.BaseStream.Seek(end_position, SeekOrigin.Begin);
 
 		if (_exList.Count != 0) throw new AggregateException("Some critical data was missing from this character.", _exList);
 
@@ -181,14 +179,15 @@ public readonly record struct AiChara : IIllusionChara
 		if (_gameInfo2 is not null) GameInfo2 = (AiRawGameInfo2Data)_gameInfo2;
 
 		for (int i = 0; i < _blockHits.Length; i++)
-			if (!_blockHits[i]) throw new InternalCardException($"Failed to detect missing blocks normally. This is a bug. (Missed block at index {i})");
+			if (!_blockHits[i])
+				throw new InternalCardException($"Failed to detect missing blocks normally. This is a bug. (Missed block at index {i})");
 
 		(Face, Body, Hair) = GetAllFriendlyBodyData(Custom);
 		(Clothing, Accessories) = GetAllFriendlyCoordinateData(Coordinate);
 		CharaInfo = GetFriendlyCharaInfoData(Parameter);
 		AISGameInfo = GetFriendlyAISGameData(GameInfo, Parameter.hsWish);
-		HS2GameInfo = GameInfo2 != null && Parameter2 != null
-			? GetFriendlyHS2GameInfoData((AiRawGameInfo2Data)GameInfo2, (AiRawParameter2Data)Parameter2)
-			: null;
+		HS2GameInfo = GameInfo2 != null && Parameter2 != null ?
+			GetFriendlyHS2GameInfoData((AiRawGameInfo2Data)GameInfo2, (AiRawParameter2Data)Parameter2) :
+			null;
 	}
 }

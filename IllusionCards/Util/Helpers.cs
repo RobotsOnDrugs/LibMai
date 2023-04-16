@@ -2,7 +2,7 @@
 
 public static class Helpers
 {
-	public static long? FindSequence(Stream stream, in ImmutableArray<byte> sequence)
+	public static bool TryFindSequence(Stream stream, in ImmutableArray<byte> sequence, out long pos)
 	{
 		long _originalPos = stream.Position;
 		long _bufferPos = stream.Position;
@@ -26,10 +26,10 @@ public static class Helpers
 				if (potentialMatch.SequenceEqual(sequence))
 				{
 					_ = stream.Seek(_originalPos, SeekOrigin.Begin);
-					return _potentialMatchPos;
+					pos = _potentialMatchPos;
+					return true;
 				}
 				_ = stream.Seek(_currentPos, SeekOrigin.Begin);
-				continue;
 
 				// Some bad code that tries to iterate over the buffer bytes instead of pulling from the stream again.
 				// The other way is fast enough, so I won't bother to fix this unless speed becomes an issue.
@@ -46,9 +46,9 @@ public static class Helpers
 			readBytes = stream.Read(buffer, 0, bufSize);
 			_bufferPos += bufSize;
 		}
-
+		pos = _originalPos;
 		_ = stream.Seek(_originalPos, SeekOrigin.Begin);
-		return null;
+		return false;
 	}
 
 	public static float[] GetRepeatArray(in int length, in float val)

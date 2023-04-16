@@ -1,5 +1,8 @@
 ﻿namespace IllusionCards.AI.Cards;
 
+[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Names are consistent with AI/HS2 naming.")]
+[SuppressMessage("ReSharper", "BadListLineBreaks", Justification = "Integer arrays are short enough to keep on a single line.")]
+// [SuppressMessage("ReSharper", "UnusedMember.Global")]
 public abstract record AiCharaCardDefinitions
 {
 	public static readonly Version AiChaVersion = new("1.0.0");
@@ -105,13 +108,12 @@ public abstract record AiCharaCardDefinitions
 		"乳首立ち"
 	};
 	
-	// ReSharper disable BadListLineBreaks (initialized with single-character ints, not long strings)
 	public static readonly int[] cf_BustShapeMaskID = new int[] { 2, 3, 4, 5, 6, 7, 8, 32 };
 	public static readonly int[] cf_ShapeMaskBust = new int[] { 0, 1, 2, 3, 4 };
 	public static readonly int[] cf_ShapeMaskNip = new int[] { 5, 6 };
 	
-	public const int cf_ShapeMaskNipStand = 7;
 	// ReSharper restore BadListLineBreaks
+	public const int cf_ShapeMaskNipStand = 7;
 	
 	public static readonly float[] cf_bodyInitValue = (
 		(Func<float[]>)delegate
@@ -183,11 +185,12 @@ public abstract record AiCharaCardDefinitions
 		"耳上部形状",
 		"耳下部形状"
 	};
+	
 	public static readonly int[] cf_MouthShapeMaskID = new int[] { 3, 6, 11, 47, 48, 49, 50, 51, 52, 53, 5, 10, 12 };
 	public static readonly float[] cf_MouthShapeDefault = Helpers.GetRepeatArray(13, 0.5f);
 	public static readonly float[] cf_faceInitValue = Helpers.GetRepeatArray(59, 0.5f);
 	public static readonly string[] cp_statename = new string[] { "普通", "好意", "享楽", "嫌悪", "隷属", "壊れ", "依存" };
-
+	
 	public enum BodyShapeIdx
 	{
 		Height,

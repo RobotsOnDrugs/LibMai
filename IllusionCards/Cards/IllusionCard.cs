@@ -30,18 +30,19 @@ public abstract record IllusionCard
 		return NewCard(_fstream, cardFile);
 	}
 
+	[SuppressMessage("ReSharper", "SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault")]
 	private static IllusionCard NewCard(Stream stream, FileInfo? cardFile)
 	{
-		using BinaryReader _breader = new(stream, Encoding.UTF8);
+		using BinaryReader binary_reader = new(stream, Encoding.UTF8);
 		CardStructure cs;
-		try { cs = new(_breader, cardFile); }
+		try { cs = new(binary_reader, cardFile); }
 		catch (UnsupportedCardException ex) { throw new UnsupportedCardException(ex.Message, ex, cardFile?.FullName); }
-		string _friendlyName = IllusionConstants.CardTypeNames[cs.CardType];
+		string friendly_name = IllusionConstants.CardTypeNames[cs.CardType];
 		return cs.CardType switch
 		{
-			CardType.AIChara => new AI.Cards.AiCharaCard(cs, _breader),
-			CardType.AICoordinate => new AI.Cards.AiCoordinateCard(cs, _breader),
-			CardType.AIScene => new AI.Cards.AiSceneCard(cs, _breader),
+			CardType.AICharaUnknown => new AI.Cards.AiCharaCard(cs, binary_reader),
+			CardType.AICoordinateUnknown => new AI.Cards.AiCoordinateCard(cs, binary_reader),
+			CardType.AIScene => new AI.Cards.AiSceneCard(cs, binary_reader),
 			//CardType.KKChara => new KKCharaCard(cs),
 			//CardType.KKPartyChara => new KKPartyCharaCard(cs),
 			//CardType.KKPartySPChara => new KKPartySPCharaCard(cs),
@@ -51,19 +52,19 @@ public abstract record IllusionCard
 			//CardType.PHMaleChara => new PHMaleCharaCard(cs),
 			//CardType.PHScene => new PHSceneCard(cs),
 			//CardType.ECChara => new ECCharaCard(cs),
-			_ => throw new UnsupportedCardException($"{_friendlyName} cards are currently not supported.", cardFile?.FullName ?? "")
+			_ => throw new UnsupportedCardException($"{friendly_name} cards are currently not supported.", cardFile?.FullName ?? "")
 		};
 	}
 
-	internal static string ReadString(BinaryReader binaryReader, bool noReset = true)
+	internal static string ReadString(BinaryReader binary_reader, bool no_reset = true)
 	{
 		// BinaryReader.ReadString() is prone to overflows in its character buffer :(
-		long offset = binaryReader.BaseStream.Position;
+		long offset = binary_reader.BaseStream.Position;
 		try
 		{
-			string _string = Encoding.UTF8.GetString(binaryReader.ReadBytes(binaryReader.Read7BitEncodedInt()));
-			if (!noReset) _ = binaryReader.BaseStream.Seek((long)offset, SeekOrigin.Begin);
-			return _string;
+			string s = Encoding.UTF8.GetString(binary_reader.ReadBytes(binary_reader.Read7BitEncodedInt()));
+			if (!no_reset) _ = binary_reader.BaseStream.Seek(offset, SeekOrigin.Begin);
+			return s;
 		}
 		catch (Exception ex) { throw new InvalidCardException("Could not parse card.", ex); }
 	}
