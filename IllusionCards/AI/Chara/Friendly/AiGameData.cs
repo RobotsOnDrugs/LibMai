@@ -1,9 +1,15 @@
-﻿namespace IllusionCards.AI.Chara.Friendly;
+﻿// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedType.Global
+// Properties are part of a public API
 
-[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Use MessagePack convention")]
-public readonly record struct AISGameData // GameInfo
+namespace IllusionCards.AI.Chara.Friendly;
+
+[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
+[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Uses MessagePack convention")]
+public readonly record struct AiGameData // GameInfo
 {
-	public AISGameData() { }
+	public AiGameData() { }
 	public ImmutableArray<int> Wishes { get; init; } = ImmutableArray.CreateBuilder<int>().ToImmutable(); // This comes from Parameter and seems to be AIS-specific
 	public bool IsRegistered { get; init; }
 	public float LowerTempBound { get; init; }
@@ -35,6 +41,7 @@ public readonly record struct AISGameData // GameInfo
 		Darkness,
 		Sociability
 	}
+	
 	[Flags]
 	public enum DesireFlags
 	{
@@ -56,6 +63,7 @@ public readonly record struct AISGameData // GameInfo
 		Location = 16384,
 		Drink = 32768
 	}
+	
 	public enum Desires
 	{
 		Toilet,
@@ -75,6 +83,7 @@ public readonly record struct AISGameData // GameInfo
 		Location,
 		Drink
 	}
+	
 	public enum StatusType
 	{
 		Temperature,
@@ -86,6 +95,7 @@ public readonly record struct AISGameData // GameInfo
 		Immoral,
 		Morality
 	}
+	
 	public enum LifestyleType
 	{
 		Getter,
@@ -95,6 +105,7 @@ public readonly record struct AISGameData // GameInfo
 		ExcitementSeeker,
 		Armchair
 	}
+	
 	public enum SkillType
 	{
 		None = -1,
@@ -149,6 +160,7 @@ public readonly record struct AISGameData // GameInfo
 		Guts,
 		GoodLuck
 	}
+	
 	public readonly record struct DesireData
 	{
 		public float BaseDesire { get; init; }

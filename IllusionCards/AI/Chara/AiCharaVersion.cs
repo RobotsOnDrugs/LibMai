@@ -1,8 +1,8 @@
 ﻿namespace IllusionCards.AI.Chara;
 
-public static class AiCharaType
+internal static class AiCharaVersion
 {
-	public const int LoadProductNumber = 100;
+	private const int LoadProductNumber = 100;
 	internal static Version ParseAiCharaTypeVersion(BinaryReader binaryReader, in string identifier)
 	{
 		try

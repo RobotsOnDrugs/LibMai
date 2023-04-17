@@ -2,6 +2,7 @@
 
 namespace IllusionCards.AI.Scene;
 
+[SuppressMessage("ReSharper", "BadListLineBreaks")]
 public record AiStudioCharacter : AiStudioObject
 {
 	public CharaSex Sex => Chara.Sex;
@@ -29,7 +30,8 @@ public record AiStudioCharacter : AiStudioObject
 	// Kinematics
 	public KinematicMode KinematicModeStatus { get; init; } // FK + IK is a mod
 	public bool FKEnabled { get; init; }
-	private ImmutableArray<bool> ActiveFKArray { get; init; } = new bool[7] { false, false, false, false, false, false, false, }.ToImmutableArray();
+	private ImmutableArray<bool> ActiveFKArray { get; init; } = new bool[] { false, false, false, false, false, false, false }.ToImmutableArray();
+	
 	public readonly record struct ActiveFKStruct
 	{
 		public bool Hair { get; init; }
@@ -40,10 +42,12 @@ public record AiStudioCharacter : AiStudioObject
 		public bool LeftHand { get; init; }
 		public bool Skirt { get; init; }
 	}
+	
 	public ActiveFKStruct ActiveFK { get; init; }
 	public ImmutableDictionary<int, AiIKTarget> IKTargets { get; init; }
 	public bool IKEnabled { get; init; }
-	private ImmutableArray<bool> ActiveIKArray { get; init; } = new bool[5] { false, false, false, false, false, }.ToImmutableArray();
+	private ImmutableArray<bool> ActiveIKArray { get; init; } = new bool[5] { false, false, false, false, false }.ToImmutableArray();
+	
 	public readonly record struct ActiveIKStruct
 	{
 		public bool Body { get; init; }
@@ -52,10 +56,12 @@ public record AiStudioCharacter : AiStudioObject
 		public bool RightArm { get; init; }
 		public bool LeftArm { get; init; }
 	}
+	
 	public ActiveIKStruct ActiveIK { get; init; }
 	public AiStudioLookAtTarget LookAtTarget { get; init; }
 	public static EyeLookType EyePosition => EyeLookType.NO_LOOK; // (EyeLookType)Chara.Status.eyesLookPtn;
 	public ImmutableArray<Quaternion> EyeAngles { get; init; }
+	
 	public enum NeckLookTypeStudio // NECK_LOOK_TYPE_VER2
 	{
 		ANIMATION,
@@ -65,6 +71,7 @@ public record AiStudioCharacter : AiStudioObject
 		FIX,
 		CONTROL
 	}
+	
 	public NeckLookTypeStudio NeckPosition { get; init; }
 	public ImmutableArray<Quaternion> NeckAngles { get; init; }
 	public float MouthOpen { get; init; }
@@ -84,6 +91,7 @@ public record AiStudioCharacter : AiStudioObject
 	public AiVoiceControl VoiceControl { get; init; }
 	// Joint correction?
 	private ImmutableArray<bool> JCArray { get; init; }
+	
 	public readonly record struct JointCorrectionStruct
 	{
 		public bool RightShoulder { get; init; }
@@ -95,6 +103,7 @@ public record AiStudioCharacter : AiStudioObject
 		public bool RightFat { get; init; }
 		public bool LeftFat { get; init; }
 	}
+	
 	public JointCorrectionStruct JointCorrection { get; init; }
 
 	[SuppressMessage("Style", "IDE0008:Use explicit type", Justification = "Analyzer doesn't recognize immutable builder methods as apparent")]
@@ -103,7 +112,7 @@ public record AiStudioCharacter : AiStudioObject
 		// TODO: verify mapping of sex - I think female is 1 here but 0 in AiChara
 		int _sex = binaryReader.ReadInt32();
 
-		Chara = new(binaryReader);
+		Chara = new(binaryReader, out _);
 
 		int _count = binaryReader.ReadInt32();
 		Dictionary<int, AiStudioBone> _bones = new();
@@ -278,7 +287,9 @@ public record AiStudioCharacter : AiStudioObject
 		RightLegChain,
 		RightFoot
 	}
+	
 	public enum KinematicMode { None, IK, FK }
+	
 	public readonly record struct AnimeInfo
 	{
 		public int Group { get; init; } = -1;

@@ -214,7 +214,7 @@ public static class AiFriendlyCharaDataConverters
 				Ankles = custom.body.shapeValueBody[28],
 			}
 		};
-		AiHairData hairData = new() { };
+		AiHairData hairData = new();
 		return (faceData, bodyData, hairData);
 	}
 	[SuppressMessage("Style", "IDE0008:Use explicit type", Justification = "Analyzer doesn't recognize immutable builder methods as apparent")]
@@ -366,19 +366,19 @@ public static class AiFriendlyCharaDataConverters
 		VoiceRate = parameter.voiceRate,
 		IsFuta = parameter.futanari
 	};
-	public static AISGameData GetFriendlyAISGameData(in AiRawGameInfoData gameInfo, in HashSet<int> wishes)
+	public static AiGameData GetFriendlyAiGameData(in AiRawGameInfoData gameInfo, in HashSet<int> wishes)
 	{
-		int[] _wishes = new int[3] { -1, -1, -1 };
+		int[] _wishes = new int[] { -1, -1, -1 };
 		int[] _hsWish = wishes.ToArray();
 		for (int i = 0; i < wishes.Count; i++)
 			_wishes[i] = _hsWish[i];
-		Dictionary<AISGameData.FlavorType, int> _flavor = new();
+		Dictionary<AiGameData.FlavorType, int> _flavor = new();
 		for (int i = 0; i < 8; i++)
-			_flavor.Add((AISGameData.FlavorType)i, gameInfo.flavorState[i]);
+			_flavor.Add((AiGameData.FlavorType)i, gameInfo.flavorState[i]);
 
-		Dictionary<AISGameData.Desires, AISGameData.DesireData> _desire = new();
+		Dictionary<AiGameData.Desires, AiGameData.DesireData> _desire = new();
 		for (int j = 0; j < 16; j++)
-			_desire.Add((AISGameData.Desires)j, new() { BaseDesire = gameInfo.desireDefVal[j], DesireBuff = gameInfo.desireBuffVal[j] });
+			_desire.Add((AiGameData.Desires)j, new() { BaseDesire = gameInfo.desireDefVal[j], DesireBuff = gameInfo.desireBuffVal[j] });
 
 		return new()
 		{
@@ -390,7 +390,7 @@ public static class AiFriendlyCharaDataConverters
 			UpperMoodBound = gameInfo.moodBound.upper,
 			FlavorState = _flavor.ToImmutableDictionary(),
 			Desire = _desire.ToImmutableDictionary(),
-			Lifestyle = (AISGameData.LifestyleType)gameInfo.lifestyle,
+			Lifestyle = (AiGameData.LifestyleType)gameInfo.lifestyle,
 			Hearts = gameInfo.phase
 		};
 	}
