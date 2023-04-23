@@ -1,4 +1,4 @@
-﻿namespace IllusionCards.AI.Chara.Friendly;
+﻿namespace IllusionCards.AI.Chara.Friendly.FriendlyNameLookup;
 
 public static partial class AiFriendlyNameLookup
 {

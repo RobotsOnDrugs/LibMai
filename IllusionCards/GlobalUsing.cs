@@ -29,7 +29,7 @@ global using static IllusionCards.AI.Cards.AiCharaCardDefinitions;
 global using static IllusionCards.AI.Cards.AiSceneCard;
 global using static IllusionCards.AI.Chara.AiCharaVersion;
 global using static IllusionCards.AI.Chara.Friendly.AiFriendlyCharaDataConverters;
-global using static IllusionCards.AI.Chara.Friendly.AiFriendlyNameLookup;
+// global using static IllusionCards.AI.Chara.Friendly.AiFriendlyNameLookup;
 global using static IllusionCards.AI.Scene.SceneHelpers;
 global using static IllusionCards.Cards.IllusionCard;
 global using static IllusionCards.Chara.IIllusionChara;

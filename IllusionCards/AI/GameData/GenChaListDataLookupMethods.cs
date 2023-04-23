@@ -6,7 +6,7 @@ public static class GenChaListDataLookupMethods
 	// The data can be extracted from abdata\list\characustom unity3d files using uTinyRipper
 	internal static void GenerateChaListDataFriendlyNames()
 	{
-		Dictionary<CategoryNo, Dictionary<int, string>> chaListData = new();
+		Dictionary<CategoryIndex, Dictionary<int, string>> chaListData = new();
 		const string fpath = "/path/AiFriendlyItemLookup.cs";
 		using StreamWriter outputFile = new(Path.Combine(fpath));
 		outputFile.WriteLine("namespace IllusionCards.AI.Chara.Friendly;");
@@ -24,7 +24,7 @@ public static class GenChaListDataLookupMethods
 			AiRawListData data = MessagePackSerializer.Deserialize<AiRawListData>(rawlist);
 			foreach (int ID in data.dictList.Keys)
 			{
-				CategoryNo cat = (CategoryNo)data.categoryNo;
+				CategoryIndex cat = (CategoryIndex)data.categoryNo;
 				int enusKey = 1000;
 				int jpKey = 1000;
 				for (int i = 0; i < data.lstKey.Count; i++)
@@ -39,15 +39,15 @@ public static class GenChaListDataLookupMethods
 				if (chaListData.ContainsKey(cat))
 				{
 					if (chaListData[cat].ContainsKey(ID)) chaListData[cat][ID] = int.TryParse(_nameEn, out _) ? _nameJp : _nameEn;
-					else chaListData[(CategoryNo)data.categoryNo].Add(ID, _nameEn);
+					else chaListData[(CategoryIndex)data.categoryNo].Add(ID, _nameEn);
 				}
-				else chaListData.Add((CategoryNo)data.categoryNo, new() { { ID, data.dictList[ID][enusKey] } });
+				else chaListData.Add((CategoryIndex)data.categoryNo, new() { { ID, data.dictList[ID][enusKey] } });
 #pragma warning restore CA1854 // Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method
 			}
 		}
-		List<CategoryNo> catList = chaListData.Keys.ToList();
+		List<CategoryIndex> catList = chaListData.Keys.ToList();
 		catList.Sort();
-		foreach (CategoryNo cat in catList)
+		foreach (CategoryIndex cat in catList)
 		{
 			outputFile.WriteLine($"\tpublic static string Get_{cat}(in int itemID) => itemID switch // {(int)cat} {cat}");
 			outputFile.WriteLine("\t{");

@@ -170,7 +170,7 @@ public readonly record struct AiChara : IIllusionChara
 		CharaInfo = GetFriendlyCharaInfoData(Parameter);
 		AiGameInfo = GetFriendlyAiGameData(GameInfo, Parameter.hsWish);
 		HS2GameInfo = GameInfo2 is not null && Parameter2 is not null ?
-			GetFriendlyHS2GameInfoData((AiRawGameInfo2Data)GameInfo2, (AiRawParameter2Data)Parameter2) :
+			GetFriendlyHs2GameInfoData((AiRawGameInfo2Data)GameInfo2, (AiRawParameter2Data)Parameter2) :
 			null;
 	}
 }

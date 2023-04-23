@@ -1,66 +1,72 @@
-﻿namespace IllusionCards.AI.Chara.Raw.Custom;
+﻿// ReSharper disable UnassignedGetOnlyAutoProperty - Properties are assigned by MessagePack
+
+#pragma warning disable CS8618 // Get-only properties are assigned by MessagePack and have to be null-checked later anyway
+
+namespace IllusionCards.AI.Chara.Raw.Custom;
 
 [MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
+[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Uses MessagePack convention")]
 public readonly record struct AiRawFaceData
 {
-	public AiRawFaceData() { }
-	public Version version { get; init; } = null!;
-	public float[] shapeValueFace { get; init; } = null!;
-	public int headId { get; init; }
-	public int skinId { get; init; }
-	public int detailId { get; init; }
+	public Version version { get; }
+	public float[] shapeValueFace { get; }
+	public int headId { get; }
+	public int skinId { get; }
+	public int detailId { get; }
 	public float detailPower { get; init; }
-	public int eyebrowId { get; init; }
-	public Color eyebrowColor { get; init; }
-	public Vector4 eyebrowLayout { get; init; }
-	public float eyebrowTilt { get; init; }
-	public EyesInfo[] pupil { get; init; } = null!;
+	public int eyebrowId { get; }
+	public Color eyebrowColor { get; }
+	public Vector4 eyebrowLayout { get; }
+	public float eyebrowTilt { get; }
+	public EyesInfo[] pupil { get; }
 
-	public bool pupilSameSetting { get; init; }
-	public float pupilY { get; init; }
-	public int hlId { get; init; }
-	public Color hlColor { get; init; }
-	public Vector4 hlLayout { get; init; }
-	public float hlTilt { get; init; }
-	public float whiteShadowScale { get; init; }
-	public int eyelashesId { get; init; }
-	public Color eyelashesColor { get; init; }
-	public int moleId { get; init; }
+	public bool pupilSameSetting { get; }
+	public float pupilY { get; }
+	public int hlId { get; }
+	public Color hlColor { get; }
+	public Vector4 hlLayout { get; }
+	public float hlTilt { get; }
+	public float whiteShadowScale { get; }
+	public int eyelashesId { get; }
+	public Color eyelashesColor { get; }
+	public int moleId { get; }
 	public Color moleColor { get; init; }
-	public Vector4 moleLayout { get; init; }
-	public MakeupInfo makeup { get; init; }
+	public Vector4 moleLayout { get; }
+	public MakeupInfo makeup { get; }
 	public int beardId { get; init; }
 	public Color beardColor { get; init; }
+	
 	[MessagePackObject(true)]
 	public readonly record struct EyesInfo
 	{
-		public Color whiteColor { get; init; }
-		public int pupilId { get; init; }
-		public Color pupilColor { get; init; }
-		public float pupilW { get; init; }
-		public float pupilH { get; init; }
-		public float pupilEmission { get; init; }
-		public int blackId { get; init; }
-		public Color blackColor { get; init; }
-		public float blackW { get; init; }
-		public float blackH { get; init; }
+		public Color whiteColor { get; }
+		public int pupilId { get; }
+		public Color pupilColor { get; }
+		public float pupilW { get; }
+		public float pupilH { get; }
+		public float pupilEmission { get; }
+		public int blackId { get; }
+		public Color blackColor { get; }
+		public float blackW { get; }
+		public float blackH { get; }
 	}
+	
 	[MessagePackObject(true)]
 	public readonly record struct MakeupInfo
 	{
-		public int eyeshadowId { get; init; }
-		public Color eyeshadowColor { get; init; }
-		public float eyeshadowGloss { get; init; }
-		public int cheekId { get; init; }
-		public Color cheekColor { get; init; }
-		public float cheekGloss { get; init; }
-		public int lipId { get; init; }
-		public Color lipColor { get; init; }
-		public float lipGloss { get; init; }
+		public int eyeshadowId { get; }
+		public Color eyeshadowColor { get; }
+		public float eyeshadowGloss { get; }
+		public int cheekId { get; }
+		public Color cheekColor { get; }
+		public float cheekGloss { get; }
+		public int lipId { get; }
+		public Color lipColor { get; }
+		public float lipGloss { get; }
+		
 		[Key("paintInfo")]
-		[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Required for MessagePack initialization")]
-		[SuppressMessage("Roslynator", "RCS1213:Remove unused member declaration.", Justification = "Required for MessagePack initialization")]
 		private AiRawPaintInfo[] _paintInfo { init => paintInfo = value.ToImmutableArray(); }
-		public ImmutableArray<AiRawPaintInfo> paintInfo { get; init; }
+		
+		public ImmutableArray<AiRawPaintInfo> paintInfo { get; private init; }
 	}
 }

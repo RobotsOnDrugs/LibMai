@@ -1,4 +1,4 @@
-﻿namespace IllusionCards.AI.Chara.Friendly;
+﻿namespace IllusionCards.AI.Chara.Friendly.FriendlyNameLookup;
 
 public static partial class AiFriendlyNameLookup
 {
@@ -157,6 +157,7 @@ public static partial class AiFriendlyNameLookup
 		238 => "0",
 		_ => "Unknown"
 	};
+	
 	public static string GetFriendlyEarringName(in int itemID) => itemID switch // 352 ao_ear
 	{
 		0 => "Star Earring",
@@ -170,6 +171,7 @@ public static partial class AiFriendlyNameLookup
 		8 => "0",
 		_ => "Unknown"
 	};
+	
 	public static string GetFriendlyGlassesName(in int itemID) => itemID switch // 353 ao_glasses
 	{
 		0 => "Square Glasses",
@@ -197,6 +199,7 @@ public static partial class AiFriendlyNameLookup
 		22 => "ハートサングラス",
 		_ => "Unknown"
 	};
+	
 	public static string GetFriendlyFaceAccessoryName(in int itemID) => itemID switch // 354 ao_face
 	{
 		0 => "Clown Nose",
@@ -216,6 +219,7 @@ public static partial class AiFriendlyNameLookup
 		201 => "0",
 		_ => "Unknown"
 	};
+	
 	public static string GetFriendlyNeckAccessoryName(in int itemID) => itemID switch // 355 ao_neck
 	{
 		0 => "Heart Necklace",
@@ -275,6 +279,7 @@ public static partial class AiFriendlyNameLookup
 		219 => "0",
 		_ => "Unknown"
 	};
+	
 	public static string GetFriendlyShoulderAccessoryName(in int itemID) => itemID switch // 356 ao_shoulder
 	{
 		0 => "Tote Bag",
@@ -297,6 +302,7 @@ public static partial class AiFriendlyNameLookup
 		205 => "0",
 		_ => "Unknown"
 	};
+	
 	public static string GetFriendlyChestAccessoryName(in int itemID) => itemID switch // 357 ao_chest
 	{
 		0 => "Simple Nipple Ring",
@@ -309,6 +315,7 @@ public static partial class AiFriendlyNameLookup
 		7 => "Slime C",
 		_ => "Unknown"
 	};
+	
 	public static string GetFriendlyWaistAccessoryName(in int itemID) => itemID switch // 358 ao_waist
 	{
 		0 => "Waist Bag",
@@ -342,6 +349,7 @@ public static partial class AiFriendlyNameLookup
 		208 => "0",
 		_ => "Unknown"
 	};
+	
 	public static string GetFriendlyBackAccessoryName(in int itemID) => itemID switch // 359 ao_back
 	{
 		0 => "Backpack",
@@ -367,6 +375,7 @@ public static partial class AiFriendlyNameLookup
 		20 => "羽衣",
 		_ => "Unknown"
 	};
+	
 	public static string GetFriendlyArmAccessoryName(in int itemID) => itemID switch // 360 ao_arm
 	{
 		0 => "Armband A",
@@ -398,6 +407,7 @@ public static partial class AiFriendlyNameLookup
 		206 => "0",
 		_ => "Unknown"
 	};
+	
 	public static string GetFriendlyHandAccessoryName(in int itemID) => itemID switch // 361 ao_hand
 	{
 		0 => "Simple Ring",
@@ -494,6 +504,7 @@ public static partial class AiFriendlyNameLookup
 		209 => "0",
 		_ => "Unknown"
 	};
+	
 	public static string GetFriendlyLegAccessoryName(in int itemID) => itemID switch // 362 ao_leg
 	{
 		0 => "Lace Garter Belt (Left)",
@@ -513,6 +524,7 @@ public static partial class AiFriendlyNameLookup
 		202 => "足縄（右）",
 		_ => "Unknown"
 	};
+	
 	public static string GetFriendlyCrotchAccessoryName(in int itemID) => itemID switch // 363 ao_kokan
 	{
 		0 => "Dildo",

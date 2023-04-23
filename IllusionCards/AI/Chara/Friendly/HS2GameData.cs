@@ -29,7 +29,7 @@ public readonly record struct HS2GameData // GameInfo2 and Parameter2
 	public int BDSMExperience { get; init; } // resistPain
 	public int AnalExperience { get; init; } // resistAnal
 	public SexItemType ActiveItem { get; init; } // usedItem
-	public bool isChangeParameter { get; init; }
+	public bool IsChangeParameter { get; init; }
 	public bool IsConcierge { get; init; }
 
 	public enum SexTraitType // hAttribute
@@ -46,6 +46,7 @@ public readonly record struct HS2GameData // GameInfo2 and Parameter2
 		SexHater,
 		Lonely
 	}
+	
 	public enum MentalityType // mind
 	{
 		None,
@@ -62,6 +63,7 @@ public readonly record struct HS2GameData // GameInfo2 and Parameter2
 		Charmed,
 		Aroused,
 	}
+	
 	public enum TraitType // trait
 	{
 		None,
@@ -78,6 +80,7 @@ public readonly record struct HS2GameData // GameInfo2 and Parameter2
 		AtWill,
 		Sensitive
 	}
+	
 	public enum SexItemType { }
 
 	public enum HS2CharaStatus

@@ -1,5 +1,9 @@
-﻿namespace IllusionCards.AI.Chara.Friendly;
+﻿using IllusionCards.AI.Chara.Friendly.Clothing;
+using IllusionCards.AI.Chara.Raw.Coordinate;
 
+namespace IllusionCards.AI.Chara.Friendly;
+
+// Raw character data does not have 1-to-1 mappings for each logical category, so it makes more sense to return everything that a raw category has
 public static class AiFriendlyCharaDataConverters
 {
 	public static (AiFaceData, AiBodyData, AiHairData) GetAllFriendlyBodyData(in AiRawCustomData custom)
@@ -8,9 +12,9 @@ public static class AiFriendlyCharaDataConverters
 		{
 			FaceType = new()
 			{
-				Contour = GetFriendlyFemaleFaceContourName(custom.face.headId),
-				Skin = GetFriendlyFemaleFaceSkinName(custom.face.skinId),
-				Wrinkles = GetFriendlyFemaleFaceWrinklesName(custom.face.detailId),
+				// Contour = GetFriendlyFemaleFaceContourName(custom.face.headId),
+				// Skin = GetFriendlyFemaleFaceSkinName(custom.face.skinId),
+				// Wrinkles = GetFriendlyFemaleFaceWrinklesName(custom.face.detailId)
 			},
 			Overall = new()
 			{
@@ -18,7 +22,7 @@ public static class AiFriendlyCharaDataConverters
 				UpperDepth = custom.face.shapeValueFace[1],
 				UpperHeight = custom.face.shapeValueFace[2],
 				LowerDepth = custom.face.shapeValueFace[3],
-				LowerWidth = custom.face.shapeValueFace[4],
+				LowerWidth = custom.face.shapeValueFace[4]
 			},
 			Jaw = new()
 			{
@@ -140,7 +144,7 @@ public static class AiFriendlyCharaDataConverters
 			{
 				Type = custom.face.makeup.eyeshadowId,
 				Color = custom.face.makeup.eyeshadowColor,
-				Shine = custom.face.makeup.eyeshadowGloss,
+				Shine = custom.face.makeup.eyeshadowGloss
 			},
 			Blush = new()
 			{
@@ -211,97 +215,98 @@ public static class AiFriendlyCharaDataConverters
 				UpperThighs = custom.body.shapeValueBody[25],
 				LowerThighs = custom.body.shapeValueBody[26],
 				Calves = custom.body.shapeValueBody[27],
-				Ankles = custom.body.shapeValueBody[28],
+				Ankles = custom.body.shapeValueBody[28]
 			}
 		};
 		AiHairData hairData = new();
 		return (faceData, bodyData, hairData);
 	}
 	[SuppressMessage("Style", "IDE0008:Use explicit type", Justification = "Analyzer doesn't recognize immutable builder methods as apparent")]
+	[SuppressMessage("ReSharper", "SuggestVarOrType_SimpleTypes", Justification = "Analyzer doesn't recognize immutable builder methods as apparent")]
 	public static (AiClothingData, AiAccessoriesData) GetAllFriendlyCoordinateData(in AiRawCoordinateData coordinate)
 	{
-		Raw.Coordinate.ClothesPartsInfo[] _cparts = coordinate.clothes.parts;
-		List<Clothing.AiClothingSettingsData> _clothingDatas = new(8);
-		if (_cparts.Length != 8) throw new InvalidCardException($"Card has {coordinate.clothes.parts.Length} instead of 8 clothing parts");
-		for (int i = 0; i < _cparts.Length; i++)
+		ClothesPartsInfo[] cparts = coordinate.clothes.parts;
+		List<AiClothingSettingsData> clothing_datas = new(8);
+		if (cparts.Length != 8) throw new InvalidCardException($"Card has {coordinate.clothes.parts.Length} instead of 8 clothing parts");
+		for (int i = 0; i < cparts.Length; i++)
 		{
-			var _clothingColorInfosBuilder = ImmutableArray.CreateBuilder<Clothing.AiClothingColorInfo>();
-			for (int j = 0; j < _cparts[i].colorInfo.Length; j++)
+			ImmutableArray<AiClothingColorInfo>.Builder clothing_color_infos_builder = ImmutableArray.CreateBuilder<AiClothingColorInfo>();
+			for (int j = 0; j < cparts[i].colorInfo.Length; j++)
 			{
-				_clothingColorInfosBuilder.Add(new()
+				clothing_color_infos_builder.Add(new()
 				{
-					Color = _cparts[i].colorInfo[j].baseColor,
-					PatternID = _cparts[i].colorInfo[j].pattern,
-					PatternName = GetFriendlyClothingPatternByID(_cparts[i].colorInfo[j].pattern),
-					PatternColor = _cparts[i].colorInfo[j].patternColor,
-					PatternWidth = _cparts[i].colorInfo[j].layout.W,
-					PatternHeight = _cparts[i].colorInfo[j].layout.Z,
-					PatternPositionX = _cparts[i].colorInfo[j].layout.X,
-					PatternPositionY = _cparts[i].colorInfo[j].layout.Y,
-					PatternRotation = _cparts[i].colorInfo[j].rotation,
-					Shine = _cparts[i].colorInfo[j].glossPower,
-					Texture = _cparts[i].colorInfo[j].metallicPower
+					Color = cparts[i].colorInfo[j].baseColor,
+					PatternID = cparts[i].colorInfo[j].pattern,
+					// PatternName = GetFriendlyClothingPatternByID(cparts[i].colorInfo[j].pattern),
+					PatternColor = cparts[i].colorInfo[j].patternColor,
+					PatternWidth = cparts[i].colorInfo[j].layout.W,
+					PatternHeight = cparts[i].colorInfo[j].layout.Z,
+					PatternPositionX = cparts[i].colorInfo[j].layout.X,
+					PatternPositionY = cparts[i].colorInfo[j].layout.Y,
+					PatternRotation = cparts[i].colorInfo[j].rotation,
+					Shine = cparts[i].colorInfo[j].glossPower,
+					Texture = cparts[i].colorInfo[j].metallicPower
 				});
 			}
-			_clothingDatas.Add(new()
+			clothing_datas.Add(new()
 			{
-				ID = _cparts[i].id,
-				Name = GetFriendlyFemaleClothingByIndexAndID(i, _cparts[i].id),
-				ColorInfos = _clothingColorInfosBuilder.ToImmutable()
+				ID = cparts[i].id,
+				// Name = GetFriendlyFemaleClothingByIndexAndID(i, cparts[i].id),
+				ColorInfos = clothing_color_infos_builder.ToImmutable()
 			});
 		}
-		AiClothingData _clothingData = new()
+		AiClothingData clothing_data = new()
 		{
-			Top = _clothingDatas[0],
-			Bottom = _clothingDatas[1],
-			InnerTop = _clothingDatas[2],
-			InnerBottom = _clothingDatas[3],
-			Gloves = _clothingDatas[4],
-			Pantyhose = _clothingDatas[5],
-			Socks = _clothingDatas[6],
-			Shoes = _clothingDatas[7]
+			Top = clothing_datas[0],
+			Bottom = clothing_datas[1],
+			InnerTop = clothing_datas[2],
+			InnerBottom = clothing_datas[3],
+			Gloves = clothing_datas[4],
+			Pantyhose = clothing_datas[5],
+			Socks = clothing_datas[6],
+			Shoes = clothing_datas[7]
 		};
 
-		var _accessoryDatasBuilder = ImmutableArray.CreateBuilder<AiAccessoryData>();
+		var accessory_datas_builder = ImmutableArray.CreateBuilder<AiAccessoryData>();
 		foreach (Raw.Coordinate.AccessoryPartsInfo part in coordinate.accessory.parts)
 		{
-			var _accessoryAdjustmentDatasBuilder = ImmutableArray.CreateBuilder<AiAccessoryAdjustmentData>();
+			var accessory_adjustment_datas_builder = ImmutableArray.CreateBuilder<AiAccessoryAdjustmentData>();
 			for (int i = 0; i < part.addMove.Rank; i++)
-				_accessoryAdjustmentDatasBuilder.Add(new()
+				accessory_adjustment_datas_builder.Add(new()
 				{
 					Position = part.addMove[i, 0],
 					Rotation = part.addMove[i, 1],
 					Scale = part.addMove[i, 2]
 				});
-			var _accessoryColorinfosBuilder = ImmutableArray.CreateBuilder<AiAccessoryColorInfo>();
-			for (int j = 0; j < part.colorInfo.Length; j++)
-				_accessoryColorinfosBuilder.Add(new()
+			var accessory_colorinfos_builder = ImmutableArray.CreateBuilder<AiAccessoryColorInfo>();
+			foreach (AccessoryPartsInfo.ColorInfo color_info in part.colorInfo)
+				accessory_colorinfos_builder.Add(new()
 				{
-					Color = part.colorInfo[j].color,
-					Shine = part.colorInfo[j].glossPower,
-					Smoothness = part.colorInfo[j].smoothnessPower,
-					Texture = part.colorInfo[j].metallicPower
+					Color = color_info.color,
+					Shine = color_info.glossPower,
+					Smoothness = color_info.smoothnessPower,
+					Texture = color_info.metallicPower
 				});
-			AiAccessoryData _accessoryData = new()
+			AiAccessoryData accessory_data = new()
 			{
 				AccessoryType = (AiAccessoryType)part.type,
 				ID = part.id,
-				Name = GetFriendlyNameByCategoryID(part.type, part.id),
-				Parent = GetFriendlyAccessoryParent(part.parentKey),
-				Adjustments = _accessoryAdjustmentDatasBuilder.ToImmutable(),
-				ColorInfos = _accessoryColorinfosBuilder.ToImmutable(),
+				// Name = GetFriendlyNameByCategoryID(part.type, part.id),
+				// Parent = GetFriendlyAccessoryParent(part.parentKey),
+				Adjustments = accessory_adjustment_datas_builder.ToImmutable(),
+				ColorInfos = accessory_colorinfos_builder.ToImmutable(),
 				hideCategory = part.hideCategory,
 				hideTiming = part.hideTiming,
 				IsRigid = part.noShake
 			};
-			_accessoryDatasBuilder.Add(_accessoryData);
+			accessory_datas_builder.Add(accessory_data);
 		}
-		AiAccessoriesData _accessorySettingsData = new()
+		AiAccessoriesData accessory_settings_data = new()
 		{
 			Version = coordinate.accessory.version,
-			Accessories = _accessoryDatasBuilder.ToImmutable()
+			Accessories = accessory_datas_builder.ToImmutable()
 		};
-		return (_clothingData, _accessorySettingsData);
+		return (clothing_data, accessory_settings_data);
 	}
 	public static AiCharaStatusData GetFriendlyAiCharaStatusData(in AiRawStatusData status) => new()
 	{
@@ -366,63 +371,60 @@ public static class AiFriendlyCharaDataConverters
 		VoiceRate = parameter.voiceRate,
 		IsFuta = parameter.futanari
 	};
-	public static AiGameData GetFriendlyAiGameData(in AiRawGameInfoData gameInfo, in HashSet<int> wishes)
+	
+	public static AiGameData GetFriendlyAiGameData(in AiRawGameInfoData raw_game_info_data, in ICollection<int> raw_wishes)
 	{
-		int[] _wishes = new int[] { -1, -1, -1 };
-		int[] _hsWish = wishes.ToArray();
-		for (int i = 0; i < wishes.Count; i++)
-			_wishes[i] = _hsWish[i];
-		Dictionary<AiGameData.FlavorType, int> _flavor = new();
+		Dictionary<AiGameData.FlavorType, int> flavor = new();
 		for (int i = 0; i < 8; i++)
-			_flavor.Add((AiGameData.FlavorType)i, gameInfo.flavorState[i]);
+			flavor.Add((AiGameData.FlavorType)i, raw_game_info_data.flavorState[i]);
 
-		Dictionary<AiGameData.Desires, AiGameData.DesireData> _desire = new();
+		Dictionary<AiGameData.Desires, AiGameData.DesireData> desire = new();
 		for (int j = 0; j < 16; j++)
-			_desire.Add((AiGameData.Desires)j, new() { BaseDesire = gameInfo.desireDefVal[j], DesireBuff = gameInfo.desireBuffVal[j] });
+			desire.Add((AiGameData.Desires)j, new() { BaseDesire = raw_game_info_data.desireDefVal[j], DesireBuff = raw_game_info_data.desireBuffVal[j] });
 
 		return new()
 		{
-			Wishes = _wishes.ToImmutableArray(),
-			IsRegistered = gameInfo.gameRegistration,
-			LowerTempBound = gameInfo.tempBound.lower,
-			UpperTempBound = gameInfo.tempBound.upper,
-			LowerMoodBound = gameInfo.moodBound.lower,
-			UpperMoodBound = gameInfo.moodBound.upper,
-			FlavorState = _flavor.ToImmutableDictionary(),
-			Desire = _desire.ToImmutableDictionary(),
-			Lifestyle = (AiGameData.LifestyleType)gameInfo.lifestyle,
-			Hearts = gameInfo.phase
+			Wishes = raw_wishes.ToImmutableArray(),
+			IsRegistered = raw_game_info_data.gameRegistration,
+			LowerTempBound = raw_game_info_data.tempBound.lower,
+			UpperTempBound = raw_game_info_data.tempBound.upper,
+			LowerMoodBound = raw_game_info_data.moodBound.lower,
+			UpperMoodBound = raw_game_info_data.moodBound.upper,
+			FlavorState = flavor.ToImmutableDictionary(),
+			Desire = desire.ToImmutableDictionary(),
+			Lifestyle = (AiGameData.LifestyleType)raw_game_info_data.lifestyle,
+			Hearts = raw_game_info_data.phase
 		};
 	}
-	public static HS2GameData GetFriendlyHS2GameInfoData(in AiRawGameInfo2Data gameInfo2, in AiRawParameter2Data parameter2) => new()
+	public static HS2GameData GetFriendlyHs2GameInfoData(in AiRawGameInfo2Data hs2_raw_game_info, in AiRawParameter2Data parameter2) => new()
 	{
 		SexTrait = (HS2GameData.SexTraitType)parameter2.hAttribute,
 		Mentality = (HS2GameData.MentalityType)parameter2.mind,
 		Trait = (HS2GameData.TraitType)parameter2.trait,
-		FavorLevel = gameInfo2.Favor,
-		EnjoymentLevel = gameInfo2.Enjoyment,
-		AversionLevel = gameInfo2.Aversion,
-		SlaveryLevel = gameInfo2.Slavery,
-		BrokenLevel = gameInfo2.Broken,
-		DependenceLevel = gameInfo2.Dependence,
-		StateLocked = gameInfo2.lockNowState,
-		BrokenLevelLocked = gameInfo2.lockBroken,
-		DependenceLevelLocked = gameInfo2.lockDependence,
-		State = (HS2GameData.HS2CharaStatus)gameInfo2.nowState,
-		DisplayedState = (HS2GameData.HS2CharaStatus)gameInfo2.calcState,
-		DirtyLevel = gameInfo2.Dirty,
-		TirednessLevel = gameInfo2.Tiredness,
-		ToiletLevel = gameInfo2.Toilet,
-		LibidoLevel = gameInfo2.Libido,
+		FavorLevel = hs2_raw_game_info.Favor,
+		EnjoymentLevel = hs2_raw_game_info.Enjoyment,
+		AversionLevel = hs2_raw_game_info.Aversion,
+		SlaveryLevel = hs2_raw_game_info.Slavery,
+		BrokenLevel = hs2_raw_game_info.Broken,
+		DependenceLevel = hs2_raw_game_info.Dependence,
+		StateLocked = hs2_raw_game_info.lockNowState,
+		BrokenLevelLocked = hs2_raw_game_info.lockBroken,
+		DependenceLevelLocked = hs2_raw_game_info.lockDependence,
+		State = (HS2GameData.HS2CharaStatus)hs2_raw_game_info.nowState,
+		DisplayedState = (HS2GameData.HS2CharaStatus)hs2_raw_game_info.calcState,
+		DirtyLevel = hs2_raw_game_info.Dirty,
+		TirednessLevel = hs2_raw_game_info.Tiredness,
+		ToiletLevel = hs2_raw_game_info.Toilet,
+		LibidoLevel = hs2_raw_game_info.Libido,
 		//arriveRoom50 = gameInfo2.arriveRoom50,
 		//arriveRoom80 = gameInfo2.arriveRoom80,
 		//arriveRoomHAfter = gameInfo2.arriveRoomHAfter,
-		SexExperience = gameInfo2.resistH,
-		BDSMExperience = gameInfo2.resistPain,
-		AnalExperience = gameInfo2.resistAnal,
-		ActiveItem = (HS2GameData.SexItemType)gameInfo2.usedItem,
+		SexExperience = hs2_raw_game_info.resistH,
+		BDSMExperience = hs2_raw_game_info.resistPain,
+		AnalExperience = hs2_raw_game_info.resistAnal,
+		ActiveItem = (HS2GameData.SexItemType)hs2_raw_game_info.usedItem,
 		//isChangeParameter = gameInfo2.isChangeParameter,
-		IsConcierge = gameInfo2.isConcierge,
+		IsConcierge = hs2_raw_game_info.isConcierge,
 	};
 
 	// Looks like some unfinished business. Set to internal and come back later.
@@ -446,12 +448,12 @@ public static class AiFriendlyCharaDataConverters
 	private static Face.EyeInfo ConvertEyeInfo(in Raw.Custom.AiRawFaceData.EyesInfo rawEyeInfo) => new()
 	{
 		ScleraColor = rawEyeInfo.whiteColor,
-		_Iris = rawEyeInfo.pupilId,
+		Iris = rawEyeInfo.pupilId,
 		IrisColor = rawEyeInfo.pupilColor,
 		IrisWidth = rawEyeInfo.pupilW,
 		IrisHeight = rawEyeInfo.pupilH,
 		IrisGlow = rawEyeInfo.pupilEmission,
-		_Pupil = rawEyeInfo.blackId,
+		Pupil = rawEyeInfo.blackId,
 		PupilColor = rawEyeInfo.blackColor,
 		PupilWidth = rawEyeInfo.blackW,
 		PupilHeight = rawEyeInfo.blackH,

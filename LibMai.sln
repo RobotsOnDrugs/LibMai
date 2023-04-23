@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31612.314
@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibMai.SideloaderMods", "Li
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaiGUI", "MaiGUI\MaiGUI.csproj", "{C8CA0CFE-ABB7-4F6A-8373-E6DB63B01A73}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaiDevSandbox", "MaiDevSandbox\MaiDevSandbox.csproj", "{A8FA9BDD-32E5-44AB-A505-4B371543C2A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -26,9 +28,11 @@ Global
 		{353CA4AF-CA73-4EA7-AF48-1F3E337DCD4E}.Debug|x64.ActiveCfg = Debug|x64
 		{353CA4AF-CA73-4EA7-AF48-1F3E337DCD4E}.Debug|x64.Build.0 = Debug|x64
 		{353CA4AF-CA73-4EA7-AF48-1F3E337DCD4E}.Release|x64.ActiveCfg = Release|x64
+		{353CA4AF-CA73-4EA7-AF48-1F3E337DCD4E}.Release|x64.Build.0 = Release|x64
 		{B6DF555C-B531-4AF9-BF5A-54F8247C420D}.Debug|x64.ActiveCfg = Debug|x64
 		{B6DF555C-B531-4AF9-BF5A-54F8247C420D}.Debug|x64.Build.0 = Debug|x64
 		{B6DF555C-B531-4AF9-BF5A-54F8247C420D}.Release|x64.ActiveCfg = Release|x64
+		{B6DF555C-B531-4AF9-BF5A-54F8247C420D}.Release|x64.Build.0 = Release|x64
 		{AF684E74-5C96-436F-B26E-9AAE4F5D5C68}.Debug|x64.ActiveCfg = Debug|x64
 		{AF684E74-5C96-436F-B26E-9AAE4F5D5C68}.Debug|x64.Build.0 = Debug|x64
 		{AF684E74-5C96-436F-B26E-9AAE4F5D5C68}.Release|x64.ActiveCfg = Release|x64
@@ -39,6 +43,10 @@ Global
 		{C8CA0CFE-ABB7-4F6A-8373-E6DB63B01A73}.Release|x64.ActiveCfg = Release|x64
 		{C8CA0CFE-ABB7-4F6A-8373-E6DB63B01A73}.Release|x64.Build.0 = Release|x64
 		{C8CA0CFE-ABB7-4F6A-8373-E6DB63B01A73}.Release|x64.Deploy.0 = Release|x64
+		{A8FA9BDD-32E5-44AB-A505-4B371543C2A1}.Release|x64.ActiveCfg = Release|x64
+		{A8FA9BDD-32E5-44AB-A505-4B371543C2A1}.Release|x64.Build.0 = Release|x64
+		{A8FA9BDD-32E5-44AB-A505-4B371543C2A1}.Debug|x64.ActiveCfg = Debug|x64
+		{A8FA9BDD-32E5-44AB-A505-4B371543C2A1}.Debug|x64.Build.0 = Debug|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

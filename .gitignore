@@ -12,3 +12,7 @@ LibMai.SideloaderMods/
 MaiGUI/
 
 CardManagerCLI/
+
+MaiDevSandbox/
+
+IllusionCards/AI/Chara/Friendly/FriendlyNameLookup/AiFriendlyAccessoryLookupReference.cs

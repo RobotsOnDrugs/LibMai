@@ -26,7 +26,7 @@ public readonly record struct AiRawGameInfo2Data
 	public bool firstHFlag { get; init; }
 	public bool[][] genericVoice { get; init; } = null!;
 	public bool genericBrokenVoice { get; init; }
-	public bool genericDependencepVoice { get; init; }
+	public bool genericDependenceVoice { get; init; }
 	public bool genericAnalVoice { get; init; }
 	public bool genericPainVoice { get; init; }
 	public bool genericFlag { get; init; }

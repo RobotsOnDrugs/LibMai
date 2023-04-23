@@ -4,5 +4,5 @@ public interface IAiCharacterPartData
 {
 	public int Category { get; }
 	public int Type { get; init; }
-	public string Name => GetFriendlyNameByCategoryID(Category, Type);
+	// public string Name => GetFriendlyNameByCategoryID(Category, Type);
 }

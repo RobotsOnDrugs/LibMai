@@ -1,10 +1,15 @@
-﻿namespace IllusionCards.AI.Chara.Friendly.Body;
+﻿// ReSharper disable UnusedAutoPropertyAccessor.Global
 
+namespace IllusionCards.AI.Chara.Friendly.Body;
+
+// Indicies in comments refer to a float array in the raw body data and are provided for convenience
+// See also AiFriendlyCharaDataConverters.GetAllFriendlyBodyData and AiRawBodyData
 public readonly record struct OverallData
 {
 	public float Height { get; internal init; } // 0
 	public float HeadSize { get; init; } // 9
 }
+
 public readonly record struct BreastData
 {
 	public float Size { get; init; } // 1
@@ -20,6 +25,7 @@ public readonly record struct BreastData
 	public float NippleWidth { get; init; } // 8
 	public float NippleDepth { get; init; } // 32
 }
+
 public readonly record struct UpperBodyData
 {
 	public float NeckWidth { get; init; } // 10
@@ -31,6 +37,7 @@ public readonly record struct UpperBodyData
 	public float WaistWidth { get; init; } // 16
 	public float WaistThickness { get; init; } // 17
 }
+
 public readonly record struct LowerBodyData
 {
 	public float WaistHeight { get; init; } // 18
@@ -41,12 +48,14 @@ public readonly record struct LowerBodyData
 	public float Butt { get; init; } // 23
 	public float ButtAngle { get; init; } // 24
 }
+
 public readonly record struct ArmsData
 {
 	public float Shoulder { get; init; } // 29
 	public float UpperArms { get; init; } // 30
 	public float Forearm { get; init; } // 31
 }
+
 public readonly record struct LegsData
 {
 	public float UpperThighs { get; init; } // 25
@@ -54,22 +63,27 @@ public readonly record struct LegsData
 	public float Calves { get; init; } // 27
 	public float Ankles { get; init; } // 28
 }
+
 public readonly record struct SkinTypeData
 {
 
 }
+
 public readonly record struct SuntanData
 {
 
 }
+
 public readonly record struct NipplesData
 {
 
 }
+
 public readonly record struct PubicHairData
 {
 
 }
+
 public readonly record struct NailColorData
 {
 

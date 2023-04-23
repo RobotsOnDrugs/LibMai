@@ -19,7 +19,7 @@ public class AiRawListData
 	public List<string> lstKey { get; set; }
 	public Dictionary<int, List<string>> dictList { get; set; }
 }
-public enum CategoryNo
+public enum CategoryIndex
 {
 	unknown = -1,
 	cha_sample_m,
