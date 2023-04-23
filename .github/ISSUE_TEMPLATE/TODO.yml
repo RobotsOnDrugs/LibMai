@@ -1,0 +1,14 @@
+name: TODO
+description: Planned feature or change
+title: "[TODO] "
+labels: [TODO]
+assignees:
+  - RobotsOnDrugs
+body:
+  - type: textarea
+    attributes:
+      label: Work to do
+      description: Describe the planned change
+      placeholder: This is for developer use to track project TODO items only. If you want to propose a change, file a feature request or bug report instead.
+    validations:
+      required: true
