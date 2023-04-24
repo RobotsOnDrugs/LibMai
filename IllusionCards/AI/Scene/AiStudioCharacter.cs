@@ -109,7 +109,6 @@ public record AiStudioCharacter : AiStudioObject
 	[SuppressMessage("Style", "IDE0008:Use explicit type", Justification = "Analyzer doesn't recognize immutable builder methods as apparent")]
 	public AiStudioCharacter(BinaryReader binaryReader) : base(binaryReader)
 	{
-		// TODO: verify mapping of sex - I think female is 1 here but 0 in AiChara
 		int _sex = binaryReader.ReadInt32();
 
 		Chara = new(binaryReader, out _);

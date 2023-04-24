@@ -35,7 +35,6 @@ public static class GenChaListDataLookupMethods
 				string _nameEn = data.dictList[ID][enusKey];
 				string _nameJp = data.dictList[ID][jpKey];
 #pragma warning disable CA1854 // Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method
-				// TODO: Revisit this warning later
 				if (chaListData.ContainsKey(cat))
 				{
 					if (chaListData[cat].ContainsKey(ID)) chaListData[cat][ID] = int.TryParse(_nameEn, out _) ? _nameJp : _nameEn;

@@ -74,7 +74,7 @@ public record KK_PregnancyPlusData : AiPluginData
 		}
 		public class SkinnedMeshRenderer
 		{
-			public SkinnedMeshRenderer() => throw new NotImplementedException();
+			// public SkinnedMeshRenderer() => throw new NotImplementedException();
 		}
 	}
 
@@ -103,7 +103,7 @@ public record KK_PregnancyPlusData : AiPluginData
 					_field.SetValue(this, dataDict.TryGetValue(_field.Name, out _tryval) ? new Version((string)_tryval) : null);
 					break;
 				case var x when x == typeof(ImmutableArray<MeshBlendShape>):
-					// TODO: Not implementing the logic to deserialize meshBlendShapes yet
+					// Not implementing the logic to deserialize meshBlendShapes yet
 					_field.SetValue(this, null);
 					break;
 				default:

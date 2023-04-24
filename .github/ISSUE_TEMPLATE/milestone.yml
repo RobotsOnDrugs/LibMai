@@ -1,0 +1,14 @@
+name: Milestone issue
+description: Developer-planned feature or change
+title: "[Milestone] "
+labels: [milestone]
+assignees:
+  - RobotsOnDrugs
+body:
+  - type: textarea
+    attributes:
+      label: Work to do
+      description: Describe the planned change
+      placeholder: This is for developer use to track milestone issues only. If you want to propose a change, file a feature request or bug report instead.
+    validations:
+      required: true

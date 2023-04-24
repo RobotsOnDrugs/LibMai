@@ -68,9 +68,9 @@ public readonly record struct AiChara : IIllusionChara
 		}
 	}
 	
-	// I try to break up methods and keep them simpler and easier to follow, but a character object is quite complex
-	// There's also a mashup of metadata assigned to local variables that are used both inside and outside the nested switch cases that I can't quite straighten out
-	// TODO: See if it's possible to simplify getting data at each position - each block might always be in the same position relative to the others
+	// I try to break up methods and keep them simpler and easier to follow, but a character object is quite complex.
+	// There's also a mashup of metadata assigned to local variables that are used both inside and outside the nested switch cases that I can't quite straighten out.
+	// See also issue #5.
 	internal AiChara(BinaryReader binary_reader, out long data_end_position)
 	{
 		LoadVersion = ParseAiCharaTypeVersion(binary_reader, IllusionConstants.AICharaIdentifier);

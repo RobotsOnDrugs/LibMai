@@ -6,8 +6,6 @@ namespace IllusionCards.AI.Chara.Friendly.MasterDictionaryLookup;
 // If you're reviewing this, I highly suggest opening it in an IDE to collapse the enums.
 
 // There are multiple accessories named "0". They are omitted here, but are defined in MasterItemDictionaries.HeadAccessoryLookup so that you can, e.g., lookup 1 and get "0" back.
-// TODO: Double check head accessories in dnSpy to see if there was an error in extracting the names and values.
-// TODO: Investigate duplicate items in ao_back, ao_hand, and ao_leg.
 
 /// <summary>
 /// The index of head accessories as defined by Illusion.
