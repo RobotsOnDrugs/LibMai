@@ -26,17 +26,17 @@ public abstract record IllusionCard
 
 	public static IllusionCard NewCard(FileInfo cardFile)
 	{
-		using FileStream _fstream = new(cardFile.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
-		return NewCard(_fstream, cardFile);
+		using FileStream fstream = new(cardFile.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
+		return NewCard(fstream, cardFile);
 	}
 
 	[SuppressMessage("ReSharper", "SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault")]
-	private static IllusionCard NewCard(Stream stream, FileInfo? cardFile)
+	private static IllusionCard NewCard(Stream stream, FileInfo? card_file)
 	{
 		using BinaryReader binary_reader = new(stream, Encoding.UTF8);
 		CardStructure cs;
-		try { cs = new(binary_reader, cardFile); }
-		catch (UnsupportedCardException ex) { throw new UnsupportedCardException(ex.Message, ex, cardFile?.FullName); }
+		try { cs = new(binary_reader, card_file); }
+		catch (UnsupportedCardException ex) { throw new UnsupportedCardException(ex.Message, ex, card_file?.FullName); }
 		string friendly_name = IllusionConstants.CardTypeNames[cs.CardType];
 		return cs.CardType switch
 		{
@@ -52,7 +52,7 @@ public abstract record IllusionCard
 			//CardType.PHMaleChara => new PHMaleCharaCard(cs),
 			//CardType.PHScene => new PHSceneCard(cs),
 			//CardType.ECChara => new ECCharaCard(cs),
-			_ => throw new UnsupportedCardException($"{friendly_name} cards are currently not supported.", cardFile?.FullName ?? "")
+			_ => throw new UnsupportedCardException($"{friendly_name} cards are currently not supported.", card_file?.FullName ?? "")
 		};
 	}
 

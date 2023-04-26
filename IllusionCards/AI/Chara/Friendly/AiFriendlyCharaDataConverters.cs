@@ -1,5 +1,6 @@
 ﻿using IllusionCards.AI.Chara.Friendly.Clothing;
 using IllusionCards.AI.Chara.Raw.Coordinate;
+using IllusionCards.AI.Chara.Friendly.FriendlyNameLookup;
 
 namespace IllusionCards.AI.Chara.Friendly;
 
@@ -12,9 +13,9 @@ public static class AiFriendlyCharaDataConverters
 		{
 			FaceType = new()
 			{
-				// Contour = GetFriendlyFemaleFaceContourName(custom.face.headId),
-				// Skin = GetFriendlyFemaleFaceSkinName(custom.face.skinId),
-				// Wrinkles = GetFriendlyFemaleFaceWrinklesName(custom.face.detailId)
+				Contour = AiFriendlyNameLookup.GetFriendlyFemaleFaceContourName(custom.face.headId),
+				Skin = AiFriendlyNameLookup.GetFriendlyFemaleFaceSkinName(custom.face.skinId),
+				Wrinkles = AiFriendlyNameLookup.GetFriendlyFemaleFaceWrinklesName(custom.face.detailId)
 			},
 			Overall = new()
 			{
@@ -237,7 +238,7 @@ public static class AiFriendlyCharaDataConverters
 				{
 					Color = cparts[i].colorInfo[j].baseColor,
 					PatternID = cparts[i].colorInfo[j].pattern,
-					// PatternName = GetFriendlyClothingPatternByID(cparts[i].colorInfo[j].pattern),
+					PatternName = AiFriendlyNameLookup.GetFriendlyClothingPatternByID(cparts[i].colorInfo[j].pattern),
 					PatternColor = cparts[i].colorInfo[j].patternColor,
 					PatternWidth = cparts[i].colorInfo[j].layout.W,
 					PatternHeight = cparts[i].colorInfo[j].layout.Z,
@@ -251,7 +252,7 @@ public static class AiFriendlyCharaDataConverters
 			clothing_datas.Add(new()
 			{
 				ID = cparts[i].id,
-				// Name = GetFriendlyFemaleClothingByIndexAndID(i, cparts[i].id),
+				Name = AiFriendlyNameLookup.GetFriendlyFemaleClothingByIndexAndID(i, cparts[i].id),
 				ColorInfos = clothing_color_infos_builder.ToImmutable()
 			});
 		}
@@ -268,7 +269,7 @@ public static class AiFriendlyCharaDataConverters
 		};
 
 		var accessory_datas_builder = ImmutableArray.CreateBuilder<AiAccessoryData>();
-		foreach (Raw.Coordinate.AccessoryPartsInfo part in coordinate.accessory.parts)
+		foreach (AccessoryPartsInfo part in coordinate.accessory.parts)
 		{
 			var accessory_adjustment_datas_builder = ImmutableArray.CreateBuilder<AiAccessoryAdjustmentData>();
 			for (int i = 0; i < part.addMove.Rank; i++)
@@ -291,8 +292,8 @@ public static class AiFriendlyCharaDataConverters
 			{
 				AccessoryType = (AiAccessoryType)part.type,
 				ID = part.id,
-				// Name = GetFriendlyNameByCategoryID(part.type, part.id),
-				// Parent = GetFriendlyAccessoryParent(part.parentKey),
+				Name = AiFriendlyNameLookup.GetFriendlyNameByCategoryID(part.type, part.id),
+				Parent = AiFriendlyNameLookup.GetFriendlyAccessoryParent(part.parentKey),
 				Adjustments = accessory_adjustment_datas_builder.ToImmutable(),
 				ColorInfos = accessory_colorinfos_builder.ToImmutable(),
 				hideCategory = part.hideCategory,

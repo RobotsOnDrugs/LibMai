@@ -10,7 +10,7 @@ public readonly record struct CardStructure
 
 	internal CardStructure(BinaryReader binary_reader, in FileInfo? card_file)
 	{
-		using Stream stream = binary_reader.BaseStream;
+		Stream stream = binary_reader.BaseStream;
 		CardFile = card_file;
 		byte[] header = binary_reader.ReadBytes(Constants.PNGHeader.Length);
 		if (!header.SequenceEqual(Constants.PNGHeader))

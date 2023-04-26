@@ -54,7 +54,7 @@ public readonly record struct AiChara : IIllusionChara
 		// ReSharper disable once UnassignedGetOnlyAutoProperty
 		// ReSharper disable once CollectionNeverUpdated.Global
 		// lstInfo is populated via MessagePack
-		public ImmutableArray<Info> lstInfo { get; }
+		public ImmutableArray<Info> lstInfo { get; init; }
 
 		[MessagePackObject(true), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Uses MessagePack convention")]
 		public readonly record struct Info
