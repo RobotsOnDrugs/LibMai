@@ -5,7 +5,7 @@ namespace IllusionCards.AI.Scene;
 [SuppressMessage("ReSharper", "BadListLineBreaks")]
 public record AiStudioCharacter : AiStudioObject
 {
-	public CharaSex Sex => Chara.Sex;
+	public AiCharaSex Sex => Chara.Sex;
 	//private int Index { get; init; }
 	public override int Kind => 0;
 

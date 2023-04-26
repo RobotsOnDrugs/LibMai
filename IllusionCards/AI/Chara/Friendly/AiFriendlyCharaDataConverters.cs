@@ -364,7 +364,7 @@ public static class AiFriendlyCharaDataConverters
 	};
 	public static AiCharaInfoData GetFriendlyCharaInfoData(in AiRawParameterData parameter) => new()
 	{
-		Sex = (CharaSex)parameter.sex,
+		Sex = (AiCharaSex)parameter.sex,
 		Name = parameter.fullname,
 		Personality = (AiCharaInfoData.PersonalityType)parameter.personality,
 		BirthMonth = parameter.birthMonth,

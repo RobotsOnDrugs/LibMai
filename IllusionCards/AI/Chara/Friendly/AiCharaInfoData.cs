@@ -2,7 +2,7 @@ namespace IllusionCards.AI.Chara.Friendly;
 
 public readonly record struct AiCharaInfoData // Parameter - this is common to both AIS and HS2
 {
-	public CharaSex Sex { get; init; }
+	public AiCharaSex Sex { get; init; }
 	public string Name { get; init; }
 	public PersonalityType Personality { get; init; }
 	public int BirthMonth { get; init; }

@@ -6,7 +6,7 @@ namespace IllusionCards.AI.Chara;
 [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Names match AI/HS2 naming.")]
 [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
 [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
-public readonly record struct AiChara : IIllusionChara
+public readonly record struct AiChara
 {
 	//public static AiChara Tsubomi { get; }
 	//public static AiChara Hero { get; }
@@ -16,7 +16,7 @@ public readonly record struct AiChara : IIllusionChara
 
 	//internal AiChara DefaultChara => Sex is CharaSex.Male ? Hero : Tsubomi;
 
-	public CharaSex Sex => CharaInfo.Sex;
+	public AiCharaSex Sex => CharaInfo.Sex;
 	public string Name => CharaInfo.Name;
 
 	public Version LoadVersion { get; }

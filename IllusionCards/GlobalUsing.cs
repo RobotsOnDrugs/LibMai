@@ -13,7 +13,6 @@ global using IllusionCards.AI.Plugins;
 global using IllusionCards.AI.Mods;
 global using IllusionCards.AI.Scene;
 global using IllusionCards.Cards;
-global using IllusionCards.Chara;
 global using IllusionCards.FakeUnity;
 global using IllusionCards.Illusion;
 global using IllusionCards.Util;
@@ -25,6 +24,7 @@ global using MessagePack.Resolvers;
 global using NLog;
 
 global using static System.Math;
+
 global using static IllusionCards.AI.Cards.AiCharaCardDefinitions;
 global using static IllusionCards.AI.Cards.AiSceneCard;
 global using static IllusionCards.AI.Chara.AiCharaVersion;
@@ -32,5 +32,4 @@ global using static IllusionCards.AI.Chara.Friendly.AiFriendlyCharaDataConverter
 // global using static IllusionCards.AI.Chara.Friendly.AiFriendlyNameLookup;
 global using static IllusionCards.AI.Scene.SceneHelpers;
 global using static IllusionCards.Cards.IllusionCard;
-global using static IllusionCards.Chara.IIllusionChara;
-global using static IllusionCards.Util.MathTypesResolver;
+global using static IllusionCards.FakeUnity.MathTypesResolver;
