@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IllusionCards", "IllusionCards\IllusionCards.csproj", "{353CA4AF-CA73-4EA7-AF48-1F3E337DCD4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibMai.Cards", "LibMai.Cards\LibMai.Cards.csproj", "{353CA4AF-CA73-4EA7-AF48-1F3E337DCD4E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardScannerDemo", "CardManagerCLI\CardScannerDemo.csproj", "{B6DF555C-B531-4AF9-BF5A-54F8247C420D}"
 EndProject

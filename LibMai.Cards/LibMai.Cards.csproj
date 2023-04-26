@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    
+    <PropertyGroup>
+        <Version>0.1.1</Version>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TargetFramework>net7.0</TargetFramework>
+        <LangVersion>11.0</LangVersion>
+        <Platforms>x64</Platforms>
+        <AssemblyName>LibMai.Cards</AssemblyName>
+        <PackageId>LibMai.Cards</PackageId>
+        <Authors>RobotsOnDrugs</Authors>
+        <Company />
+        <Product>LibMai</Product>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <Compile Remove="AI\Chara\BaseGameIds\**" />
+        <EmbeddedResource Remove="AI\Chara\BaseGameIds\**" />
+        <None Remove="AI\Chara\BaseGameIds\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MessagePack" Version="2.4.59" />
+        <PackageReference Include="NLog" Version="5.1.2" />
+    </ItemGroup>
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>MaiDevSandbox</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+</Project>
