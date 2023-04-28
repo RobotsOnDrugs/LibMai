@@ -1,5 +1,8 @@
-namespace LibMai.Cards.Cards;
+namespace LibMai.Cards.Illusion;
 
+/// <summary>
+/// Represents the structure of an Illusion card, including its type and data offset information.
+/// </summary>
 public readonly record struct CardStructure
 {
 	public const long PngStartOffset = 0;

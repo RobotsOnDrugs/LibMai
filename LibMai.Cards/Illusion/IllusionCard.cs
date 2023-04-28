@@ -1,4 +1,4 @@
-﻿namespace LibMai.Cards.Cards;
+﻿namespace LibMai.Cards.Illusion;
 
 public abstract record IllusionCard
 {

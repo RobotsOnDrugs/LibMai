@@ -1,7 +1,4 @@
-﻿using LibMai.Cards.AI.Chara;
-using LibMai.Cards.Cards;
-
-namespace LibMai.Cards.AI.Cards;
+﻿namespace LibMai.Cards.AI.Cards;
 
 public record AiCharaCard : IllusionCard
 {
