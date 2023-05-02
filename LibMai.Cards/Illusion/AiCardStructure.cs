@@ -1,61 +1,51 @@
 namespace LibMai.Cards.Illusion;
 
 /// <summary>
-/// Represents the structure of an Illusion card, including its type and data offset information.
+/// Represents the structure of an AI/HS2 card, including its type and data offset information.
 /// </summary>
-public readonly record struct CardStructure
+/// <param name="PngStartOffset">The offset of the PNG data. For valid cards from file, including those without PNG data, this should be 0.</param>
+/// <param name="DataStartOffset">The offset of the card data. This is typically immediately after the PNG data.</param>
+/// <param name="PostHeaderOffset">The offset of the card data that immediately follows the block header data.</param>
+/// <param name="CardFile">File information for the card. If you are reading from something other than a file, set this to null.</param>
+/// <param name="CardType">The type of the card.</param>
+public readonly record struct AiCardStructure(long PngStartOffset, long DataStartOffset, long PostHeaderOffset, FileInfo? CardFile, CardType CardType)
 {
-	public const long PngStartOffset = 0;
-	public long DataStartOffset { get; } = 0;
-	public long PostHeaderOffset { get; } = 0;
-	public FileInfo? CardFile { get; } = null;
-	public CardType CardType { get; } = CardType.Unknown;
-
-	internal CardStructure(BinaryReader binary_reader, in FileInfo? card_file)
+	internal static AiCardStructure AiCardStructureInternal(BinaryReader binary_reader, in FileInfo? card_file)
 	{
 		Stream stream = binary_reader.BaseStream;
-		CardFile = card_file;
 		byte[] header = binary_reader.ReadBytes(Constants.PNGHeader.Length);
 		if (!header.SequenceEqual(Constants.PNGHeader))
 			throw new InvalidCardException("No PNG header was found at the beginning of the file.");
 		if (!Helpers.TryFindSequence(stream, Constants.PNGFooter, out long png_end_offset))
 			throw new InvalidCardException("No PNG footer was found.");
-		DataStartOffset = png_end_offset + Constants.PNGFooter.Length;
-		if (stream.Length <= DataStartOffset) { throw new InvalidCardException("This is a normal PNG file with no extra data."); }
+		long data_start_offset = png_end_offset + Constants.PNGFooter.Length;
+		if (stream.Length <= data_start_offset) { throw new InvalidCardException("This is a normal PNG file with no extra data."); }
 		
-		_ = stream.Seek(DataStartOffset, SeekOrigin.Begin);
+		_ = stream.Seek(data_start_offset, SeekOrigin.Begin);
 		CardType card_type = PHParse(ReadString(binary_reader, false));
 		if (card_type is not CardType.Unknown)
-		{
-			CardType = card_type;
-			PostHeaderOffset = stream.Position;
-			return;
-		}
+			return new(0, data_start_offset, stream.Position, card_file, card_type);
 
-		_ = stream.Seek(DataStartOffset, SeekOrigin.Begin);
+		_ = stream.Seek(data_start_offset, SeekOrigin.Begin);
 		card_type = SceneParse(binary_reader);
 		if (card_type is not CardType.Unknown)
-		{
-			CardType = card_type;
-			PostHeaderOffset = stream.Position;
-			return;
-		}
+			return new(0, data_start_offset, stream.Position, card_file, card_type);
 
-		_ = stream.Seek(DataStartOffset, SeekOrigin.Begin);
+		_ = stream.Seek(data_start_offset, SeekOrigin.Begin);
 		if (binary_reader.ReadInt32() != 100) throw new InvalidCardException("Could not determine card type.");
 		string card_id = ReadString(binary_reader, false);
 		card_type = GetCharaCardType(card_id);
-		CardType = card_type == CardType.Unknown ? throw new InvalidCardException($"Looks like an AI or KK card, but could not determine card type from this identifier: {card_id}") : card_type;
-		PostHeaderOffset = stream.Position;
+		if (card_type is CardType.Unknown)
+			throw new InvalidCardException($"Looks like an AI or KK card, but could not determine card type from this identifier: {card_id}");
+		return new(0, data_start_offset, stream.Position, card_file, card_type);
 	}
 
 	/// <summary>
 	/// Parses a card's data header to determine if it is a scene card.
 	/// </summary>
 	/// <param name="binary_reader">An open BinaryReader for the card data. The stream must be at the beginning of the card data after the PNG data.</param>
-	/// <param name="card_type">The scene card type or CardType.Unknown if it is not scene card data.</param>
 	/// <exception cref="InvalidCardException">The card data is not valid.</exception>
-	/// <returns>True if it is a valid known scene card, false otherwise.</returns>
+	/// <returns>The scene card type or CardType.Unknown if it is not scene card data.</returns>
 	private static CardType SceneParse(BinaryReader binary_reader)
 	{
 		// Studio scene files for AI, KK, and PH all start with a version number.

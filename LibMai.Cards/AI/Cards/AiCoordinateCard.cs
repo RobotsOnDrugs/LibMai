@@ -5,7 +5,7 @@ public record AiCoordinateCard : IllusionCard
 	public string CoordinateName { get; init; }
 	public AiRawCoordinateData Coordinate { get; init; }
 	public override CardType CardType => CardType.AICoordinateFemale;
-	public AiCoordinateCard(in CardStructure cs, BinaryReader binaryReader) : base(cs, binaryReader)
+	public AiCoordinateCard(in AiCardStructure cs, BinaryReader binaryReader) : base(cs, binaryReader)
 	{
 		Version type_version = ParseAiCharaTypeVersion(binaryReader, IllusionConstants.AIClothesIdentifier);
 		int language = binaryReader.ReadInt32();

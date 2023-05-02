@@ -7,7 +7,7 @@ public record AiCharaCard : IllusionCard
 	public long CharacterDataEndPosition { get; }
 	public override CardType CardType => CardType.AICharaFemale;
 
-	public AiCharaCard(in CardStructure cs, BinaryReader binary_reader) : base(cs, binary_reader)
+	public AiCharaCard(in AiCardStructure cs, BinaryReader binary_reader) : base(cs, binary_reader)
 	{
 		CharacterDataStartPosition = binary_reader.BaseStream.Position;
 		long end_position;
@@ -15,6 +15,6 @@ public record AiCharaCard : IllusionCard
 		catch (InvalidDataException ex) { throw new InvalidCardException(ex.Message); }
 		catch (InternalCardException ex) { throw new UnsupportedCardException(ex.Message); }
 		CharacterDataEndPosition = end_position;
-		CardFile = CardStructure.CardFile;
+		CardFile = AiCardStructure.CardFile;
 	}
 }
